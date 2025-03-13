@@ -34,7 +34,10 @@ set anylog home !anylog_path
 create work directories
 
 set local_scripts = !anylog_path/deployment-scripts/node-deployment
+if $LOCAL_SCRIPTS then set local_scripts = $LOCAL_SCRIPTS
 set test_dir = /app/deployment-scripts/test
+if $TEST_DIR then set test_dir = $TEST_DIR
+
 
 :set-params:
 process !local_scripts/set_params.al

@@ -27,6 +27,8 @@
 on error ignore
 set create_config = false
 
+set debug interactive
+
 :check-policy:
 config_id = blockchain get config where company=!company_name and name=!config_name and node_type=!node_type bring.first [*][id]
 if !config_id then goto config-policy
