@@ -165,27 +165,23 @@ if $NOSQL_PORT then nosql_port = $NOSQL_PORT
 if $NOSQL_USER then nosql_user = $NOSQL_USER
 if $NOSQL_PASSWD then nosql_passwd = $NOSQL_PASSWD
 
-:blockchain-general:
-blockchain_sync = 30 seconds
+:blockchain-basic:
+# blockchain platform - either master (node) or optimism
 set blockchain_source = master
 set blockchain_destination = file
+blockchain_sync = 30 seconds
+# whether to use the master node as a relay against the blockchain or not
 set is_relay=false
 
 if $BLOCKCHAIN_SYNC then blockchain_sync = $BLOCKCHAIN_SYNC
 if $BLOCKCHAIN_SOURCE then blockchain_source=$BLOCKCHAIN_SOURCE
 if $DESTINATION then set blockchain_destination=$DESTINATION
-
-# if !blockchain_source != master and !node_type == master then blockchain_destination = database
-if !blockchain_source != master then goto blockchain-connect
-
-:blockchain-master:
-# master node based blockchain configuration
-
+if !node_type == master and !blockchain_source != master then set is_relay = true
 if $LEDGER_CONN ledger_conn = $LEDGER_CONN
-goto operator-settings
+
+if blockchain_source == master then goto operator-settings
 
 :blockchain-connect:
-if !node_type == master then set is_relay = true
 # live blockchain configuration
 provider = https://optimism-sepolia.infura.io/v3/532f565202744c0cb7434505859efb74
 blockchain_public_key = 0xdf29075946610ABD4FA2761100850869dcd07Aa7
