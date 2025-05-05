@@ -5,7 +5,7 @@
 #   1. create OPC-UA policies
 #   2. declare policies
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/demo-scripts/opcua_tags.al
+# process !anylog_path/deployment-scripts/connectors/opcua_tags.al
 
 
 :create-policy:

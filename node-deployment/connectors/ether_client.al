@@ -5,7 +5,7 @@
 #   3. create OPC-UA call
 #   4. start OPC-UA service
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/demo-scripts/opcua_client.al
+# process !anylog_path/deployment-scripts/connectors/opcua_client.al
 
 :opcua-service:
 on error goto opcua-service-error
