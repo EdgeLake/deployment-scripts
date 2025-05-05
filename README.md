@@ -26,7 +26,7 @@ Once step 5 is executed, the generated policy triggers steps 6-11:
 
 
 ## Other Deployments
-* [demo-scripts](demo-scripts) - sample commands that can be used by users
+* [sample-scripts](sample-scripts) - sample commands that can be used by users
   * manual connection of network configurations
   * Examples for receiving data into AnyLog via a message client (_MQTT_ & _REST-POST_) or via _Kafka_   
   * how to connect postgres and mongo to databases
