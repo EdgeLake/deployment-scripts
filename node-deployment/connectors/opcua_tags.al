@@ -7,6 +7,11 @@
 #----------------------------------------------------------------------------------------------------------------------#
 # process !anylog_path/deployment-scripts/connectors/opcua_tags.al
 
+:check-vars:
+on error ignore
+if not !opcua_url then goto missing-opcua-url
+if not !opcua_node then goto missing-opcua-node
+if not !opcua_frequency then opcua_frequency = 1
 
 :create-policy:
 on error goto create-policy-error
@@ -29,6 +34,14 @@ process !anylog_path/deployment-scripts/demo-scripts/opcua_client.al
 
 :end-script:
 end script
+
+:missing-opcua-url:
+print "Missing OPC-UA URL cannot declare OPC-UA"
+goto end-script
+
+:missing-opcua-node:
+print "Missing OPC-UA node ID(s) cannot declare OPC-UA"
+goto end-script
 
 :create-policy-error:
 print "Failed to create OPC-UA policies"

@@ -1,35 +1,32 @@
 #----------------------------------------------------------------------------------------------------------------------#
 # Sample deployment process for EtherIP
-# https://github.com/AnyLog-co/documentation/blob/master/enthernetip.md
+# https://github.com/AnyLog-co/documentation/blob/master/etherip.md
 # :steps:
-#   1. create EtherIP policies
-#   2. declare policies
+#   3. create EtherIP call
+#   4. start EtherIP service
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/connectors/etherip_tags.al
+# process !anylog_path/deployment-scripts/connectors/etherip_client.al
 
 :check-vars:
 on error ignore
 if not !etherip_url then goto missing-etherip-url
 if not !etherip_frequency then etherip_frequency = 1
 
-:create-policy:
-on error goto create-policy-error
+:opcua-service:
+on error goto etherip-service-error
 
 <get etherip struct where
     url = !etherip_url and
-    format = policy  and
-    schema = true and
+    format = run_client and
+    frequency = !etherip_frequency and
+    name = etherip-client1 and
     dbms = !default_dbms and
-    target = "local = true and master = !ledger_conn" and
-    output = !tmp_dir/etherip_policies.al>
+    output = !tmp_dir/run_etherip_service.al>
 
 on error ignore
-process !tmp_dir/etherip_policies.al
+process !tmp_dir/run_etherip_service.al
 
-:etherip-client:
-on error ignore
-process !anylog_path/deployment-scripts/demo-scripts/etherip_client.al
-
+get plc client
 :end-script:
 end script
 
@@ -37,6 +34,6 @@ end script
 print "Missing EtherIP URL cannot declare EtherIP connection"
 goto end-script
 
-:create-policy-error:
-print "Failed to create OPC-UA policies"
+:etherip-service-error:
+print "Failed to start OPC-UA service"
 goto end-script
