@@ -5,7 +5,7 @@
 #   3. create EtherIP call
 #   4. start EtherIP service
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/connectors/etherip_client.al
+# process !local_scripts/connectors/etherip_client.al
 
 :check-vars:
 on error ignore

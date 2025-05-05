@@ -5,7 +5,7 @@
 #   1. create EtherIP policies
 #   2. declare policies
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/connectors/etherip_tags.al
+# process !local_scripts/connectors/etherip_tags.al
 
 :check-vars:
 on error ignore
@@ -28,7 +28,7 @@ process !tmp_dir/etherip_policies.al
 
 :etherip-client:
 on error ignore
-process !anylog_path/deployment-scripts/demo-scripts/etherip_client.al
+process !local_scripts/connectors/etherip_client.al
 
 :end-script:
 end script

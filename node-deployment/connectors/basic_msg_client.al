@@ -3,7 +3,7 @@
 # By default, the Message client params (in set_params.al) are based rand data coming into AnyLog's
 # MQTT message broker
 #--------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/demo-scripts/basic_msg_client.al
+# process !local_scripts/connectors/basic_msg_client.al
 
 on error ignore
 if !debug_mode == true then set debug on

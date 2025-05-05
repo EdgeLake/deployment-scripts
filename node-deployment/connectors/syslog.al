@@ -27,13 +27,13 @@
 #   4. run message broker (if not set)
 #   5. run message rule
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/demo-scripts/syslog.al
+# process !local_scripts/connectors/syslog.al
 on error ignore
 
 if !debug_mode == true then set debug on
 
 :dbms-configs:
-process !anylog_path/deployment-scripts/demo-scripts/syslog_table_policy.al
+process !local_scripts/connectors/syslog_table_policy.al
 
 :store-monitoring:
 if !debug_mode == true then print "Monitoring database and table configurations for syslog"

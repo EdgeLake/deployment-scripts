@@ -5,7 +5,7 @@
 #   1. create OPC-UA policies
 #   2. declare policies
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/connectors/opcua_tags.al
+# process !local_scripts/connectors/opcua_tags.al
 
 :check-vars:
 on error ignore
@@ -30,7 +30,7 @@ process !tmp_dir/opcua_policies.al
 
 :opcua-client:
 on error ignore
-process !anylog_path/deployment-scripts/demo-scripts/opcua_client.al
+process !local_scripts/connectors/opcua_client.al
 
 :end-script:
 end script

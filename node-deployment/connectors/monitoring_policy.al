@@ -10,7 +10,7 @@
 #   'name' : 'Generic Monitoring Schedule',
 #   'script' : [
 #       "schedule name = monitoring_ips and time=300 seconds and task monitoring_ips = blockchain get query bring.ip_port",
-#       "if !store_monitoring == true and !node_type == operator then process !anylog_path/deployment-scripts/demo-scripts/monitoring_table_policy.al",
+#       "if !store_monitoring == true and !node_type == operator then process !local_scripts/connectors/monitoring_table_policy.al",
 #       "if !store_monitoring == true and !node_type != operator then schedule name=operator_monitoring_ips and time=300 seconds and task if not !operator_monitoring_ip then operator_monitoring_ip = blockchain get operator bring.first [*][ip] : [*][port]",
 #       "schedule name = get_stats and time=30 seconds and task node_insight = get stats where service = operator and topic = summary  and format = json",
 #       "schedule name = get_timestamp and time=30 seconds and task node_insight[timestamp] = get datetime local now()",
@@ -56,12 +56,12 @@
 #    'Network Error' : 0
 # }
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/demo-scripts/monitoring_policy.al
+# process !local_scripts/connectors/monitoring_policy.al
 on error ignore
 if !debug_mode == true then set debug on
 
 :declare-policy:
-if !store_monitoring == true and !node_type == operator then process !anylog_path/deployment-scripts/demo-scripts/monitoring_table_policy.al
+if !store_monitoring == true and !node_type == operator then process !local_scripts/connectors/monitoring_table_policy.al
 
 :set-params:
 if !debug_mode == true then print "Setting env params"
@@ -87,7 +87,7 @@ new_policy=""
         "name": "Generic Monitoring Schedule",
         "script": [
             "schedule name = monitoring_ips and time=300 seconds and task monitoring_ips = blockchain get query bring.ip_port",
-            "if !store_monitoring == true and !node_type == operator then process !anylog_path/deployment-scripts/demo-scripts/monitoring_table_policy.al",
+            "if !store_monitoring == true and !node_type == operator then process !local_scripts/connectors/monitoring_table_policy.al",
             "if !store_monitoring == true and !node_type != operator then schedule name=operator_monitoring_ips and time=300 seconds and task if not !operator_monitoring_ip then operator_monitoring_ip = blockchain get operator bring.first [*][ip] : [*][port]",
 
             "schedule name = get_stats and time=30 seconds and task node_insight = get stats where service = operator and topic = summary  and format = json",

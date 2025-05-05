@@ -32,7 +32,7 @@
 # CREATE INDEX node_insight_insert_timestamp_index ON node_insight(insert_timestamp);
 # CREATE INDEX node_insight_node_name_index ON node_insight(node_name);
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/demo-scripts/monitoring_table_policy.al
+# process !local_scripts/connectors/monitoring_table_policy.al
 on error ignore
 
 if !debug_mode == true then set debug on
