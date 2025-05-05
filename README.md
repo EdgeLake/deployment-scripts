@@ -1,6 +1,24 @@
 # Deployment Scripts 
 
 The following provides the default deployment process and sample scripts for AnyLog & EdgeLake.
+```tree
+├── customers <-- Customer specific scripts
+├── grpc <-- Sample process for deploying gRPC used by KubeArmor
+│   └── kubearmor
+├── machine-builder <-- Machine builder (factory machinary) use case example 
+├── node-deployment <-- Node deployment process  
+│   ├── connectors <-- Southbond connectors 
+│   ├── database <-- database related calls 
+│   └── policies <-- policy generator calls 
+├── sample-scripts <-- sample scripts 
+├── smart-city <-- smart city example (incuding Grafana) 
+│   ├── grafana
+│   │   ├── power_plant
+│   │   ├── waste_water
+│   │   └── water_plant
+│   └── imgs
+└── test-network-local-scripts <-- scripts used in the demo / test network 
+```
 
 ## Node Deployment
 
