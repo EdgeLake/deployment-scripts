@@ -272,7 +272,7 @@ if $OPCUA_FREQUENCY then opcua_frequency=$OPCUA_FREQUENCY
 :etherip-conifgs:
 set enable_etherip=false
 if $ENABLE_OPCUA == true or $ENABLE_OPCUA == True or $ENABLE_OPCUA == TRUE then set enable_etherip = true
-if !$ETHERIP_URL then etherip_url = $ETHERIP_URL
+if $ETHERIP_URL then etherip_url = $ETHERIP_URL
 else if !enable_etherip and ($SIMULATOR_MODE == true or $SIMULATOR_MODE == True or $SIMULATOR_MODE == TRUE) then etherip_url=127.0.0.1
 if $ETHERIP_FREQUENCY then etherip_frequency = $ETHERIP_FREQUENCY
 
