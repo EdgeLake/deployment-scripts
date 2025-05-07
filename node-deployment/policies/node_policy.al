@@ -48,6 +48,7 @@ set policy new_policy [!node_type][company] = !company_name
 if !debug_mode == true then print "Declare network configuration in new policy variables"
 
 set policy new_policy [!node_type][hostname] = !hostname
+if $HZN_DEVICE_ID then set policy new_policy [!node_type][hzn_device_id] = $HZN_DEVICE_ID
 set policy new_policy [!node_type][ip] = !external_ip
 if !tcp_bind == true and !overlay_ip then set policy new_policy [!node_type][ip] = !overlay_ip
 if !tcp_bind == true and not !overlay_ip then set policy new_policy [!node_type][ip] = !ip
