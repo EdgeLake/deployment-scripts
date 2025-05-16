@@ -104,7 +104,10 @@ if $ANYLOG_BROKER_PORT then anylog_broker_port = $ANYLOG_BROKER_PORT
 if $BROKER_BIND == true or $BROKER_BIND == True or $BROKER_BIND == TRUE then broker_bind = true
 if !broker_threads.int < 1 then broker_threads = 1
 
-if $OVERLAY_IP then overlay_ip = $OVERLAY_IP
+# update !ip based on $NIC_TYPE
+if $NIC_TYPE then set internal ip with $NIC_TYPE
+# useer OVERLAY IP address
+if not $NIC_TYPE and $OVERLAY_IP then overlay_ip = $OVERLAY_IP
 if $PROXY_IP then proxy_ip = $PROXY_IP
 if $CONFIG_NAME then config_name = $CONFIG_NAME
 
