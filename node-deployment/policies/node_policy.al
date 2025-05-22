@@ -34,9 +34,11 @@ if !debug_mode == true then print "Check whether policy already exists based on 
 process !local_scripts/policies/validate_node_policy.al
 
 # checks nodes without networking configurations - this will also update the node name on the interface
-is_node = blockchain get !node_type where name=!node_name
-if not !is_policy and !node_name then
-do node_name = !node_name + "2"
+node_count = blockchain get !node_type where name=!node_name bring.count
+
+if not !is_policy and !node_count then
+do node_count =  python !node_count.int  + 1
+do node_name = !node_name + !node_count
 do set node name !node_name
 
 if not !is_policy and !create_policy == false then goto create-policy
