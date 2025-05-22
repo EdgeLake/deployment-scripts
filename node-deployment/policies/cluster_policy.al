@@ -16,7 +16,30 @@
 on error ignore
 if !debug_mode == true then set debug on
 
+
 set create_policy = false
+
+:cluster-naming:
+#---------------------------------------------------------------------------------------------------#
+# If cluster name is not provided than use the information for the node to get the cluster base ID
+# If there's a cluster ID, then get cluster name and goto :check-policy:
+# If there's no cluster name or ID then generate a new cluster name
+#---------------------------------------------------------------------------------------------------#
+if !cluster_name then goto check-policy
+
+process !local_scripts/policies/validate_node_policy.al
+if !is_policy then
+do cluster_id = from !is_policy bring [*][cluster]
+do cluster_name = blockchain get cluster where id=!cluster_id bring [*][name]
+do goto check-policy
+
+cluster_count = blockchain get cluster where company=!company_name bring.count
+if not !cluster_count then cluster_name = !company_name + " cluster1"
+if !cluster_count then
+do cluster_count =  python !cluster_count.int  + 1
+do cluster_name = !company_name + " cluster" + !cluster_count
+
+goto prep-policy
 
 :check-policy:
 if !debug_mode == true then print "Check whether cluster policy exists"

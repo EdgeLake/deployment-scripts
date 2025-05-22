@@ -23,6 +23,7 @@ if !debug_mode == true then set debug on
 :required-params:
 company_name = "New Company"
 ledger_conn = 127.0.0.1:32048
+hostname = get hostname
 
 if $NODE_TYPE == master-operator then set node_type = operator
 else if $NODE_TYPE == master-publisher then set node_type = publisher
@@ -30,11 +31,11 @@ else if $NODE_TYPE then set node_type = $NODE_TYPE
 else goto missing-node-type
 
 if $NODE_NAME then node_name = $NODE_NAME
-if !node_type == master and not !node_name then node_name = anylog-master
-else if !node_type == operator and not !node_name then node_name = anylog-operator
-else if !node_type == publisher and not !node_name then node_name = anylog-publisher
-else if !node_type == query and not !node_name then node_name = anylog-query
-else if not !node_name then node_name = anylog-node
+if !node_type == master and not !node_name then node_name = !hostname + " master"
+else if !node_type == operator and not !node_name then node_name = !hostname + " operator"
+else if !node_type == publisher and not !node_name then node_name = !hostname + " publisher"
+else if !node_type == query and not !node_name then node_name = !hostname + " query"
+else if not !node_name then node_name = !hostname + " generic"
 
 set node name !node_name
 
@@ -44,7 +45,6 @@ if $LEDGER_CONN then ledger_conn=$LEDGER_CONN
 
 
 :general-params:
-hostname = get hostname
 loc_info = rest get where url = https://ipinfo.io/json
 if $LOCATION then loc = $LOCATION
 if $COUNTRY then country = $COUNTRY
@@ -199,7 +199,6 @@ if $CONTRACT then contract = $CONTRACT
 
 :operator-settings:
 set enable_partitions = true
-cluster_name = !node_name.name + -cluster
 table_name=*
 partition_column = insert_timestamp
 partition_interval = day
