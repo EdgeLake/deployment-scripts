@@ -348,9 +348,9 @@ exit scripts
 print "Missing node type, cannot continue..."
 goto terminate-scripts
 
-:missing-node-name:
-print "Missing node name, cannot continue..."
-goto terminate-scripts
+# :missing-node-name:
+# print "Missing node name, cannot continue..."
+# goto terminate-scripts
 
 :missing-license-key:
 print "Missing license key, cannot continue..."
