@@ -30,7 +30,14 @@ if !is_relay == true then set node_type = relay
 :check-policy:
 if !debug_mode == true then print "Check whether policy already exists based on params"
 
+# checks nodes based on name, company and networking configurations
 process !local_scripts/policies/validate_node_policy.al
+
+# checks nodes without networking configurations - this will also update the node name on the interface
+is_node = blockchain get !node_type where name=!node_name
+if not !is_policy and !node_name then
+do node_name = !node_name + "2"
+do set node name !node_name
 
 if not !is_policy and !create_policy == false then goto create-policy
 if not !is_policy and !create_policy == true then goto config-policy-error
