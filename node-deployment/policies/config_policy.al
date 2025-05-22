@@ -93,6 +93,7 @@ if !node_type == generic then
 <do set policy new_policy [config][script] = [
     "if !blockchain_source == master then blockchain seed from !ledger_conn",
     "process !local_scripts/connect_blockchain.al",
+    "if !system_query == true then process !local_scripts/database/configure_dbms_system_query.al",
     "run scheduler 1",
     "if !monitor_nodes == true then process !anylog_path/deployment-scripts/node-deployment/connectors/monitoring_policy.al",
     "if !deploy_local_script == true then process !local_scripts/local_script.al",
