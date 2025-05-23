@@ -14,6 +14,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # process !local_scripts/policies/declare_cluster_policy.al
 set debug on
+set debug interactive
 on error ignore
 if !debug_mode == true then set debug on
 
@@ -28,12 +29,12 @@ set create_policy = false
 #---------------------------------------------------------------------------------------------------#
 if !cluster_name then goto check-policy
 
-process !local_scripts/policies/validate_node_policy.al
-if !is_policy then
-do json !is_policy
-do cluster_id = from !is_policy bring [*][cluster]
-do cluster_name = blockchain get cluster where id=!cluster_id bring [*][name]
-do goto check-policy
+# process !local_scripts/policies/validate_node_policy.al
+# if !is_policy then
+# do json !is_policy
+# do cluster_id = from !is_policy bring [*][cluster]
+# do cluster_name = blockchain get cluster where id=!cluster_id bring [*][name]
+# do goto check-policy
 
 cluster_count = blockchain get cluster where company=!company_name bring.count
 if not !cluster_count then cluster_name = !company_name + " cluster1"
