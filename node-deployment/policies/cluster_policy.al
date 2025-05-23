@@ -13,12 +13,12 @@
 # ---- Sample Policy ---
 #-----------------------------------------------------------------------------------------------------------------------
 # process !local_scripts/policies/declare_cluster_policy.al
+set debug on
 on error ignore
 if !debug_mode == true then set debug on
 
 
 set create_policy = false
-exit scripts
 
 :cluster-naming:
 #---------------------------------------------------------------------------------------------------#
@@ -71,6 +71,7 @@ wait 5
 goto check-policy
 
 :end-script:
+set debug off
 end script
 
 :terminate-scripts:
