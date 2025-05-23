@@ -18,6 +18,7 @@ if !debug_mode == true then set debug on
 
 
 set create_policy = false
+exit scripts
 
 :cluster-naming:
 #---------------------------------------------------------------------------------------------------#
