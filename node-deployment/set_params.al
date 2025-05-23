@@ -31,11 +31,7 @@ else if $NODE_TYPE then set node_type = $NODE_TYPE
 else goto missing-node-type
 
 if $NODE_NAME then node_name = $NODE_NAME
-if !node_type == master and not !node_name then node_name = !hostname + " master"
-else if !node_type == operator and not !node_name then node_name = !hostname + " operator"
-else if !node_type == publisher and not !node_name then node_name = !hostname + " publisher"
-else if !node_type == query and not !node_name then node_name = !hostname + " query"
-else if not !node_name then node_name = !hostname + " generic"
+else node_name = !hostname + " " + !node_type
 
 set node name !node_name
 
