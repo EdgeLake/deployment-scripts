@@ -30,6 +30,7 @@ if !cluster_name then goto check-policy
 
 process !local_scripts/policies/validate_node_policy.al
 if !is_policy then
+do json !is_policy
 do cluster_id = from !is_policy bring [*][cluster]
 do cluster_name = blockchain get cluster where id=!cluster_id bring [*][name]
 do goto check-policy
