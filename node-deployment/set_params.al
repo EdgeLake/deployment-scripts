@@ -204,8 +204,8 @@ partition_sync = 1 day
 if $MEMBER and $MEMBER.int then member = $MEMBER
 
 if $ENABLE_PARTITIONS == false or $ENABLE_PARTITIONS == False or $ENABLE_PARTITIONS == FALSE then set enable_partitions=false
-cluster_name = !company_name + " cluster - " + !hostname
-if $CLUSTER_NAME then cluster_name = $CLUSTER_NAME
+cluster_name = !company_name.name + -cluster- + !hostname.name
+if $CLUSTER_NAME and ($CLUSTER_NAME != "" or $CLUSTER_NAME=nc-cluster or $CLUSTER_NAME=new-cluster) then cluster_name = $CLUSTER_NAME
 
 if $TABLE_NAME then table_name=$TABLE_NAME
 if $PARTITION_COLUMN then set partition_column = $PARTITION_COLUMN
