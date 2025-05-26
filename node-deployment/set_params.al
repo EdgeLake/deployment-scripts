@@ -205,8 +205,8 @@ if $MEMBER and $MEMBER.int then member = $MEMBER
 
 if $ENABLE_PARTITIONS == false or $ENABLE_PARTITIONS == False or $ENABLE_PARTITIONS == FALSE then set enable_partitions=false
 
-if $CLUSTER_NAME and ($CLUSTER_NAME != "" or $CLUSTER_NAME=nc-cluster or $CLUSTER_NAME=new-cluster) then cluster_name = $CLUSTER_NAME
-else cluster_name = !company_name.name + -cluster- + !hostname.name
+if not $CLUSTER_NAME or $CLUSTER_NAME=nc-cluster or $CLUSTER_NAME=new-cluster then cluster_name = !company_name.name + -cluster- + !hostname.name
+else cluster_name = $CLUSTER_NAME
 
 if $TABLE_NAME then table_name=$TABLE_NAME
 if $PARTITION_COLUMN then set partition_column = $PARTITION_COLUMN
