@@ -57,7 +57,7 @@ do print !contract
 do process !local_scripts/policies/blockchain_policy.al
 do get platforms
 else if !blockchain_source == master and !node_type == master then
-do run blockchain sync where source = !blockchain_source and time = blockchain_sync and dest = !blockchain_destination
+do run blockchain sync where source = !blockchain_source and time = !blockchain_sync and dest = !blockchain_destination
 else if !blockchain_source == master !node_type != master then
 <do run blockchain sync where
     source=!blockchain_source and
