@@ -1,8 +1,7 @@
+on error ignore
+if !node_type != operator then goto pull-data
 :store-monitoring:
-if !debug_mode == true then print "Monitoring database and table configurations for docker_insight"
-on error goto store-monitoring-error
-connect dbms monitoring where type=sqlite
-create table syslog where dbms=monitoring
+process !local_scripts/database/configure_dbms_monitoring.al
 
 on error goto partition-data-err
 partition monitoring docker_insight using timestamp by 12 hours
@@ -10,7 +9,7 @@ schedule time=12 hours and name="drop docker_insight partitions" task drop parti
 
 
 :pull-data:
-on error
+on error pull-data-error
 <run scheduled pull
   where name = docker_client
   and type = docker
@@ -19,17 +18,21 @@ on error
   and dbms = monitoring
   and table = docker_insight>
 
+if !node_type == operator or !node_type == publisher then goto end-script
 
+
+# if not !docker_operator then docker_operator = blockchain get operator bring.first [*][ip] : [*][port]
+# run client (!docker_operator) file copy !watch_dir/* !!watch_dir
+# system mv !watch_dir/* !bkup_dir/
 
 :end-script:
 end script
 
-:terminate-scripts:
-exit scripts
-
-:store-monitoring-error:
-print "Failed to store"
-
 :partition-data-err:
 print "Error: Failed to set partitioning for default database"
-goto terminate-scripts
+goto end-script
+
+:pull-data-error:
+print "Error occurred during pull-data"
+goto end-script
+
