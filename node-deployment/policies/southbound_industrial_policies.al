@@ -8,7 +8,7 @@ set create_config = false
 
 :get-monitoring-config:
 on error ignore
-is_policy = blockchain get config where id = monitoring-config
+is_policy = blockchain get config where id = industrial-config
 if !is_policy then goto config-policy
 if not !is_policy and !create_config == true then goto declare-policy-error
 

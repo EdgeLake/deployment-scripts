@@ -140,8 +140,8 @@ if !node_type == query or $SYSTEM_QUERY == true or $SYSTEM_QUERY == True or $SYS
 do set system_query = true
 do if $MEMORY == false or $MEMORY == False or $MEMORY == FALSE then set memory=false
 
-if not $SYSTEM_QUERY_DB or ($SYSTEM_QUERY_DB != psql and $SYSTEM_QUERY_DB != sqlite) then  system_query_db = !db_type
-else system_query_db = $SYSTEM_QUERY_DB
+system_query_db = sqlite
+if $SYSTEM_QUERY_DB != psql or $SYSTEM_QUERY_DB != sqlite then system_query_db = $SYSTEM_QUERY_DB
 
 :nosql-database:
 set enable_nosql = false
