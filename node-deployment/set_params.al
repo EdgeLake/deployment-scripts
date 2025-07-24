@@ -141,7 +141,7 @@ do set system_query = true
 do if $MEMORY == false or $MEMORY == False or $MEMORY == FALSE then set memory=false
 
 system_query_db = sqlite
-if $SYSTEM_QUERY_DB != psql or $SYSTEM_QUERY_DB != sqlite then system_query_db = $SYSTEM_QUERY_DB
+if $SYSTEM_QUERY_DB == psql or $SYSTEM_QUERY_DB == sqlite then system_query_db = $SYSTEM_QUERY_DB
 
 :nosql-database:
 set enable_nosql = false
