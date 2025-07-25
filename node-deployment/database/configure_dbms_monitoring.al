@@ -18,11 +18,6 @@ on error goto monitoring-dbms-error
     port = !db_port>
 else connect dbms monitoring where type=!db_type
 
-if !debug_mode == true then print "create tsd_info table in monitoring"
-on error goto monitoring-table-error
-is_table = info table monitoring tsd_info exists
-if !is_table == false then create table tsd_info where dbms=monitoring
-
 
 :end-script:
 end script
