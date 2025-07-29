@@ -25,11 +25,6 @@ if !debug_mode == true then set debug on
 :declare-policy:
 if !store_monitoring == true and !node_type == operator then process !local_scripts/connectors/monitoring_table_policy.al
 
-:set-params:
-if !debug_mode == true then print "Setting env params"
-schedule_id = generic-schedule-policy
-set create_policy = false
-
 :check-policy:
 if !debug_mode == true then print "check if policy exists"
 is_policy = blockchain get schedule where id=!schedule_id
