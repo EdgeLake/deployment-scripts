@@ -31,13 +31,13 @@ The following describe steps to join a network wheen using _Master node_ vs _Blo
 1. Declare Params
 2. Connect to TCP / REST services
 3. 
-   * Copy blockchain to local node -- if node type is master, then step is skipped (step in [main](../node-deployment/main.al))
+   * Copy blockchain to local node -- if node type is master, then step is skipped (step in [main](main.al))
    * For Master node - create database (_blockchain_) and table (_ledger_) if does not exist 
 4. automatically sync against master every 30 seconds (`SYNC_TIMEE`)
 
 The reason for step 3 is that AnyLog/EdgeLake checks whether the policy exists when try to declare it. 
 
-**File**: [configure_dbms_blockchain.al](../node-deployment/database/configure_dbms_blockchain.al)
+**File**: [configure_dbms_blockchain.al](database/configure_dbms_blockchain.al)
 
 ## Blockchain  
 1. Declare Params
