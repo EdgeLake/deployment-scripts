@@ -52,4 +52,4 @@ The reason for step 3 is that AnyLog/EdgeLake checks whether the policy exists w
 
 There is no need for a master node when deploying an actual blockchain
 
-**File**: [connect_blockchain.al](connect_blockchain.al)
+**File**: [connect_blockchain.al](../archive/connect_blockchain.al)

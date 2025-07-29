@@ -8,6 +8,8 @@ partition monitoring docker_insight using timestamp by 12 hours
 schedule time=12 hours and name="drop docker_insight partitions" task drop partition where dbms=monitoring and table=docker_insight and keep=3
 
 
+
+
 :pull-data:
 on error pull-data-error
 <run scheduled pull

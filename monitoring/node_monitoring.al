@@ -87,8 +87,7 @@ new_policy=""
         "name": "Generic Monitoring Schedule",
         "script": [
             "schedule name = monitoring_ips and time=300 seconds and task monitoring_ips = blockchain get query bring.ip_port",
-            "if !store_monitoring == true and !node_type == operator then process !local_scripts/connectors/monitoring_table_policy.al",
-            "if !store_monitoring == true and !node_type != operator then schedule name=operator_monitoring_ips and time=300 seconds and task if not !operator_monitoring_ip then operator_monitoring_ip = blockchain get operator bring.first [*][ip] : [*][port]",
+            "if !store_monitoring == true and !node_type == operator then process !local_scripts/monitoring/monitoring_table_policy.al",
 
             "schedule name = get_stats and time=30 seconds and task node_insight = get stats where service = operator and topic = summary  and format = json",
             "schedule name = get_timestamp and time=30 seconds and task node_insight[timestamp] = get datetime local now()",

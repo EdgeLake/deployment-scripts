@@ -34,7 +34,7 @@ the node with a network and specify the node type.
 
 Once step 5 is executed, the generated policy triggers steps 6-11:
 
-5. **Create Configuration Policy**: Generate a [configuration policy](node-deployment/policies/config_policy.al).
+5. **Create Configuration Policy**: Generate a [configuration policy](archive/config_policy.al).
 6. **Create Node Policy**: Generate a [node policy](node-deployment/policies/create_node_policy.al).
 7. **Deploy Databases**: Initialize and deploy the necessary databases.
 8. **Start Scheduling Processes**: Activate any scheduling processes.

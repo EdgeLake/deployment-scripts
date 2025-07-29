@@ -265,6 +265,10 @@ if $MONITOR_NODES == false or $MONITOR_NODES == False or $MONITOR_NODES == FALSE
 if $STORE_MONITORING == true or $STORE_MONITORING == True or $STORE_MONITORING == TRUE then set store_monitoring = true
 if $MONITORING_OPERATOR then monitoring_operator = $MONITORING_OPERATOR
 
+:docker-monitoring:
+set docker_continuous = true
+if $DOCKER_CONTINUOUS == false or $DOCKER_CONTINUOUS == False or $DOCKER_CONTINUOUS == FALSE then  set docker_continuous = false
+
 :opcua-configs:
 set enable_opcua=false
 if $ENABLE_OPCUA == true or $ENABLE_OPCUA == True or $ENABLE_OPCUA == TRUE then set enable_opcua = true
