@@ -49,10 +49,11 @@ new_policy=""
         "id": !schedule_id,
         "name": "Node Monitoring Schedule",
         "script": [
-            "if !node_type != operator then schedule name=operator_monitoring_ips and time=300 seconds and task if not !operator_monitoring_ip then operator_monitoring_ip = blockchain get operator bring.first [*][ip] : [*][port]",
-            "if !monitor_nodes == true then process !local_scripts/node_monitoring.al",
-            "if !syslog_monitoring == true then process !local_scripts/syslog_monitoring.al",
-            "if !docker_monitoring == true then  process !local_scripts/docker_monitoring.al"
+            "if !node_type != operator and (!monitor_nodes == true or !syslog_monitoring == true or !docker_monitoring == true) then schedule name=operator_monitoring_ips and time=300 seconds and task if not !operator_monitoring_ip then operator_monitoring_ip = blockchain get operator bring.first [*][ip] : [*][port]",
+            "if !node_type == operator and (!monitor_nodes == true or !syslog_monitoring == true or !docker_monitoring == true) then process !anylog_path/deployment-scripts/southbound-monitoring/configure_dbms_monitoring.al"
+            "if !monitor_nodes == true then process !anylog_path/deployment-scripts/southbound-monitoring/node_monitoring.al",
+            "if !syslog_monitoring == true then process !anylog_path/deployment-scripts/southbound-monitoring/syslog_monitoring.al",
+            "if !docker_monitoring == true then  process !anylog_path/deployment-scripts/southbound-monitoring/docker_monitoring.al"
         ]
     }
 }>

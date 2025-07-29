@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # Based on node_type create relevant databases / tables for monitoring logical database
 #-----------------------------------------------------------------------------------------------------------------------
-# process !local_scripts/database/configure_dbms_monitoring.al
+# process !anylog_path/deployment-scripts/southbound-monitoring/configure_dbms_monitoring.al
 
 on error ignore
 if !debug_mode == true then set debug on

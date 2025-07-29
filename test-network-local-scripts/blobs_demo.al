@@ -11,9 +11,9 @@ factory_policy = factory-imgs
 people_policy = people-videos
 
 :declare-policies:
-process !anylog_path/deployment-scripts/demo-scripts/blobs_car_videos.al
-process !anylog_path/deployment-scripts/demo-scripts/blobs_factory_images.al
-process !anylog_path/deployment-scripts/demo-scripts/blobs_people_videos.al
+process !anylog_path/deployment-scripts/data-generator/blobs_car_videos.al
+process !anylog_path/deployment-scripts/data-generator/blobs_factory_images.al
+process !anylog_path/deployment-scripts/data-generator/blobs_people_videos.al
 
 :msg-client:
 on error call msg-client-error

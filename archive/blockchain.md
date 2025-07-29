@@ -1,7 +1,7 @@
 # Blockchain
 
-The following describes utilizing the blockchainn logic as opposed to the "local" master node.
-To utilize a "local" master node, set `LOCAL_BLOCKCHAIN=true` in the confugrations with appropriate 
+The following describes utilizing the blockchain logic as opposed to the "local" master node.
+To utilize a "local" master node, set `LOCAL_BLOCKCHAIN=true` in the configuration with appropriate 
 configurations.
 
 ## Environment Params
@@ -31,13 +31,13 @@ The following describe steps to join a network wheen using _Master node_ vs _Blo
 1. Declare Params
 2. Connect to TCP / REST services
 3. 
-   * Copy blockchain to local node -- if node type is master, then step is skipped (step in [main](main.al))
+   * Copy blockchain to local node -- if node type is master, then step is skipped (step in [main](../node-deployment/main.al))
    * For Master node - create database (_blockchain_) and table (_ledger_) if does not exist 
 4. automatically sync against master every 30 seconds (`SYNC_TIMEE`)
 
 The reason for step 3 is that AnyLog/EdgeLake checks whether the policy exists when try to declare it. 
 
-**File**: [configure_dbms_blockchain.al](database/configure_dbms_blockchain.al)
+**File**: [configure_dbms_blockchain.al](../node-deployment/database/configure_dbms_blockchain.al)
 
 ## Blockchain  
 1. Declare Params
@@ -52,4 +52,4 @@ The reason for step 3 is that AnyLog/EdgeLake checks whether the policy exists w
 
 There is no need for a master node when deploying an actual blockchain
 
-**File**: [connect_blockchain.al](../archive/connect_blockchain.al)
+**File**: [connect_blockchain.al](connect_blockchain.al)
