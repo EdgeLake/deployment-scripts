@@ -95,8 +95,8 @@ if !node_type == generic then
     "process !local_scripts/connect_blockchain.al",
     "if !system_query == true then process !local_scripts/database/configure_dbms_system_query.al",
     "run scheduler 1",
-    "if !deploy_local_script == true then process !local_scripts/local_script.al",
     "process !anylog_path/deployment-scripts/southbound-monitoring/monitoring_policy.al",
+    "if !deploy_local_script == true then process !local_scripts/local_script.al",
     "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
 ]>
 do goto publish-policy
@@ -145,8 +145,8 @@ goto publish-policy
     "if !enable_ha == true then run data consumer where start_date=!start_data",
     "if !operator_id and !blockchain_source != master then run operator where create_table=!create_table and update_tsd_info=!update_tsd_info and compress_json=!compress_file and compress_sql=!compress_sql and archive_json=!archive and archive_sql=!archive_sql and blockchain=!blockchain_source and policy=!operator_id and threads=!operator_threads",
     "if !operator_id and !blockchain_source == master then run operator where create_table=!create_table and update_tsd_info=!update_tsd_info and compress_json=!compress_file and compress_sql=!compress_sql and archive_json=!archive and archive_sql=!archive_sql and master_node=!ledger_conn and policy=!operator_id and threads=!operator_threads",
-    "if !deploy_local_script == true then process !local_scripts/local_script.al",
     "process !anylog_path/deployment-scripts/southbound-monitoring/monitoring_policy.al",
+    "if !deploy_local_script == true then process !local_scripts/local_script.al",
     "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
 ]>
 
