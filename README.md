@@ -34,7 +34,7 @@ the node with a network and specify the node type.
 
 Once step 5 is executed, the generated policy triggers steps 6-11:
 
-5. **Create Configuration Policy**: Generate a [configuration policy](archive/config_policy.al).
+5. **Create Configuration Policy**: Generate a [configuration policy](node-deployment/policies/config_policy.al).
 6. **Create Node Policy**: Generate a [node policy](node-deployment/policies/create_node_policy.al).
 7. **Deploy Databases**: Initialize and deploy the necessary databases.
 8. **Start Scheduling Processes**: Activate any scheduling processes.
@@ -52,6 +52,6 @@ Once step 5 is executed, the generated policy triggers steps 6-11:
   * how to deploy syslog
   * Setting a message client to accept data from [_FLEDGE_](https://lfedge.org/projects/fledge/)
 * [grpc](grpc) - connecting and running gRPC client against KubeArmor and accept data associated with _alerts_, _logs_ and _messages_
-* [Smart City](smart-city) - provides a sample deployment of AnyLog / EdgeLake as a data manager for a smart city using 
+* [Smart City](customers/smart-city) - provides a sample deployment of AnyLog / EdgeLake as a data manager for a smart city using 
 _Dynics Fusion_. 
-* [Machine Builder](machine-builder) - provides a sample deployment for a machine builder 
+* [Machine Builder](customers/machine-builder) - provides a sample deployment for a machine builder 
