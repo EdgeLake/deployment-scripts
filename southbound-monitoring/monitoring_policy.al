@@ -8,6 +8,8 @@
 #----------------------------------------------------------------------------------------------------------------------#
 # process !local_scripts/monitoring_policy.al
 
+set debug_mode = true
+
 on error ignore
 
 if !debug_mode == true then set debug on

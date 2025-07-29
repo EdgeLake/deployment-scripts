@@ -104,19 +104,12 @@ do goto publish-policy
 :master-query:
 if !node_type == master or !node_type == query then
 <do set policy new_policy [config][script] = [
-    "print p1",
     "process !local_scripts/database/deploy_database.al",
-    "print p2",
     "if !blockchain_source == master then blockchain seed from !ledger_conn",
-    "print p3",
     "process !local_scripts/connect_blockchain.al",
-    "print p4",
     "process !local_scripts/policies/node_policy.al",
-    "print p5",
     "run scheduler 1",
-    "print p6",
     "if !deploy_local_script == true then process !local_scripts/local_script.al",
-    "print p7",
     "process !anylog_path/deployment-scripts/southbound-monitoring/monitoring_policy.al",
     "print p8",
     "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
