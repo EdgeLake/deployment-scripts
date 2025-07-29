@@ -8,7 +8,6 @@
 #----------------------------------------------------------------------------------------------------------------------#
 # process !local_scripts/monitoring_policy.al
 
-set debug_mode = true
 
 on error ignore
 
@@ -18,7 +17,7 @@ if !store_monitoring == true and !node_type == operator then process !local_scri
 
 :set-params:
 if !debug_mode == true then print "Setting env params"
-schedule_id = node-monitoring
+schedule_id = config-monitoring
 set create_policy = false
 
 on error ignore
