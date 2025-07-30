@@ -64,7 +64,6 @@ process !local_scripts/set_params.al
 :set-configs:
 if !debug_mode == true then print "declare configs"
 process !local_scripts/policies/config_policy.al
-process !local_scripts/policies/southbound_monitoring_policy.al
 process !anylog_path/deployment-scripts/southbound-monitoring/monitoring_policy.al
 
 :end-script:
