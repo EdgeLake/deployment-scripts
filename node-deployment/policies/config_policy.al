@@ -95,6 +95,7 @@ if !node_type == generic then
     "process !local_scripts/connect_blockchain.al",
     "if !system_query == true then process !local_scripts/database/configure_dbms_system_query.al",
     "run scheduler 1",
+    "process !anylog_path/deployment-scripts/southbound-monitoring/monitoring_policy.al",
     "if !deploy_local_script == true then process !local_scripts/local_script.al",
     "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
 ]>
@@ -108,8 +109,7 @@ if !node_type == master or !node_type == query then
     "process !local_scripts/connect_blockchain.al",
     "process !local_scripts/policies/node_policy.al",
     "run scheduler 1",
-    "if !deploy_local_script == true then process !local_scripts/local_script.al",
-    "process !anylog_path/deployment-scripts/southbound-monitoring/monitoring_policy.al",
+    "if !deploy_local_script == true then process !local_scripts/local_script.al"
     "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
 ]>
 do goto publish-policy
