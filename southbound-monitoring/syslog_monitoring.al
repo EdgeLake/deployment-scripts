@@ -37,9 +37,6 @@ process !local_scripts/connectors/syslog_table_policy.al
 
 :store-monitoring:
 if !debug_mode == true then print "Monitoring database and table configurations for syslog"
-on error goto store-monitoring-error
-connect dbms monitoring where type=sqlite
-create table syslog where dbms=monitoring
 
 on error goto partition-data-err
 partition monitoring syslog using timestamp by 12 hours
