@@ -48,7 +48,7 @@ if !is_edgelake == true and $NODE_TYPE == publisher then edgelake-error
 if !debug_mode == true then print "Set directory paths"
 
 # directory where deployment-scripts is stored
-set anylog_path = /Users/roy/Github-Repos/
+set anylog_path = /app
 if $ANYLOG_PATH then set anylog_path = $ANYLOG_PATH
 else if $EDGELAKE_PATH then set anylog_path = $EDGELAKE_PATH
 
@@ -66,8 +66,6 @@ process !local_scripts/set_params.al
 :set-configs:
 if !debug_mode == true then print "declare configs"
 process !local_scripts/policies/config_policy.al
-#process !local_scripts/policies/southbound_monitoring_policy.al
-
 
 :end-script:
 if !debug_mode == true then print "Validate everything is running as expected"

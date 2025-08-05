@@ -32,7 +32,9 @@ deployment-scripts
    |- node_monitoring_table.al   <-- table used for monitoring data 
    |- syslog_monitoring.al       <-- message broker to accept data from syslog(s)
    |- syslog_monitoring_table.al <-- table used for syslog data 
-   |- docker_monitoring.al       <-- schedule policy for monitoring docker state    
+   |- syslog_insight.py          <-- python3 script to accept data from syslog  
+   |- docker_monitoring.al       <-- schedule policy for monitoring docker state
+   |- docker_insight.py          <-- python3 script to accept data regarding docker
 |- customers <-- "archive" with customer use cases 
    |- machine-builder <-- Orics machine builder use case 
    |- smart-city <-- Sabetha smart city example
@@ -59,3 +61,4 @@ deployment-scripts
 2. integrate industrial and monitoring policies 
 3. validate env params
 4. integrate config_threshold.al
+5. README.md

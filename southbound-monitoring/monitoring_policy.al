@@ -8,16 +8,16 @@
 #----------------------------------------------------------------------------------------------------------------------#
 # process !local_scripts/monitoring_policy.al
 
+
 on error ignore
 
 if !debug_mode == true then set debug on
 
-:declare-policy:
 if !store_monitoring == true and !node_type == operator then process !local_scripts/connectors/monitoring_table_policy.al
 
 :set-params:
 if !debug_mode == true then print "Setting env params"
-schedule_id = node-monitoring
+schedule_id = config-monitoring
 set create_policy = false
 
 on error ignore
@@ -25,11 +25,6 @@ if !debug_mode == true then set debug on
 
 :declare-policy:
 if !store_monitoring == true and !node_type == operator then process !local_scripts/connectors/monitoring_table_policy.al
-
-:set-params:
-if !debug_mode == true then print "Setting env params"
-schedule_id = generic-schedule-policy
-set create_policy = false
 
 :check-policy:
 if !debug_mode == true then print "check if policy exists"
@@ -45,14 +40,14 @@ if not !is_policy and !create_policy == true then goto declare-policy-error
 if !debug_mode == true then print "create policy"
 new_policy=""
 <new_policy = {
-    "config": {
+    "schedule": {
         "id": !schedule_id,
         "name": "Node Monitoring Schedule",
         "script": [
-            "if !node_type != operator then schedule name=operator_monitoring_ips and time=300 seconds and task if not !operator_monitoring_ip then operator_monitoring_ip = blockchain get operator bring.first [*][ip] : [*][port]",
-            "if !monitor_nodes == true then process !local_scripts/node_monitoring.al",
-            "if !syslog_monitoring == true then process !local_scripts/syslog_monitoring.al",
-            "if !docker_monitoring == true then  process !local_scripts/docker_monitoring.al"
+            "if !node_type != operator and (!monitor_nodes == true or !syslog_monitoring == true or !docker_monitoring == true) then schedule name=operator_monitoring_ips and time=300 seconds and task if not !operator_monitoring_ip then operator_monitoring_ip = blockchain get operator bring.first [*][ip] : [*][port]",
+            "if !node_type == operator and (!monitor_nodes == true or !syslog_monitoring == true or !docker_monitoring == true) then process !anylog_path/deployment-scripts/southbound-monitoring/configure_dbms_monitoring.al",
+            "if !monitor_nodes == true then process !anylog_path/deployment-scripts/southbound-monitoring/node_monitoring.al",
+            "if !syslog_monitoring == true then process !anylog_path/deployment-scripts/southbound-monitoring/syslog_monitoring_table.al"
         ]
     }
 }>

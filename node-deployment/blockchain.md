@@ -1,7 +1,7 @@
 # Blockchain
 
-The following describes utilizing the blockchainn logic as opposed to the "local" master node.
-To utilize a "local" master node, set `LOCAL_BLOCKCHAIN=true` in the confugrations with appropriate 
+The following describes utilizing the blockchain logic as opposed to the "local" master node.
+To utilize a "local" master node, set `LOCAL_BLOCKCHAIN=true` in the configuration with appropriate 
 configurations.
 
 ## Environment Params
@@ -52,4 +52,4 @@ The reason for step 3 is that AnyLog/EdgeLake checks whether the policy exists w
 
 There is no need for a master node when deploying an actual blockchain
 
-**File**: [connect_blockchain.al](../archive/connect_blockchain.al)
+**File**: [connect_blockchain.al](connect_blockchain.al)
