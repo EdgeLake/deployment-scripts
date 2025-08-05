@@ -12,6 +12,13 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # python3.11 AnyLog-Network/anylog_enterprise/anylog.py process $ANYLOG_PATH/deployment-scripts/node-deployment/main.al
 
+### Make sure to define $WORK_DIR in your .env file
+if !debug_mode == true then print "set home path"
+set anylog home $WORK_DIR
+
+if !debug_mode == true then print "Create work directories"
+create work directories
+
 if $EXCEPTION_TRACEBACK == true or $EXCEPTION_TRACEBACK == True or $EXCEPTION_TRACEBACK == TRUE then set exception traceback on
 
 :debug-mode:
@@ -41,20 +48,15 @@ if !is_edgelake == true and $NODE_TYPE == publisher then edgelake-error
 if !debug_mode == true then print "Set directory paths"
 
 # directory where deployment-scripts is stored
-set anylog_path = /app
+set anylog_path = /Users/roy/Github-Repos/
 if $ANYLOG_PATH then set anylog_path = $ANYLOG_PATH
 else if $EDGELAKE_PATH then set anylog_path = $EDGELAKE_PATH
-
-if !debug_mode == true then print "set home path"
-set anylog home !anylog_path
 
 local_scripts = !anylog_path/deployment-scripts/node-deployment
 test_dir = !anylog_path/deployment-scripts/test
 if $LOCAL_SCRIPTS then set local_scripts = $LOCAL_SCRIPTS
 if $TEST_DIR then set test_dir = $TEST_DIR
 
-if !debug_mode == true then print "Create work directories"
-create work directories
 
 :set-params:
 if !debug_mode == true then print "Set environment params"
@@ -64,7 +66,8 @@ process !local_scripts/set_params.al
 :set-configs:
 if !debug_mode == true then print "declare configs"
 process !local_scripts/policies/config_policy.al
-process !local_scripts/policies/southbound_monitoring_policy.al
+#process !local_scripts/policies/southbound_monitoring_policy.al
+
 
 :end-script:
 if !debug_mode == true then print "Validate everything is running as expected"
