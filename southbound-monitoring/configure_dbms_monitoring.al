@@ -10,14 +10,13 @@ if !debug_mode == true then set debug on
 if !debug_mode == true then print "deploy `monitoring` logical database - used for HA"
 
 on error goto monitoring-dbms-error
-<if !db_type == psql then connect dbms !monitoring_db where
+<if !db_type == psql then connect dbms monitoring where
     type=!db_type and
     user = !db_user and
     password = !db_passwd and
     ip = !db_ip and
     port = !db_port>
-else connect dbms !monitoring_db where type=!db_type
-
+else connect dbms monitoring where type=!db_type
 
 
 :end-script:

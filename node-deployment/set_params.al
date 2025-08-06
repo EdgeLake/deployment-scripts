@@ -22,7 +22,7 @@ if !debug_mode == true then set debug on
 
 :required-params:
 company_name = "New Company"
-ledger_conn = 192.168.1.125:32048
+ledger_conn = 127.0.0.1:32048
 hostname = get hostname
 
 if $NODE_TYPE == master-operator then set node_type = operator
@@ -171,7 +171,7 @@ if $NOSQL_PASSWD then nosql_passwd = $NOSQL_PASSWD
 # blockchain platform - either master (node) or optimism
 set blockchain_source = master
 set blockchain_destination = file
-blockchain_sync = 10 seconds
+blockchain_sync = 30 seconds
 # whether to use the master node as a relay against the blockchain or not
 set is_relay=false
 
@@ -183,12 +183,12 @@ if $LEDGER_CONN ledger_conn = $LEDGER_CONN
 
 if blockchain_source == master then goto operator-settings
 
-#:blockchain-connect:
+:blockchain-connect:
 # live blockchain configuration
-#provider = https://optimism-sepolia.infura.io/v3/532f565202744c0cb7434505859efb74
-#blockchain_public_key = 0xdf29075946610ABD4FA2761100850869dcd07Aa7
-#blockchain_private_key = 712be5b5827d8c111b3e57a6e529eaa9769dcde550895659e008bdcf4f893c1c
-#chain_id = 11155420
+provider = https://optimism-sepolia.infura.io/v3/532f565202744c0cb7434505859efb74
+blockchain_public_key = 0xdf29075946610ABD4FA2761100850869dcd07Aa7
+blockchain_private_key = 712be5b5827d8c111b3e57a6e529eaa9769dcde550895659e008bdcf4f893c1c
+chain_id = 11155420
 
 if $PROVIDER then provider = $PROVIDER
 if $BLOCKCHAIN_PUBLIC_KEY then blockchain_public_key = $BLOCKCHAIN_PUBLIC_KEY
