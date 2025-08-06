@@ -3,7 +3,7 @@
 #   -> create table policy
 #   -> if operator then: connect dbms (monitoring), create table, set partitioning
 # :sample table:
-#  CREATE TABLE IF NOT EXISTS syslog(
+#  CREATE TABLE IF NOT EXISTS syslog_insight(
 #    row_id SERIAL PRIMARY KEY,
 #    insert_timestamp TIMESTAMP NOT NULL DEFAULT NOW(),
 #    tsd_name CHAR(3),
@@ -15,10 +15,10 @@
 #    tag varchar,
 #    message varchar
 # );
-# CREATE INDEX syslog_timestamp_index ON syslog(timestamp);
-# CREATE INDEX syslog_tsd_index ON syslog(tsd_name, tsd_id);
-# CREATE INDEX syslog_insert_timestamp_index ON syslog(insert_timestamp);
-# CREATE INDEX syslog_source_ip_index ON syslog(source_ip);
+# CREATE INDEX syslog_timestamp_index ON syslog_insight(timestamp);
+# CREATE INDEX syslog_tsd_index ON syslog_insight(tsd_name, tsd_id);
+# CREATE INDEX syslog_insert_timestamp_index ON syslog_insight(insert_timestamp);
+# CREATE INDEX syslog_source_ip_index ON syslog_insight(source_ip);
 #-----------------------------------------------------------------------------------------------------------------------
 # process !local_scripts/connectors/syslog_table_policy.al
 on error ignore
@@ -26,7 +26,7 @@ if !debug_mode == true then set debug on
 
 set create_table = false
 :check-table-policy:
-if !debug_mode == true then print "Check if policy eixsts"
+if !debug_mode == true then print "Check if policy exists"
 is_table = blockchain get table where dbms=monitoring and name=syslog
 if !is_table then goto end-script
 else if not !is_table and !create_table == true then goto declare-policy-error
@@ -35,9 +35,9 @@ else if not !is_table and !create_table == true then goto declare-policy-error
 if !debug_mode == true then print "Create table policy for monitoring syslog"
 <new_policy = {
     "table": {
-        "dbms": "monitoring",
-        "name": "syslog",
-        "create": "CREATE TABLE IF NOT EXISTS syslog(row_id SERIAL PRIMARY KEY,insert_timestamp TIMESTAMP NOT NULL DEFAULT NOW(),tsd_name CHAR(3),tsd_id INT,source_ip cidr,priority int,timestamp timestamp not null default now(),hostname varchar,tag varchar,message varchar);CREATE INDEX syslog_timestamp_index ON syslog(timestamp);CREATE INDEX syslog_tsd_index ON syslog(tsd_name, tsd_id);CREATE INDEX syslog_insert_timestamp_index ON syslog(insert_timestamp);CREATE INDEX syslog_source_ip_index ON syslog(source_ip);"
+        "dbms": !monitoring_db,
+        "name": "syslog_insight",
+        "create": "CREATE TABLE IF NOT EXISTS syslog_insight(row_id SERIAL PRIMARY KEY,insert_timestamp TIMESTAMP NOT NULL DEFAULT NOW(),tsd_name CHAR(3),tsd_id INT,source_ip cidr,priority int,timestamp timestamp not null default now(),hostname varchar,tag varchar,message varchar);CREATE INDEX syslog_timestamp_index ON syslog_insight(timestamp);CREATE INDEX syslog_tsd_index ON syslog_insight(tsd_name, tsd_id);CREATE INDEX syslog_insert_timestamp_index ON syslog_insight(insert_timestamp);CREATE INDEX syslog_source_ip_index ON syslog_insight(source_ip);"
     }
 }>
 

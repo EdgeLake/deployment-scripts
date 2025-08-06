@@ -16,14 +16,14 @@ def blockchain_get(conn:str, policy_type:str='*', node_name:str=None, local_ip:b
         'User-Agent': 'AnyLog/1.23'
     }
     try:
-        response = requests.get(url=f"http://{conn}", headers=headers)
+        response = requests.get(url=f"http://p{conn}", headers=headers)
         response.raise_for_status()
         return ast.literal_eval(response.text)
     except Exception as error:
         raise Exception(f"Failed to execute GET against {conn} (Error: {error})")
 
-def post_docker_insight(conn:str, node_name:str='local', node_ip:str='localhost', db_name:str='monitoring', table:str='docker_insight'):
-    command = f"set msg rule {node_name}-syslog if ip={node_ip} then dbms={db_name} and table={table} and extend=ip and syslog=true"
+def post_docker_insight(conn:str, node_name:str='local', node_ip:str='localhost', db_name:str='monitoring'):
+    command = f"set msg rule {node_name}-syslog if ip={node_ip} then dbms={db_name} and table=syslog_insight and extend=ip and syslog=true"
     headers =  {
         'command': command,
         'User-Agent': 'AnyLog/1.23'
