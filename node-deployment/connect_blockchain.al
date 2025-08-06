@@ -6,7 +6,7 @@
 #   --> set account
 #   --> sync from contract
 #----------------------------------------------------------------------------------------------------------------------#
-# process !local_scripts/connect_blockchain.al
+# process !local_scripts/archive/connect_blockchain.al
 
 on error ignore
 
