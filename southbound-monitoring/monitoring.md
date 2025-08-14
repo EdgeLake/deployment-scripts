@@ -1,3 +1,0 @@
-# Monitoring
-
-AnyLog / EdgeLake supports 

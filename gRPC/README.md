@@ -1,4 +1,4 @@
-# GRPC
+# gRPC
 
 ## General Steps 
 1. Access the Docker or Kubernetes volume & compile the relevant _proto_ file(s)
@@ -12,7 +12,7 @@ The following example is using the Kubearmor protocol file, which provides both 
 1. Access the Docker or Kubernetes volume & compile the relevant _proto_ file(s)
 This step will soon be deprecated and replaced by a command within AnyLog 
 ```shell
-python3 /app/deployment-scripts/grpc/compile.py /app/deployment-scripts/grpc/kubearmor/kubearmor.proto
+python3 /app/deployment-scripts/gRPC/compile.py /app/deployment-scripts/gRPC/kubearmor/kubearmor.proto
 ```
 
 2. Access the Docker or Kubernetes volume &  update params for kubernetes
