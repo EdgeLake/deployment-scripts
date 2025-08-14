@@ -28,7 +28,7 @@ python3 /app/deployment-scripts/gRPC/compile.py /app/deployment-scripts/gRPC/kub
 
 ### Enable gRPC service  
 
-1. Attach to the Docker / Kubernetes container
+Attach to the Docker / Kubernetes container
 ```shell
 # Docker 
 docker attach --detach-keys=ctrl-d my-operator 
