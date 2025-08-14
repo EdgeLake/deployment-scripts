@@ -14,7 +14,7 @@ If you want to use these deployment scripts locally when running AnyLog / EdgeLa
 - [Southbound Monitoring](#southbound-monitoring)
   - [Node Monitoring](#node-monitoring)
   - [Syslog](#syslog)
-- [gRPC](#grpc)
+- [gRPC](gRPC/README.md)
 - [Enable Aggregations](#enable-aggregations)
   - [Python Call](#python-call)
 
