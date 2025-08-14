@@ -31,7 +31,7 @@ set authentication off
 if !debug_mode == true then print "Check whether if an EdgeLake or AnyLog Deployment"
 
 # check whether we're running EdgeLake or AnyLog
-set is_edgelake = false
+set is_edgelake = falsem
 version = get version
 deployment_type = python !version.split(" ")[0]
 if !deployment_type != AnyLog then set is_edgelake = true
