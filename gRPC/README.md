@@ -18,7 +18,7 @@ This example uses the **KubeArmor** protocol file, which supports both standard 
 docker exec -it my-operator /bin/sh 
 
 # Kubernetes 
-kubectrl exec -it my-operator -- /bin/bash
+kubectl exec -it my-operator -- /bin/bash
 ```
 
 2. Compile the protocol file 
