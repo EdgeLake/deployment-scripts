@@ -47,7 +47,6 @@ new_policy=""
             "process !anylog_path/deployment-scripts/southbound-monitoring/prepare_monitoring.al",
             "if !monitor_nodes == true then process !anylog_path/deployment-scripts/southbound-monitoring/node_monitoring.al",
             "if !syslog_monitoring == true then process !anylog_path/deployment-scripts/southbound-monitoring/syslog_monitoring_table.al"
-            "if !docker_monitoring == true then  "
         ]
     }
 }>
