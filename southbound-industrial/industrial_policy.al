@@ -18,6 +18,7 @@ if not !is_policy and !create_config == true then goto declare-policy-error
         "name": "industrial southbound sources",
         "id": "industrial-config",
         "script": [
+            "if !enable_etherip == true and !first_etherip then process "
             "if !enable_mqtt == true then process !anylog_path/deployment-scripts/node-deployment/connectors/basic_msg_client.al",
             "if !enable_opcua == true and !set_opcua_tags == true then process !anylog_path/deployment-scripts/node-deployment/connectors/opcua_tags.al",
             "if !enable_opcua == true and !set_opcua_tags == false then process !anylog_path/deployment-scripts/node-deployment/connectors/opcua_client.al",
