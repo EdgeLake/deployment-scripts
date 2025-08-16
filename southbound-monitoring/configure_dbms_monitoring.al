@@ -18,6 +18,8 @@ on error goto monitoring-dbms-error
     port = !db_port>
 else connect dbms monitoring where type=!db_type
 
+partition monitoring * using insert_timestamp by 12 hours
+schedule time="12 hours" and name="Drop Monitoring Partitions" task drop partition where dbms=monitoring and table=* and keep=3
 
 :end-script:
 end script

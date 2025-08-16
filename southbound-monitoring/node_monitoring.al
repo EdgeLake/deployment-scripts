@@ -86,7 +86,6 @@ new_policy=""
         "id": !schedule_id,
         "name": "Generic Monitoring Schedule",
         "script": [
-            "schedule name = monitoring_ips and time=300 seconds and task monitoring_ips = blockchain get query bring.ip_port",
             "if !store_monitoring == true and !node_type == operator then process !local_scripts/monitoring/monitoring_table_policy.al",
 
             "schedule name = get_stats and time=30 seconds and task node_insight = get stats where service = operator and topic = summary  and format = json",
@@ -111,6 +110,7 @@ new_policy=""
             "schedule name = local_monitor_node and time = 30 seconds task monitor operators where info = !node_insight",
             "schedule name = monitor_node and time = 30 seconds task if !monitoring_ips then run client (!monitoring_ips) monitor operators where info = !node_insight",
             "schedule name = clean_status and time = 30 seconds task node_insight[status]='Active'",
+            
             "if !store_monitoring == true and !node_type == operator then schedule name = operator_monitor_node and time = 30 seconds task stream !node_insight where dbms=monitoring and table=node_insight",
             "if !store_monitoring == true and !node_type != operator then schedule name = operator_monitor_node and time = 30 seconds task if !operator_monitoring_ip then run client (!operator_monitoring_ip) stream !node_insight  where dbms=monitoring and table=node_insight"
         ]
