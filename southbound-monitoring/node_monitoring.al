@@ -62,7 +62,7 @@ on error ignore
 if !debug_mode == true then set debug on
 
 :declare-policy:
-if !store_monitoring == true and !node_type == operator then process !anylog_path/deployment-scripts/southbound-monitoring/node_monitoring_table.al
+# if !store_monitoring == true and !node_type == operator then process !anylog_path/deployment-scripts/southbound-monitoring/node_monitoring_table.al
 
 :set-params:
 if !debug_mode == true then print "Setting env params"
@@ -87,7 +87,7 @@ new_policy=""
         "id": !schedule_id,
         "name": "Generic Monitoring Schedule",
         "script": [
-            "if !store_monitoring == true and !node_type == operator then process !local_scripts/monitoring/monitoring_table_policy.al",
+            "if !store_monitoring == true and !node_type == operator then process !anylog_path/deployment-scripts/southbound-monitoring/node_monitoring_table.al,
 
             "schedule name = get_stats and time=30 seconds and task node_insight = get stats where service = operator and topic = summary  and format = json",
             "schedule name = get_timestamp and time=30 seconds and task node_insight[timestamp] = get datetime local now()",
