@@ -127,7 +127,7 @@ set create_policy = true
 goto check-policy
 
 :config-policy:
-if !debug_mode == true then pring "Config from policy"
+if !debug_mode == true then print "Config from policy"
 on error goto config-policy-error
 config from policy where id=!schedule_id
 

@@ -13,8 +13,6 @@ on error ignore
 
 if !debug_mode == true then set debug on
 
-if !store_monitoring == true and !node_type == operator then process !local_scripts/connectors/monitoring_table_policy.al
-
 :set-params:
 if !debug_mode == true then print "Setting env params"
 schedule_id = config-monitoring
@@ -22,9 +20,6 @@ set create_policy = false
 
 on error ignore
 if !debug_mode == true then set debug on
-
-:declare-policy:
-if !store_monitoring == true and !node_type == operator then process !local_scripts/connectors/monitoring_table_policy.al
 
 :check-policy:
 if !debug_mode == true then print "check if policy exists"
