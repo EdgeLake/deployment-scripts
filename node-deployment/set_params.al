@@ -271,10 +271,13 @@ if $DOCKER_CONTINUOUS == false or $DOCKER_CONTINUOUS == False or $DOCKER_CONTINU
 
 :opcua-configs:
 set enable_opcua=false
+set set_opcua_tags = false
+if $SET_OPCUA_TAGS == true or $SET_OPCUA_TAGS == True or $SET_OPCUA_TAGS == TRUE then set set_opcua_tags=true
 if $ENABLE_OPCUA == true or $ENABLE_OPCUA == True or $ENABLE_OPCUA == TRUE then set enable_opcua = true
 if $OPCUA_URL then opcua_url=$OPCUA_URL
 if $OPCUA_NODE then opcua_node=$OPCUA_NODE
 if $OPCUA_FREQUENCY then opcua_frequency=$OPCUA_FREQUENCY
+
 
 :etherip-conifgs:
 set enable_etherip=false
