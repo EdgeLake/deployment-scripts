@@ -108,7 +108,8 @@ def main():
             if column != timestamp_column:
                 command = build_command(db_name=args.dbms, table_name=table, interval=args.interval,
                                         time_frame=args.time_frame, time_column=timestamp_column, value_column=column)
-                # print(command)
+                print(command)
+                post_command(conn=args.conn, command=command)
 
 
 if __name__ == '__main__':
