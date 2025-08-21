@@ -9,12 +9,13 @@ def blockchain_get(conn:str, policy_type:str='*', node_name:str=None, local_ip:b
     extract list of IPs
     :return:
     """
-    command = f"blockchain get * where name='{node_name}'" if node_name is not None else f'blockchain get {policy_type}'
-    command += " bring.json [*][name] [*][local_ip] separator=," if local_ip is True else " bring.json [*][name] [*][ip] separator=,"
+    command = f'blockchain get {policy_type} where name="{node_name}"' if node_name is not None else f'blockchain get {policy_type}'
+    command += " bring.json [*][name] [*][local_ip]" if local_ip is True else " bring.json [*][name] [*][ip]"
     headers = {
         'command': command,
         'User-Agent': 'AnyLog/1.23'
     }
+
     try:
         response = requests.get(url=f"http://{conn}", headers=headers)
         response.raise_for_status()
@@ -29,7 +30,7 @@ def post_docker_insight(conn:str, node_name:str='local', node_ip:str='localhost'
         'User-Agent': 'AnyLog/1.23'
     }
     try:
-        response = requests.post(url=f'http://{url}', headers=headers)
+        response = requests.post(url=f'http://{conn}', headers=headers)
         response.raise_for_status()
     except Exception as error:
         raise Exception(f"Failed to execute POST against {conn} (Error: {error})")
@@ -41,7 +42,7 @@ def main():
                         help='comma separated list of operator node(s) to store ddata in')
     parser.add_argument('--db-name', type=str, default='monitoring', help='logical database to store data in')
     parser.add_argument('--table', type=str, default='syslog', help='table to store data in')
-    parser.add_argument('--policy-type', type=str, default='*', help='comma separated list of policies to use')
+    parser.add_argument('--policy-type', type=str, default='(master, operator, query, publisher)', help='comma separated list of policies to use')
     parser.add_argument('--local-ip', type=bool, nargs='?', const=True, default=False, help='user external-ip')
     parser.add_argument('--node-name', type=str, default=None, help='specify (policy) node name to get IP for')
     args = parser.parse_args()
@@ -58,7 +59,7 @@ def main():
     if args.node_name:
         policies = []
         for node_name in args.node_name.split(','):
-            policies.append(blockchain_get(conn=args.operator_conn[0], policy_type='*', node_name=node_name,
+            policies.extend(blockchain_get(conn=args.operator_conn[0], policy_type=args.policy_type, node_name=node_name,
                                            local_ip=args.local_ip))
     else:
         policies = blockchain_get(conn=args.operator_conn[0], policy_type=args.policy_type, node_name=args.node_name,
