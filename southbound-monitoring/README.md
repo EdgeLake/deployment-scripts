@@ -52,85 +52,37 @@ process deployment-scripts/southbound-monitoring/node_policy.al
 
 If configured store the data on operator node(s) - this data is stored for 36 hours in 12 hour intervals 
 
-## Syslog
-Syslog is a multistep process. A deep dive into the syslog logic can be found in the <a href="https://github.com/AnyLog-co/documentation/blob/master/using%20syslog.md" target="_blank">documentation</a>
+## Syslog & Docker Monitoring
+AnyLog/EdgeLake enable comprehensive monitoring of both node status and Docker container insights. They also collect 
+and store syslog data, allowing you to view the health and activity of your entire distributed network from a single 
+centralized point.
 
-1. When deploying AnyLog / EdgeLake that's supposed to get content from syslog - make sure to enable `ANLOG_BROKER_PORT`
-2. Declare _rsyslog_ configurations for the node 
-3. Through the AnyLog CLI, Set a message rule
+### Syslog
+Syslog integration involves multiple steps. A detailed explanation of the syslog process is available in the <a href="https://github.com/AnyLog-co/documentation/blob/master/using%20syslog.md" target="_blank">documentation</a>
+
+1. **Enable Message Broker**: When deploying AnyLog / EdgeLake that's supposed to get content from syslog - make sure to enable `ANLOG_BROKER_PORT`
+2. **Configure rSyslog**: Set the appropriate rsyslog configurations for your node
+3. **Define Message Rules via AnyLog CLI**
 ```anylog 
-set msg rule my_rule if ip = 10.0.0.78 and port = 1468 then dbms = monitoring and table = syslog and syslog = true
+<set msg rule my_rule if 
+    ip = 10.0.0.78 and port = 1468 then 
+    dbms = monitoring and 
+    table = syslog and 
+    syslog = true>
 ```
 
-Alternatively users can deploy step 3 using [syslog_monitoring.al](../southbound-monitoring/syslog_monitoring.al). This will 
-also create a special table that better stores insights from the logs
-
-```anylog
-process deployment-scripts/southbound-monitoring/syslog_monitoring.al
+Sample [syslog](syslog_monitoring.al) call using AnyLog script
+```process
+process !anylog_path/deployment-scripts/southbound-industrial/syslog_monitoring.al
 ```
 
-#### Multiple Syslog sources
+### Docker
 
-When receiving syslog insights from multiple sources, it's a pain to update each each process / command individually. 
+Monitoring Docker is more straightforward. It primarily requires referencing the docker.socket path in your Docker 
+Compose configuration.
+When deploying using our [docker-compose](https://github.com/AnyLog-co/docker-compose), this is done automatically.
 
-1. Locate [syslog_insight.py](../southbound-monitoring/syslog_insight.py)
-```shell
-docker volume inspect docker-makefiles_my-operator-local-scripts
-```
-
-**Output**
-```output
-[
-    {
-        "CreatedAt": "2025-07-14T00:52:11Z",
-        "Driver": "local",
-        "Labels": {
-            "com.docker.compose.project": "docker-makefiles",
-            "com.docker.compose.version": "2.29.1",
-            "com.docker.compose.volume": "smart-city-operator3-local-scripts"
-        },
-        "Mountpoint": "/var/lib/docker/volumes/    "docker-makefiles_my-operator-local-scripts/_data",
-        "Name": "    "docker-makefiles_my-operator-local-scripts",
-        "Options": null,
-        "Scope": "local"
-    }
-]
-```
-
-2.View script `help` options
-```shell
-python3 /var/lib/docker/volumes/docker-makefiles_my-operator-local-scripts/_data/southbound-monitoring/syslog_insight.py --help
-```
-
-**Output**
-```output 
-usage: syslog_insight.py [-h] [--db-name DB_NAME] [--table TABLE] [--policy-type POLICY_TYPE] [--local-ip [LOCAL_IP]] [--node-name NODE_NAME] operator_conn
-
-positional arguments:
-  operator_conn         comma separated list of operator node(s) to store ddata in
-
-options:
-  -h, --help            show this help message and exit
-  --db-name DB_NAME     logical database to store data in
-  --table TABLE         table to store data in
-  --policy-type POLICY_TYPE
-                        comma separated list of policies to use
-  --local-ip [LOCAL_IP]
-                        user external-ip
-  --node-name NODE_NAME
-                        specify (policy) node name to get IP for
-```
-**Note**: If no `--node-name` is set, then simply declare `msg rule` for local syslog.
-
-3. Execute `msg rule` based on the provided params
-```shell
-python3 /var/lib/docker/volumes/docker-makefiles_my-operator-local-scripts/_data/sample-scripts/set_aggregations.py 127.0.0.1:32149 --db-name monitoring --table syslog
-```
-
-
-## Docker
-
-AnyLog / EdgeLake can autonomously gather insight  regarding docker containers on the node, using the command 
+**Sample Call**:
 ```anylog 
 <run scheduled pull
   where name = docker_insights
@@ -141,36 +93,24 @@ AnyLog / EdgeLake can autonomously gather insight  regarding docker containers o
   and table = docker_insight>
 ```
 
-### Requirements 
-When deploying the docker container for AnyLog/EdgeLake, users associate the socket connection for the docker service as 
-a volume for the node receiving the data.
-
-**Example**: Generic docker-compose.yaml
-```yaml
-version: '3.8'
-
-services:
-  my-service:
-    image: your-image
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-
+Sample [docker](docker_monitoring.al) call using AnyLog script
+```process
+process !anylog_path/deployment-scripts/southbound-industrial/docker_monitoring.al
 ```
 
-This is done automatically when deploying AnyLog/EdgeLake via Docker. 
+### Multiple Sources
 
-### python-based process 
+In large-scale networks, there is often a need to collect syslog and Docker insights from multiple sources.
+Running the same command repeatedly with only minor parameter changes can be redundant and time-consuming.
+To simplify this process, users can use the [syslog_docker_insight.py](python-code/syslog_docker_insight.py) script, 
+which allows executing requests for multiple sources from a single point.
 
-The process for getting insights for docker is done via a `scheduled pull`, the operator node can get insights from multiple 
-machines running docker container(s). As such, a python3 script can be used to execute the `scheduled pull` request for the
-different nodes, rather than manually executing `scheduled pull` via AnyLog/EdgeLake CLI.
-
-1. Locate [docker_insight.py](../southbound-monitoring/docker_insight.py)
+1. Locate [syslog_docker_insight.py](python-code/syslog_docker_insight.py)
 ```shell
 docker volume inspect docker-makefiles_my-operator-local-scripts
 ```
 
-**Output**
+**Example Output**
 ```output
 [
     {
@@ -190,35 +130,48 @@ docker volume inspect docker-makefiles_my-operator-local-scripts
 ```
 
 2.View script `help` options
-```shell
-python3 /var/lib/docker/volumes/docker-makefiles_my-operator-local-scripts/_data/southbound-monitoring/docker_insight.py --help
+```anylog
+python3 /var/lib/docker/volumes/docker-makefiles_my-operator-local-scripts/_data/southbound-monitoring/python-code/syslog_docker_insight.py --help
 ```
 
 **Output**
 ```output 
-usage: docker_insight.py [-h] [--data-frequency DATA_FREQUENCY] [--continuous [CONTINUOUS]] [--db-name DB_NAME] [--table TABLE] [--policy-type POLICY_TYPE] [--local-ip [LOCAL_IP]] [--node-name NODE_NAME] operator_conn
+PS C:\Users\oshad\AnyLog-code\deployment-scripts> python3 .\southbound-monitoring\python-code\syslog_docker_insight.py --help 
+usage: syslog_docker_insight.py [-h] [--node-type NODE_TYPE] [--node-name NODE_NAME] [--local-ip [LOCAL_IP]] [--db-name DB_NAME] [--docker-table DOCKER_TABLE]
+                                [--syslog-table SYSLOG_TABLE] [--docker-insight [DOCKER_INSIGHT]] [--syslog-insight [SYSLOG_INSIGHT]]
+                                dest
 
 positional arguments:
-  operator_conn         comma separated list of operator node(s) to store data in
+  dest                  destination to run command against
 
 options:
   -h, --help            show this help message and exit
-  --data-frequency DATA_FREQUENCY
-                        how often to pull the data
-  --continuous [CONTINUOUS]
-                        run continuously
-  --db-name DB_NAME     logical database to store data in
-  --table TABLE         table to store data in
-  --policy-type POLICY_TYPE
-                        comma separated list of policies to use
-  --local-ip [LOCAL_IP]
-                        user external-ip
+  --node-type NODE_TYPE
+                        comma separated list of node types to get blockchain info from
   --node-name NODE_NAME
-                        specify (policy) node name to get IP for
+                        comma separated list of node names to get information from
+  --local-ip [LOCAL_IP]
+                        force use `local_ip`, otherwise will use `ip` address
+  --db-name DB_NAME     database to store monitoring in
+  --docker-table DOCKER_TABLE
+                        table to store docker insight
+  --syslog-table SYSLOG_TABLE
+                        table to store syslog insight
+  --docker-insight [DOCKER_INSIGHT]
+                        get docker container insights for node(s)
+  --syslog-insight [SYSLOG_INSIGHT]
+                        get syslog insights for node(s)
 ```
 **Note**: If no `--node-name` is set, then simply declare `msg rule` for local syslog.
 
-3. Execute `scheduled pull` based on the provided params
+3. Execute `msg rule` based on the provided params
 ```shell
-python3 /var/lib/docker/volumes/docker-makefiles_my-operator-local-scripts/_data/sample-scripts/docker_insight.py 127.0.0.1:32149 --node-name smart-city1,smart-city2,smart-city3 --db-name monitoring --table docker
+python3 /var/lib/docker/volumes/docker-makefiles_my-operator-local-scripts/_data/southbound-monitoring/python-code/syslog_docker_insight.py 127.0.0.1:32149 \ 
+  --node-type master,operator,query \
+  --node-name operator1,query2 \
+  --db-name monitoring
+  --docker-table docker \
+  --syslog-table syslog \
+  --docker-insight \
+  --syslog-insight
 ```

@@ -13,7 +13,7 @@ If you want to use these deployment scripts locally when running AnyLog / EdgeLa
 - [Southbound Industrial](southbound-industrial/README.md)
 - [Southbound Monitoring](southbound-monitoring/README.md)
   - [Node Monitoring](southbound-monitoring/README.md#node-monitoring)
-  - [Syslog](southbound-monitoring/README.md#syslog)
+  - [Syslog & Docker Monitoring](southbound-monitoring/README.md#syslog--docker-monitoring)
   - [Docker](southbound-monitoring/README.md#docker)
 - [gRPC](gRPC/README.md)
 - [Enable Aggregations](#enable-aggregations)
