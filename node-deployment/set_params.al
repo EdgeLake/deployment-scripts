@@ -281,12 +281,12 @@ if $OPCUA_FREQUENCY then opcua_frequency=$OPCUA_FREQUENCY
 
 :etherip-conifgs:
 set enable_etherip=false
-set set_ether_tags=false 
+set set_etherip_tags=false 
 if $ENABLE_ETHERIP == true or $ENABLE_ETHERIP == True or $ENABLE_ETHERIP == TRUE then set enable_etherip = true
 if $ETHERIP_URL then etherip_url = $ETHERIP_URL
 else if !enable_etherip and ($SIMULATOR_MODE == true or $SIMULATOR_MODE == True or $SIMULATOR_MODE == TRUE) then etherip_url=127.0.0.1
 if $ETHERIP_FREQUENCY then etherip_frequency = $ETHERIP_FREQUENCY
-if $SET_ETHER_TAGS == true or $SET_ETHER_TAGS == True or $SET_ETHER_TAGS == TRUE then set set_ether_tags=true
+if $SET_ETHERIP_TAGS == true or $SET_ETHERIP_TAGS == True or $SET_ETHERIP_TAGS == TRUE then set set_etherip_tags=true
 
 :aggregations:
 set enable_aggregations = false
