@@ -74,6 +74,7 @@ if !debug_mode == true then print "For an operator node add cluster ID new polic
 if !node_type == operator and not !cluster_id then goto operator-cluster-error
 
 set policy new_policy [!node_type][cluster] = !cluster_id
+set policy new_policy [!node_type][member] = !member
 
 set is_main = true
 is_primary = blockchain get operator where cluster = !cluster_id
