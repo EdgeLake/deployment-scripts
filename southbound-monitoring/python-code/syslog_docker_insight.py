@@ -50,7 +50,7 @@ def main():
         node_ip = policy['ip']
 
         if args.syslog_insight:
-            command = f"set msg rule {node_name}-syslog if ip={node_ip} then dbms={args.dbd_name} and table={args.syslog_table} and extend=ip and syslog=true"
+            command = f"set msg rule {node_name}-syslog if ip={node_ip} then dbms={args.db_name} and table={args.syslog_table} and extend=ip and syslog=true"
             publish_command(conn=args.dest, command=command)
         if args.docker_insight:
             command = f"run scheduled pull where name={node_name}-docker-insight and source={node_ip} and type=docker and frequency=5 and continuous=true and dbms={args.db_name} and table={args.docker_table}"
