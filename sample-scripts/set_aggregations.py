@@ -201,7 +201,7 @@ def main():
         timestamp_column = next((k for k, v in tables[table].items() if v == 'timestamp'), None)
         for column in tables[table]:
             if column != timestamp_column:
-                if args.create_tag: # create tag if exists
+                if args.create_tags: # create tag if exists
                     create_tags(conn=args.conn, tag_name=args.tag_name, dbms=db_name, table=table_name,
                                 column_name=column, column_type=tables[table][column])
 
