@@ -26,12 +26,12 @@ def __rest_request(request_type:str, conn:str, headers:dict, payload:str=None):
         raise Exception(f"Failed to execute {request_type.upper()} against {conn} (Error: {error})")
     return  response
 
-def create_tags(conn:str, tag_name:str, dbms:str, table:str, column_name:str, column_type:str):
+def create_tags(conn:str, policy_type:str, dbms:str, table:str, column_name:str, column_type:str):
     """
     Publish tags for table / columns to blockchain
     :args:
         conn:str - REST connection information
-        tag_name:str - tag name / policy type
+        policy_type:str - blockchain policy type
         dbms:str - logical database name
         table:str - logical table name
         column_name:str - column name
@@ -46,11 +46,11 @@ def create_tags(conn:str, tag_name:str, dbms:str, table:str, column_name:str, co
         error - raise Exception
     """
     payload = {
-        tag_name: {
+        policy_tag_name: {
             "dbms": dbms,
             "table": table,
             "column_name": column_name,
-            "column_type": column_type
+            "column_type": column_type # <-- optional
         }
     }
 
@@ -135,7 +135,7 @@ def build_command(db_name:str, table_name:str, interval:int, time_frame:str, tim
         time_frame:str - length of each interval
         time_column:str - timestamp column
         value_column:str - value column name 
-    :params: 
+    :params:
         command:str - generated command 
     :return: 
         command
@@ -162,10 +162,25 @@ def post_command(conn:str, command:str):
 
 def main():
     """
-    Set aggregations based on logical database name and (optional) table name
-    :args:
-
-    :return:
+    Set aggregations based on logical database name and (optional) table name for numeric based columns
+    :logic:
+        0. before initiating aggregation data must flow into the AnyLog agents
+        1. user either specifies database / table OR code gets a list of tables based on `get streaming`
+        2. extract relevant database.table.column information for numeric type columns in a given table using `get columns`
+        3. create new policies for the columns on the blockchain (if specified)
+        4. declare aggregations
+    :positional arguments:
+        conn                  Comma-separated operator or publisher connections to get aggregations on
+        dbms                  Database name
+    :options:
+        -h, --help            show this help message and exit
+        --table TABLE         Table name (default: None)
+        --interval INTERVAL
+        --time-frame TIME_FRAME
+        --create-policies [CREATE_POLICIES]     create policies (needed only once) for each numeric
+                        column (default: False)
+        --policy-type POLICY_TYPE   unique policy type (default: schema-tags)
+        --insert-timestamp [INSERT_TIMESTAMP]enforce using `insert_timestamp` column (default: False)
     """
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('conn', type=str, help='Comma-separated operator or publisher connections')
@@ -173,8 +188,8 @@ def main():
     parser.add_argument('--table', type=str, default=None, help='Table name')
     parser.add_argument('--interval', type=int, default=10)
     parser.add_argument('--time-frame', type=str, default='1 minute')
-    parser.add_argument('--create-tags', type=bool, nargs='?', const=True, default=False, help='create tags (needed only once) for each column')
-    parser.add_argument('--tag-name', type=str, default='schema-tags', help='unique tag name')
+    parser.add_argument('--create-policies', type=bool, nargs='?', const=True, default=False, help='create policies (needed only once) for each numeric column')
+    parser.add_argument('--policy-type', type=str, default='schema-tags', help='unique policy type ')
     parser.add_argument('--insert-timestamp', type=bool, nargs='?', const=True, default=False, help='enforce using `insert_timestamp` column')
     args = parser.parse_args()
 
@@ -201,13 +216,13 @@ def main():
         timestamp_column = next((k for k, v in tables[table].items() if v == 'timestamp'), None)
         for column in tables[table]:
             if column != timestamp_column:
-                if args.create_tags: # create tag if exists
-                    create_tags(conn=args.conn, tag_name=args.tag_name, dbms=db_name, table=table_name,
+                if args.create_policies: # create policy tags if exists
+                    create_tags(conn=args.conn, tag_name=args.policy_type, dbms=db_name, table=table_name,
                                 column_name=column, column_type=tables[table][column])
 
                 command = build_command(db_name=db_name, table_name=table_name, interval=args.interval,
                                         time_frame=args.time_frame, time_column=timestamp_column, value_column=column)
-                print(command)
+                # print(command)
                 post_command(conn=args.conn, command=command)
 
 
