@@ -8,10 +8,9 @@ if !debug_mode == true then set debug on
 :system-query-dbms:
 if !debug_mode == true then print "Connect to system_query database"
 on error goto system-query-db-error
-if !db_type == sqlite and !memory == true then connect dbms system_query where type=sqlite and memory=!memory
-if !db_type == sqlite and !memory == false then connect dbms system_query where type=sqlite
-<if !db_type == psql then connect dbms system_query where
-    type=!db_type and
+if !system_query_db == sqlite then connect dbms system_query where type=sqlite and memory=!memory
+<else if !system_query_db == psql then connect dbms system_query where
+    type=!system_query_db and
     user = !db_user and
     password = !db_passwd and
     ip = !db_ip and
@@ -24,5 +23,5 @@ end script
 
 
 :system-query-db-error:
-echo "Error: Unable to connect to almgm database with db type: " !db_type ". Cannot continue"
+echo "Error: Unable to connect to almgm database with db type: " !system_query_db ". Cannot continue"
 goto end-script

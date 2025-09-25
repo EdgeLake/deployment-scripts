@@ -18,11 +18,12 @@ on error ignore
 set debug off
 if !debug_mode == true then set debug on
 
-if $DISABLE_CLI == true or  $DISABLE_CLI == True or $DISABLE_CLI == TRUE then set cli off
+# if $DISABLE_CLI == true or  $DISABLE_CLI == True or $DISABLE_CLI == TRUE then set cli off
 
 :required-params:
 company_name = "New Company"
 ledger_conn = 127.0.0.1:32048
+hostname = get hostname
 
 if $NODE_TYPE == master-operator then set node_type = operator
 else if $NODE_TYPE == master-publisher then set node_type = publisher
@@ -30,11 +31,7 @@ else if $NODE_TYPE then set node_type = $NODE_TYPE
 else goto missing-node-type
 
 if $NODE_NAME then node_name = $NODE_NAME
-if !node_type == master and not !node_name then node_name = anylog-master
-else if !node_type == operator and not !node_name then node_name = anylog-operator
-else if !node_type == publisher and not !node_name then node_name = anylog-publisher
-else if !node_type == query and not !node_name then node_name = anylog-query
-else if not !node_name then node_name = anylog-node
+else node_name = !hostname + " " + !node_type
 
 set node name !node_name
 
@@ -44,7 +41,6 @@ if $LEDGER_CONN then ledger_conn=$LEDGER_CONN
 
 
 :general-params:
-hostname = get hostname
 loc_info = rest get where url = https://ipinfo.io/json
 if $LOCATION then loc = $LOCATION
 if $COUNTRY then country = $COUNTRY
@@ -104,7 +100,10 @@ if $ANYLOG_BROKER_PORT then anylog_broker_port = $ANYLOG_BROKER_PORT
 if $BROKER_BIND == true or $BROKER_BIND == True or $BROKER_BIND == TRUE then broker_bind = true
 if !broker_threads.int < 1 then broker_threads = 1
 
-if $OVERLAY_IP then overlay_ip = $OVERLAY_IP
+# update !ip based on $NIC_TYPE
+if $NIC_TYPE then set internal ip with $NIC_TYPE
+# useer OVERLAY IP address
+if not $NIC_TYPE and $OVERLAY_IP then overlay_ip = $OVERLAY_IP
 if $PROXY_IP then proxy_ip = $PROXY_IP
 if $CONFIG_NAME then config_name = $CONFIG_NAME
 
@@ -141,6 +140,9 @@ if !node_type == query or $SYSTEM_QUERY == true or $SYSTEM_QUERY == True or $SYS
 do set system_query = true
 do if $MEMORY == false or $MEMORY == False or $MEMORY == FALSE then set memory=false
 
+system_query_db = sqlite
+if $SYSTEM_QUERY_DB == psql or $SYSTEM_QUERY_DB == sqlite then system_query_db = $SYSTEM_QUERY_DB
+
 :nosql-database:
 set enable_nosql = false
 nosql_type = mongo
@@ -165,27 +167,23 @@ if $NOSQL_PORT then nosql_port = $NOSQL_PORT
 if $NOSQL_USER then nosql_user = $NOSQL_USER
 if $NOSQL_PASSWD then nosql_passwd = $NOSQL_PASSWD
 
-:blockchain-general:
-blockchain_sync = 30 seconds
+:blockchain-basic:
+# blockchain platform - either master (node) or optimism
 set blockchain_source = master
 set blockchain_destination = file
+blockchain_sync = 30 seconds
+# whether to use the master node as a relay against the blockchain or not
 set is_relay=false
 
 if $BLOCKCHAIN_SYNC then blockchain_sync = $BLOCKCHAIN_SYNC
 if $BLOCKCHAIN_SOURCE then blockchain_source=$BLOCKCHAIN_SOURCE
 if $DESTINATION then set blockchain_destination=$DESTINATION
-
-# if !blockchain_source != master and !node_type == master then blockchain_destination = database
-if !blockchain_source != master then goto blockchain-connect
-
-:blockchain-master:
-# master node based blockchain configuration
-
+if !node_type == master and !blockchain_source != master then set is_relay = true
 if $LEDGER_CONN ledger_conn = $LEDGER_CONN
-goto operator-settings
+
+if blockchain_source == master then goto operator-settings
 
 :blockchain-connect:
-if !node_type == master then set is_relay = true
 # live blockchain configuration
 provider = https://optimism-sepolia.infura.io/v3/532f565202744c0cb7434505859efb74
 blockchain_public_key = 0xdf29075946610ABD4FA2761100850869dcd07Aa7
@@ -200,7 +198,6 @@ if $CONTRACT then contract = $CONTRACT
 
 :operator-settings:
 set enable_partitions = true
-cluster_name = !node_name.name + -cluster
 table_name=*
 partition_column = insert_timestamp
 partition_interval = day
@@ -210,7 +207,9 @@ partition_sync = 1 day
 if $MEMBER and $MEMBER.int then member = $MEMBER
 
 if $ENABLE_PARTITIONS == false or $ENABLE_PARTITIONS == False or $ENABLE_PARTITIONS == FALSE then set enable_partitions=false
-if $CLUSTER_NAME then cluster_name = $CLUSTER_NAME
+
+if not $CLUSTER_NAME or $CLUSTER_NAME == nc-cluster or $CLUSTER_NAME == new-cluster then cluster_name = !company_name.name + -cluster- + !hostname.name
+else cluster_name = $CLUSTER_NAME
 
 if $TABLE_NAME then table_name=$TABLE_NAME
 if $PARTITION_COLUMN then set partition_column = $PARTITION_COLUMN
@@ -266,12 +265,28 @@ if $MONITOR_NODES == false or $MONITOR_NODES == False or $MONITOR_NODES == FALSE
 if $STORE_MONITORING == true or $STORE_MONITORING == True or $STORE_MONITORING == TRUE then set store_monitoring = true
 if $MONITORING_OPERATOR then monitoring_operator = $MONITORING_OPERATOR
 
+:docker-monitoring:
+set docker_continuous = true
+if $DOCKER_CONTINUOUS == false or $DOCKER_CONTINUOUS == False or $DOCKER_CONTINUOUS == FALSE then  set docker_continuous = false
+
 :opcua-configs:
 set enable_opcua=false
+set set_opcua_tags = false
+if $SET_OPCUA_TAGS == true or $SET_OPCUA_TAGS == True or $SET_OPCUA_TAGS == TRUE then set set_opcua_tags=true
 if $ENABLE_OPCUA == true or $ENABLE_OPCUA == True or $ENABLE_OPCUA == TRUE then set enable_opcua = true
 if $OPCUA_URL then opcua_url=$OPCUA_URL
 if $OPCUA_NODE then opcua_node=$OPCUA_NODE
 if $OPCUA_FREQUENCY then opcua_frequency=$OPCUA_FREQUENCY
+
+
+:etherip-conifgs:
+set enable_etherip=false
+set set_etherip_tags=false 
+if $ENABLE_ETHERIP == true or $ENABLE_ETHERIP == True or $ENABLE_ETHERIP == TRUE then set enable_etherip = true
+if $ETHERIP_URL then etherip_url = $ETHERIP_URL
+else if !enable_etherip and ($SIMULATOR_MODE == true or $SIMULATOR_MODE == True or $SIMULATOR_MODE == TRUE) then etherip_url=127.0.0.1
+if $ETHERIP_FREQUENCY then etherip_frequency = $ETHERIP_FREQUENCY
+if $SET_ETHERIP_TAGS == true or $SET_ETHERIP_TAGS == True or $SET_ETHERIP_TAGS == TRUE then set set_etherip_tags=true
 
 :aggregations:
 set enable_aggregations = false
@@ -343,9 +358,9 @@ exit scripts
 print "Missing node type, cannot continue..."
 goto terminate-scripts
 
-:missing-node-name:
-print "Missing node name, cannot continue..."
-goto terminate-scripts
+# :missing-node-name:
+# print "Missing node name, cannot continue..."
+# goto terminate-scripts
 
 :missing-license-key:
 print "Missing license key, cannot continue..."

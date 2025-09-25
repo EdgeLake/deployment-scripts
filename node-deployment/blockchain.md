@@ -1,7 +1,7 @@
 # Blockchain
 
-The following describes utilizing the blockchainn logic as opposed to the "local" master node.
-To utilize a "local" master node, set `LOCAL_BLOCKCHAIN=true` in the confugrations with appropriate 
+The following describes utilizing the blockchain logic as opposed to the "local" master node.
+To utilize a "local" master node, set `LOCAL_BLOCKCHAIN=true` in the configuration with appropriate 
 configurations.
 
 ## Environment Params
