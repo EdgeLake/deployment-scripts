@@ -45,12 +45,6 @@ if !nic_type then
 do on error call nic-error
 do set internal ip with !nic_type
 
-:set-network-configs:
-on error ignore
-if !configure_dns == true then
-do process !local_scripts/policies/config_policy_network_dns.al
-do goto scripts
-
 :prepare-new-policy:
 if !debug_mode == true then print "Create base for new config policy"
 
