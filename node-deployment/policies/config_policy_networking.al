@@ -7,12 +7,12 @@ on error ignore
 if section == broker then goto broker-params
 
 :tcp-params:
-if !config_dns == true then set policy new_policy [config][ip] = '!external_dns'
+if !configure_dns == true then set policy new_policy [config][ip] = '!external_dns'
 else set policy new_policy [config][ip] = '!external_ip'
 
 if !overlay_ip then set policy new_policy [config][local_ip] = '!overlay_ip'
-else if !config_dns == true and !tcp_bind == false then set policy new_policy [config][local_ip] = '!dns'
-else if !config_dns == false or !tcp_bind == true then set policy new_policy [config][local_ip] = '!ip'
+else if !configure_dns == true and !tcp_bind == false then set policy new_policy [config][local_ip] = '!dns'
+else if !configure_dns == false or !tcp_bind == true then set policy new_policy [config][local_ip] = '!ip'
 
 set policy new_policy [config][port]     = '!anylog_server_port.int'
 set policy new_policy [config][threads]  = '!tcp_threads.int'
