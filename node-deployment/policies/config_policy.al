@@ -39,6 +39,14 @@ config_id = blockchain get config where company=!company_name and name=!config_n
 if !config_id then goto config-policy
 if not !config_id and !create_config == true then goto declare-policy-error
 
+
+:set-nic:
+if !nic_type then
+do on error call nic-error
+do set internal ip with !nic_type
+
+:set-network-configs:
+on error ignore
 if !configure_dns == true then
 do process !local_scripts/policies/config_policy_network_dns.al
 do goto scripts
@@ -169,6 +177,10 @@ config from policy where id = !config_id
 
 :end-script:
 end script
+
+:nic-error:
+echo "Invalid NIC type " + !nic_Type
+return
 
 :sign-policy-error:
 print "Failed to sign config policy"
