@@ -49,11 +49,11 @@ do set internal ip with !nic_type
 if !debug_mode == true then print "Create base for new config policy"
 
 new_policy = ""
-<set policy new_policy [config] = {
-    "name": !config_name,
-    "company": !company_name,
-    "node_type": !node_type
-}>
+set policy new_policy [config] = {}
+set policy new_policy [config][name] = !config_name
+set policy new_policy [config][company] = !company_name
+set policy new_policy [config][node_type] = !node_type
+
 
 :network-configs:
 process !local_scripts/policies/config_policy_networking.al
