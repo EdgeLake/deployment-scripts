@@ -55,46 +55,15 @@ do goto scripts
 if !debug_mode == true then print "Create base for new config policy"
 
 new_policy = ""
-set policy new_policy [config] = {}
-set policy new_policy [config][name] = !config_name
-set policy new_policy [config][company] = !company_name
-set policy new_policy [config][node_type] = !node_type
+<set policy new_policy [config] = {
+    "name": !config_name,
+    "company": !company_name,
+    "node_type": !node_type
+}>
 
 :network-configs:
-if !debug_mode.int == 2 then
-do set debug interactive
-do print "Add networking configurations for policy"
-do set debug on
+process !local_scripts/policies/config_policy_networking.al
 
-set policy new_policy [config][ip] = '!external_ip'
-set policy new_policy [config][local_ip] = '!ip'
-if !overlay_ip then set policy new_policy [config][local_ip] = '!overlay_ip'
-
-set policy new_policy [config][port] = '!anylog_server_port.int'
-set policy new_policy [config][rest_port] = '!anylog_rest_port.int'
-if !anylog_broker_port then set policy new_policy [config][broker_port] = '!anylog_broker_port.int'
-
-set policy new_policy [config][threads] = '!tcp_threads.int'
-set policy new_policy [config][tcp_bind] = '!tcp_bind'
-
-set policy new_policy [config][rest_threads] = '!rest_threads.int'
-set policy new_policy [config][rest_timeout] = '!rest_timeout.int'
-set policy new_policy [config][rest_bind] = '!rest_bind'
-if !rest_bind == true and  not !overlay_ip then set policy new_policy [config][rest_ip] = '!ip'
-if !rest_bind == true and !overlay_ip      then set policy new_policy [config][rest_ip] = '!overlay_ip'
-
-if !anylog_broker_port then
-do set policy new_policy [config][broker_threads] = '!broker_threads.int'
-do set policy new_policy [config][broker_bind] = '!broker_bind'
-
-if !broker_bind == true and  not !overlay_ip then set new_policy [config][broker_ip] == '!ip'
-if !broker_bind == true and !overlay_ip      then set policy new_policy [config][broker_ip] = '!overlay_ip'
-
-:scripts:
-if !debug_mode == true then print "Add script for deploying policy - each node type has a unique policy"
-
-if !node_type == publisher then goto publisher-scripts
-if !node_type == operator then goto operator-scripts
 
 :generic-node:
 if !node_type == generic then
