@@ -139,7 +139,7 @@ goto check-policy
 if !debug_mode == true then print "Deploy Policy"
 
 on error goto config-policy-error
-# config from policy where id = !config_id
+config from policy where id = !config_id
 
 :end-script:
 end script
