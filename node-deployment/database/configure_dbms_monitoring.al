@@ -9,7 +9,8 @@
 on error ignore
 :connect-dbms:
 db_name = monitoring
-process !local_scripts/database/connect_dbms_sql.al
+# process !local_scripts/database/connect_dbms_sql.al
+connect dbms !db_name where type=sqlite
 
 :data-partitioning:
 if !debug_mode == true then print "Set Partitioning"
