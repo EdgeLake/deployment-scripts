@@ -58,6 +58,9 @@ set policy new_policy [config][node_type] = !node_type
 :network-configs:
 process !local_scripts/policies/config_policy_networking.al
 
+if !node_type == operator then goto operator-scripts
+else if !node_type == publisher then goto publisher-scripts
+else if !node_type == master or node_type == query then goto master-query
 
 :generic-node:
 if !node_type == generic then
