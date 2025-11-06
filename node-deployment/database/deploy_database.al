@@ -15,6 +15,5 @@ do process !local_scripts/database/configure_dbms_operator.al
 do process !local_scripts/database/configure_blob_storage.al
 
 
-if !node_type == query or !system_query == true then !local_scripts/database/connect_dbms_system_query.al
-
+if !node_type == query or !system_query == true then process !local_scripts/database/connect_dbms_system_query.al
 
