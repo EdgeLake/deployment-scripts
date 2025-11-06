@@ -69,7 +69,7 @@ if not !loc_info and not !city then city = Unknown
 
 :networking:
 set nic_type = ""
-    set enable_dns = false
+set enable_dns = false
 set enable_external_dns = false
 set dns_domain = ""
 
