@@ -56,7 +56,7 @@ set policy new_policy [!node_type][company] = !company_name
 set policy new_policy [!node_type][hostname] = !hostname
 if $HZN_DEVICE_ID then set policy new_policy [!node_type][hzn_device_id] = $HZN_DEVICE_ID
 
-:network-!node_type:
+:network-node_type:
 if !debug_mode == true then print "Declare network configuration in new policy variables"
 
 
