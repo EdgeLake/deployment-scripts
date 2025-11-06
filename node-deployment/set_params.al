@@ -68,7 +68,8 @@ if !loc_info and not !city then city = from !loc_info bring [city]
 if not !loc_info and not !city then city = Unknown
 
 :networking:
-set configure_dns=false
+set use_external_dns = false
+set use_internal_dns = false
 set nic_type = ""
 config_name = !node_type.name + - + !company_name.name + -configs
 if $ANYLOG_BROKER_PORT then config_name = !node_type.name + - + !company_name.name + -configs-broker
@@ -82,8 +83,14 @@ rest_timeout=30
 broker_bind = false
 broker_threads=6
 
-if $CONFIGURE_DNS == true or $CONFIGURE_DNS == True or $CONFIGURE_DNS == TRUE then set configure_dns = true
-if $NIC_TYPE then set nic_type = $NIC_TYPE
+if $USE_EXTERNAL_DNS == true or $USE_EXTERNAL_DNS == True or $USE_EXTERNAL_DNS == TRUE then set use_external_dns = true
+if $USE_LOCAL_DNS == true or $USE_LOCAL_DNS == True or $USE_LOCAL_DNS == TRUE then set use_local_dns = true
+# Specify NIC TYPE and update IPs
+if $NIC_TYPE then
+do set nic_type = $NIC_TYPE
+do on error call nic-error
+do set internal ip with !nic_type
+
 
 if $ANYLOG_SERVER_PORT then anylog_server_port = $ANYLOG_SERVER_PORT
 if $ANYLOG_REST_PORT then anylog_rest_port = $ANYLOG_REST_PORT
@@ -409,6 +416,11 @@ goto terminate-scripts
 # :missing-node-name:
 # print "Missing node name, cannot continue..."
 # goto terminate-scripts
+
+:nic-error:
+echo "Invalid NIC type " + !nic_Type
+return
+
 
 :missing-license-key:
 print "Missing license key, cannot continue..."

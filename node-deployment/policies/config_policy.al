@@ -40,11 +40,6 @@ if !config_id then goto config-policy
 if not !config_id and !create_config == true then goto declare-policy-error
 
 
-:set-nic:
-if !nic_type then
-do on error call nic-error
-do set internal ip with !nic_type
-
 :prepare-new-policy:
 if !debug_mode == true then print "Create base for new config policy"
 
@@ -143,10 +138,6 @@ config from policy where id = !config_id
 
 :end-script:
 end script
-
-:nic-error:
-echo "Invalid NIC type " + !nic_Type
-return
 
 :sign-policy-error:
 print "Failed to sign config policy"
