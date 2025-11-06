@@ -61,6 +61,16 @@ if !debug_mode == true then print "Declare network configuration in new policy v
 
 
 set policy new_policy [!node_type][ip] = !external_ip
+if !tcp_bind == false and !enable_dns == true and !enable_external_dns == true then set policy new_policy [!node_type][ip] = !external_dns
+else if !tcp_bind == true  and !overlay_ip then set policy new_policy [!node_type][ip] = !overlay_ip
+else if !tcp_bind == true  and !enable_dns == true then set policy new_policy [!node_type][ip] = !dns
+else if !tcp_bind == true then set policy new_policy [!node_type][ip] = !ip
+
+if !tcp_bind == false and !overlay_ip then set policy new_policy [!node_type][local_ip] = !overlay_ip
+else if !tcp_bind == false and !overlay_ip then set policy new_policy [!node_type][local_ip] = !overlay_ip
+
+
+
 if !tcp_bind == false and !use_external_dns == true                                  then set policy new_policy [!node_type][ip] = !external_dns
 else if !tcp_bind == true and !overlay_ip                                            then set policy new_policy [!node_type][ip] = !overlay_ip
 else if !tcp_bind == true and !use_internal_dns == true or !use_external_dns == true then set policy new_policy [!node_type][ip] = !dns

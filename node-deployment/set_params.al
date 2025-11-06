@@ -68,9 +68,12 @@ if !loc_info and not !city then city = from !loc_info bring [city]
 if not !loc_info and not !city then city = Unknown
 
 :networking:
-set use_external_dns = false
-set use_internal_dns = false
 set nic_type = ""
+set enable_dns = false
+set enable_external_dns = false
+set dns_domain = ""
+
+
 config_name = !node_type.name + - + !company_name.name + -configs
 if $ANYLOG_BROKER_PORT then config_name = !node_type.name + - + !company_name.name + -configs-broker
 set anylog_server_port = ""
@@ -83,14 +86,19 @@ rest_timeout=30
 broker_bind = false
 broker_threads=6
 
-if $USE_EXTERNAL_DNS == true or $USE_EXTERNAL_DNS == True or $USE_EXTERNAL_DNS == TRUE then set use_external_dns = true
-if $USE_LOCAL_DNS == true or $USE_LOCAL_DNS == True or $USE_LOCAL_DNS == TRUE then set use_local_dns = true
-# Specify NIC TYPE and update IPs
 if $NIC_TYPE then
 do set nic_type = $NIC_TYPE
 do on error call nic-error
 do set internal ip with !nic_type
+do on error ignore
 
+if $ENABLE_DNS == true  or $ENABLE_DNS == True or $ENABLE_DNS == TRUE then set  enable_dns = true
+if $ENABLE_EXTERNAL_DNS == true  or $ENABLE_EXTERNAL_DNS == True or $ENABLE_EXTERNAL_DNS == TRUE then set enable_external_dns = true
+if $DNS_DOMAIN then dns_domain = $DNS_DOMAIN
+
+# check if the !dns value ends with .local if so and user defines a domain, then it uses hostname.domain
+is_dns_local = python !dns.endswith('local')
+if !is_dns_local == true and !dns_domain then dns = !hostname.!dns_domain
 
 if $ANYLOG_SERVER_PORT then anylog_server_port = $ANYLOG_SERVER_PORT
 if $ANYLOG_REST_PORT then anylog_rest_port = $ANYLOG_REST_PORT
