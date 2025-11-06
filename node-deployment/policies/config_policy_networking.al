@@ -10,9 +10,9 @@ if section == broker then goto broker-params
 set policy new_policy [config][ip] = '!external_ip'
 set policy new_policy [config][local_ip] = '!ip'
 
-if !use_external_dns == true then set policy new_policy [config][ip]       = '!external_dns'
-if !overlay_ip               then set policy new_policy [config][local_ip] = '!overlay_ip'
-else if !use_local_dns       then set policy new_policy [config][local_ip] = '!dns'
+if !use_external_dns == true   then set policy new_policy [config][ip]       = '!external_dns'
+if !overlay_ip                 then set policy new_policy [config][local_ip] = '!overlay_ip'
+else if !use_local_dns == true then set policy new_policy [config][local_ip] = '!dns'
 
 set policy new_policy [config][port]     = '!anylog_server_port.int'
 set policy new_policy [config][threads]  = '!tcp_threads.int'
