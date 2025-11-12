@@ -1,28 +1,17 @@
 #----------------------------------------------------------------------------------------------------------------------#
-# Declare a policy specific for different types of node monitoring
-#   -> generic: cpu, disk, file i/o, event count, etc.
-#   -> store syslog into Operator database(s)
-#   -> docker insights
-#:params:
-#   operator_monitoring_ip - IP and Port (TCP) for sending data from non-Operator node(s) into Operator node(s)
+# Configure docker monitoring
+# NOTE: not supported for non-operator nodes - can work with publisher if user defines distribution
 #----------------------------------------------------------------------------------------------------------------------#
-# process !local_scripts/monitoring_policy.al
-
+# process !anylog_path/deployment-scripts/southbound-monitoring/policy_docker_monitoring.al
 
 on error ignore
-
-if !debug_mode == true then set debug on
 
 :set-params:
-if !debug_mode == true then print "Setting env params"
-schedule_id = config-monitoring
+schedule_id = docker-monitoring
 set create_policy = false
 
-on error ignore
-if !debug_mode == true then set debug on
 
 :check-policy:
-if !debug_mode == true then print "check if policy exists"
 is_policy = blockchain get schedule where id=!schedule_id
 
 # just created the policy + exists
@@ -31,32 +20,30 @@ if !is_policy then goto config-policy
 # failure show created policy
 if not !is_policy and !create_policy == true then goto declare-policy-error
 
-:schedule-policy:
-if !debug_mode == true then print "create policy"
-new_policy=""
+:create-policy
 <new_policy = {
     "schedule": {
         "id": !schedule_id,
-        "name": "Node Monitoring Schedule",
+        "name": "Docker Monitoring Schedule",
         "script": [
-            "process !anylog_path/deployment-scripts/southbound-monitoring/prepare_monitoring.al",
-            "if !monitor_nodes == true then process !anylog_path/deployment-scripts/southbound-monitoring/node_monitoring.al",
-            "if !syslog_monitoring == true then process !anylog_path/deployment-scripts/southbound-monitoring/syslog_monitoring_table.al"
+            "run scheduled pull where name = docker_insights and type = docker and frequency = !docker_frequency and continuous = false and dbms = monitoring and table = docker_insight"
         ]
     }
 }>
 
+
 :publish-policy:
 on error ignore
 process !local_scripts/policies/publish_policy.al
+if not !error_code.int then
+do set create_policy = true
+goto check-policy
+
 if !error_code == 1 then goto sign-policy-error
 if !error_code == 2 then goto prepare-policy-error
 if !error_code == 3 then goto declare-policy-error
-set create_policy = true
-goto check-policy
 
 :config-policy:
-if !debug_mode == true then print "Config from policy"
 on error goto config-policy-error
 config from policy where id=!schedule_id
 

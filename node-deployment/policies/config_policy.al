@@ -39,9 +39,6 @@ config_id = blockchain get config where company=!company_name and name=!config_n
 if !config_id then goto config-policy
 if not !config_id and !create_config == true then goto declare-policy-error
 
-if !configure_dns == true then
-do process !local_scripts/policies/config_policy_network_dns.al
-do goto scripts
 
 :prepare-new-policy:
 if !debug_mode == true then print "Create base for new config policy"
@@ -52,50 +49,19 @@ set policy new_policy [config][name] = !config_name
 set policy new_policy [config][company] = !company_name
 set policy new_policy [config][node_type] = !node_type
 
+
 :network-configs:
-if !debug_mode.int == 2 then
-do set debug interactive
-do print "Add networking configurations for policy"
-do set debug on
+process !local_scripts/policies/config_policy_networking.al
 
-set policy new_policy [config][ip] = '!external_ip'
-set policy new_policy [config][local_ip] = '!ip'
-if !overlay_ip then set policy new_policy [config][local_ip] = '!overlay_ip'
-
-set policy new_policy [config][port] = '!anylog_server_port.int'
-set policy new_policy [config][rest_port] = '!anylog_rest_port.int'
-if !anylog_broker_port then set policy new_policy [config][broker_port] = '!anylog_broker_port.int'
-
-set policy new_policy [config][threads] = '!tcp_threads.int'
-set policy new_policy [config][tcp_bind] = '!tcp_bind'
-
-set policy new_policy [config][rest_threads] = '!rest_threads.int'
-set policy new_policy [config][rest_timeout] = '!rest_timeout.int'
-set policy new_policy [config][rest_bind] = '!rest_bind'
-if !rest_bind == true and  not !overlay_ip then set new_policy [config][rest_ip] == '!ip'
-if !rest_bind == true and !overlay_ip      then set policy new_policy [config][rest_ip] = '!overlay_ip'
-
-if !anylog_broker_port then
-do set policy new_policy [config][broker_threads] = '!broker_threads.int'
-do set policy new_policy [config][broker_bind] = '!broker_bind'
-
-if !broker_bind == true and  not !overlay_ip then set new_policy [config][broker_ip] == '!ip'
-if !broker_bind == true and !overlay_ip      then set policy new_policy [config][broker_ip] = '!overlay_ip'
-
-:scripts:
-if !debug_mode == true then print "Add script for deploying policy - each node type has a unique policy"
-
-if !node_type == publisher then goto publisher-scripts
 if !node_type == operator then goto operator-scripts
+else if !node_type == publisher then goto publisher-scripts
+else if !node_type == master or node_type == query then goto master-query
 
 :generic-node:
 if !node_type == generic then
 <do set policy new_policy [config][script] = [
-    "if !blockchain_source == master then blockchain seed from !ledger_conn",
-    "process !local_scripts/connect_blockchain.al",
     "if !system_query == true then process !local_scripts/database/configure_dbms_system_query.al",
     "run scheduler 1",
-    "process !anylog_path/deployment-scripts/southbound-monitoring/monitoring_policy.al",
     "if !deploy_local_script == true then process !local_scripts/local_script.al",
     "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
 ]>
@@ -107,9 +73,8 @@ if !node_type == master or !node_type == query then
     "process !local_scripts/database/deploy_database.al",
     "if !blockchain_source == master then blockchain seed from !ledger_conn",
     "process !local_scripts/connect_blockchain.al",
-    "process !local_scripts/policies/node_policy.al",
+    "if !is_hidden == false then process !local_scripts/policies/node_policy.al",
     "run scheduler 1",
-    "process !anylog_path/deployment-scripts/southbound-monitoring/monitoring_policy.al",
     "if !deploy_local_script == true then process !local_scripts/local_script.al",
     "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
 ]>
@@ -126,7 +91,6 @@ do goto publish-policy
     "run streamer",
     "run publisher where archive_json=true and compress_json=!compress_file and compress_sql=!compress_file and dbms_name=!dbms_file_location and table_name=!table_file_location",
     "schedule name=remove_archive and time=1 day and task delete archive where days = !archive_delete",
-    "process !anylog_path/deployment-scripts/southbound-monitoring/monitoring_policy.al",
     "if !enable_mqtt == true then process !anylog_path/deployment-scripts/sample-scripts/basic_msg_client.al",
     "if !deploy_local_script == true then process !local_scripts/local_script.al",
     "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
@@ -147,7 +111,7 @@ goto publish-policy
     "if !operator_id and !blockchain_source != master then run operator where create_table=!create_table and update_tsd_info=!update_tsd_info and compress_json=!compress_file and compress_sql=!compress_sql and archive_json=!archive and archive_sql=!archive_sql and blockchain=!blockchain_source and policy=!operator_id and threads=!operator_threads",
     "if !operator_id and !blockchain_source == master then run operator where create_table=!create_table and update_tsd_info=!update_tsd_info and compress_json=!compress_file and compress_sql=!compress_sql and archive_json=!archive and archive_sql=!archive_sql and master_node=!ledger_conn and policy=!operator_id and threads=!operator_threads",
     "if !enable_mqtt == true then process !anylog_path/deployment-scripts/sample-scripts/basic_msg_client.al",
-    "process !anylog_path/deployment-scripts/southbound-monitoring/monitoring_policy.al",
+    "process !anylog_path/deployment-scripts/southbound-monitoring/deploy_monitoring.al",
     "if !deploy_local_script == true then process !local_scripts/local_script.al",
     "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
 ]>
