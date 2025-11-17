@@ -176,6 +176,9 @@ if !node_type == query or $SYSTEM_QUERY == true or $SYSTEM_QUERY == True or $SYS
 do set system_query = true
 do if $MEMORY == false or $MEMORY == False or $MEMORY == FALSE then set memory=false
 
+set enable_mcp = false
+if $ENABLE_MCP == true or $ENABLE_MCP == True or $ENABLE_MCP == TRUE then set enable_mcp = true
+
 system_query_db = sqlite
 if $SYSTEM_QUERY_DB == psql or $SYSTEM_QUERY_DB == sqlite then system_query_db = $SYSTEM_QUERY_DB
 

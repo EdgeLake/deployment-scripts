@@ -62,6 +62,7 @@ if !node_type == generic then
 <do set policy new_policy [config][script] = [
     "if !system_query == true then process !local_scripts/database/configure_dbms_system_query.al",
     "run scheduler 1",
+    "if !system_query == true and !enable_mcp == true then run mcp server",
     "if !deploy_local_script == true then process !local_scripts/local_script.al",
     "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
 ]>
@@ -75,6 +76,7 @@ if !node_type == master or !node_type == query then
     "process !local_scripts/connect_blockchain.al",
     "if !is_hidden == false then process !local_scripts/policies/node_policy.al",
     "run scheduler 1",
+    "if !system_query == true and !enable_mcp == true then run mcp server",
     "if !deploy_local_script == true then process !local_scripts/local_script.al",
     "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
 ]>
@@ -91,6 +93,7 @@ do goto publish-policy
     "run streamer",
     "run publisher where archive_json=true and compress_json=!compress_file and compress_sql=!compress_file and dbms_name=!dbms_file_location and table_name=!table_file_location",
     "schedule name=remove_archive and time=1 day and task delete archive where days = !archive_delete",
+    "if !system_query == true and !enable_mcp == true then run mcp server",
     "if !enable_mqtt == true then process !anylog_path/deployment-scripts/sample-scripts/basic_msg_client.al",
     "if !deploy_local_script == true then process !local_scripts/local_script.al",
     "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
@@ -110,6 +113,7 @@ goto publish-policy
     "if !enable_ha == true then run data consumer where start_date=!start_data",
     "if !operator_id and !blockchain_source != master then run operator where create_table=!create_table and update_tsd_info=!update_tsd_info and compress_json=!compress_file and compress_sql=!compress_sql and archive_json=!archive and archive_sql=!archive_sql and blockchain=!blockchain_source and policy=!operator_id and threads=!operator_threads",
     "if !operator_id and !blockchain_source == master then run operator where create_table=!create_table and update_tsd_info=!update_tsd_info and compress_json=!compress_file and compress_sql=!compress_sql and archive_json=!archive and archive_sql=!archive_sql and master_node=!ledger_conn and policy=!operator_id and threads=!operator_threads",
+    "if !system_query == true and !enable_mcp == true then run mcp server",
     "if !enable_mqtt == true then process !anylog_path/deployment-scripts/sample-scripts/basic_msg_client.al",
     "process !anylog_path/deployment-scripts/southbound-monitoring/deploy_monitoring.al",
     "if !deploy_local_script == true then process !local_scripts/local_script.al",
