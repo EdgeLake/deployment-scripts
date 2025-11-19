@@ -14,9 +14,11 @@ on error ignore
 if not $VIDEO_URL and not !video_url then goto missing-url
 
 if $VIDEO_URL then video_url = $VIDEO_URL
+video_url = "https://www.youtube.com/watch?v=rnXIjl_Rzy4"
 video_host = 0.0.0.0
 video_port = 8888
 set enable_detections = false
+set default_dbms=test
 
 if $VIDEO_HOST then video_host = $VIDEO_HOST
 if $VIDEO_PORT then video_port = $VIDEO_PORT
