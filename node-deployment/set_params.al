@@ -257,7 +257,7 @@ if $CONTRACT then contract = $CONTRACT
 set enable_partitions = true
 table_name=*
 partition_column = insert_timestamp
-partition_interval = day
+partition_interval = 14 days
 partition_keep = 3
 partition_sync = 1 day
 

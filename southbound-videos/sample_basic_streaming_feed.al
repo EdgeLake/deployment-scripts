@@ -82,6 +82,9 @@ else
 >
 do run video stream where name=youtube and import_display = imshow
 
+# video connect where name = youtube and protocol = https and interface = url and address = !video_url and video_dbms = !default_dbms and video_table = video_table
+
+
 :end-script:
 end script
 

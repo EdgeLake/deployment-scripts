@@ -9,14 +9,25 @@
 
 :declare-provider:
 on error goto declare-provider-error
+
+<connect dbms !default_dbms where
+    type = bucket and
+    provider = !blob_storage_type and
+    access_key = !bucket_access_key and
+    secret_key = $bucket_secrete_key and
+    region = !bucket_region and
+    endpoint = !blob_storage_ip and
+    network_id = x123x and
+    bucket_name = my-bucket>
+
 <bucket provider connect where
     group = !bucket_group and
-    provider = !blob_storage_type and
+    provider =  and
     id = !bucket_id and
     access_key = !bucket_access_key and
-    secret_key = !bucket_secrete_key and
-    region = !bucket_region and
-    endpoint_url = !blob_storage_ip
+    secret_key = ! and
+    region = ! and
+    endpoint_url = !
 >
 
 :assign-logical-name:
