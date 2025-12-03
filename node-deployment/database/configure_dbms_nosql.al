@@ -7,8 +7,9 @@ on error ignore
 if !debug_mode == true then set debug on
 
 if !enable_nosql == false then goto blobs-archiver
-if !enable_nosql == true and !nosql_type == akave then
-do process !local_scripts/database/configure_dbms_akave.al
+#if !enable_nosql == true and !nosql_type == akave then goto blobs-archiver
+if !enable_nosql == true and $NOSQL_TYPE == akave then goto blobs-archiver
+#do process !local_scripts/database/configure_dbms_akave.al
 do goto end-script
 
 :connect-dbms:
