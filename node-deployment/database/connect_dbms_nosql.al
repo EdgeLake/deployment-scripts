@@ -8,7 +8,7 @@
 if not !blob_storage_ip or not !blob_storage_port then goto missing-conn-info
 
 on error goto connect-dbms-error
-if !nosql_user and !nosql_passwd then
+if !blob_storage_user and !blob_storage_password then
 <do connect dbms !default_dbms where
     type=!blob_storage_type and
     ip=!blob_storage_ip and
