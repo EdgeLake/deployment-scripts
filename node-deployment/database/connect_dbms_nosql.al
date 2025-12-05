@@ -12,7 +12,7 @@ if !nosql_user and !nosql_passwd then
 <do connect dbms !default_dbms where
     type=!blob_storage_type and
     ip=!blob_storage_ip and
-    port=!blob_storage_port and
+    port=!blob_storage_port.int and
     user=!blob_storage_user and
     password=!blob_storage_password
 >
