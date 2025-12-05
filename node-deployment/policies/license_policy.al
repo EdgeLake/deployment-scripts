@@ -63,7 +63,7 @@ goto check-policy
 
 :set-license:
 on error goto set-license-error
-set license where activation_key = !activation_key
+set license where activation_key = $LICENSE_KEY
 
 :end-script:
 end script
