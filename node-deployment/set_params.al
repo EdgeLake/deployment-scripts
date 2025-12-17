@@ -186,17 +186,26 @@ if $SYSTEM_QUERY_DB == psql or $SYSTEM_QUERY_DB == sqlite then system_query_db =
 # store blobs in data store - mongo, s3, akave, minio, etc.
 set blobs_storage = false
 # store blobs in local file
-set blobs_folder = true
 # compress blobs
 set blobs_compress = true
 # reuse repeating blobs
 set blobs_reuse = true
 
 # store blobs in storage that's not local file system
-if $BLOBS_STORAGE == true or $BLOBS_STORAGE == True or $BLOBS_STORAGE == TRUE then set blobs_storage = true
+if $BLOBS_STORAGE == true or $BLOBS_STORAGE == True or $BLOBS_STORAGE == TRUE then
+do set blobs_storage = true
+do set blobs_folder = false
 
+# by default we're storing blobs to local files, so disable that option - either by user or us
+# - user can force disable by setting folder as False
+# - user can force enable by setting  folder as True
+if  !blobs_storage == false or ($BLOBS_FOLDER == true or $BLOBS_FOLDER == True or $BLOBS_FOLDER == TRUE) then set blobs_folder=true
+
+
+# compress blob content when stored (true by default)
 if $BLOBS_COMPRESS == false or $BLOBS_COMPRESS == False or $BLOBS_COMPRESS == FALSE then set blobs_compress = false
 
+# reuse blob content if it contains the same hash value (true by default)
 if $BLOBS_REUSE == false or $BLOBS_REUSE == False or $BLOBS_REUSE == FALSE then set blobs_reuse = false
 
 # Storage type (mongo, akave, s3 , etc)
@@ -206,11 +215,6 @@ if $BLOB_STORAGE_TYPE then blob_storage_type = $BLOB_STORAGE_TYPE
 if $BLOB_STORAGE_IP then blob_storage_ip = $BLOB_STORAGE_IP
 if $BLOB_STORAGE_PORT then blob_storage_port = $BLOB_STORAGE_PORT
 
-# by default we're storing blobs to local files, so disable that option - either by user or us
-# - user can force disable by setting folder as False
-# - user can force enable by setting  folder as True
-if $BLOBS_FOLDER == false or $BLOBS_FOLDER == False or $BLOBS_FOLDER == FALSE then set blobs_folder = false
-else if not $BLOBS_FOLDER and !blobs_storage == true and !blob_storage_type then set blobs_folder = false
 
 :blob-dbms:
 # MongoDB access credentials
