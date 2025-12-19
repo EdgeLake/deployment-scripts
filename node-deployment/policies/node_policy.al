@@ -33,14 +33,6 @@ if !debug_mode == true then print "Check whether policy already exists based on 
 # checks nodes based on name, company and networking configurations
 process !local_scripts/policies/validate_node_policy.al
 
-# checks nodes without networking configurations - this will also update the node name on the interface
-node_count = blockchain get !node_type where name=!node_name bring.count
-
-if not !is_policy and !node_count then
-do node_count =  python !node_count.int  + 1
-do node_name = !node_name + !node_count
-do set node name !node_name
-
 if not !is_policy and !create_policy == false then goto create-policy
 if not !is_policy and !create_policy == true then goto config-policy-error
 else goto node-info
@@ -53,16 +45,31 @@ set policy new_policy [!node_type] = {}
 set policy new_policy [!node_type][name] = !node_name
 set policy new_policy [!node_type][company] = !company_name
 
-:network-!node_type:
-if !debug_mode == true then print "Declare network configuration in new policy variables"
-
 set policy new_policy [!node_type][hostname] = !hostname
 if $HZN_DEVICE_ID then set policy new_policy [!node_type][hzn_device_id] = $HZN_DEVICE_ID
+
+:network-node_type:
+if !debug_mode == true then print "Declare network configuration in new policy variables"
+
 set policy new_policy [!node_type][ip] = !external_ip
-if !tcp_bind == true and !overlay_ip then set policy new_policy [!node_type][ip] = !overlay_ip
-if !tcp_bind == true and not !overlay_ip then set policy new_policy [!node_type][ip] = !ip
+if !tcp_bind == false and !enable_dns == true and !enable_external_dns == true then set policy new_policy [!node_type][ip] = !external_dns
+else if !tcp_bind == true  and !overlay_ip then set policy new_policy [!node_type][ip] = !overlay_ip
+else if !tcp_bind == true  and ( !enable_dns == true and (!is_dns_local == false or !dns_domain) )   then set policy new_policy [!node_type][ip] = !dns
+else if !tcp_bind == true then set policy new_policy [!node_type][ip] = !ip
+
 if !tcp_bind == false and !overlay_ip then set policy new_policy [!node_type][local_ip] = !overlay_ip
-if !tcp_bind == false and not !overlay_ip then set policy new_policy [!node_type][local_ip] = !ip
+else if !tcp_bind == false and !overlay_ip then set policy new_policy [!node_type][local_ip] = !overlay_ip
+
+
+
+if !tcp_bind == false and !use_external_dns == true                                  then set policy new_policy [!node_type][ip] = !external_dns
+else if !tcp_bind == true and !overlay_ip                                            then set policy new_policy [!node_type][ip] = !overlay_ip
+else if !tcp_bind == true and ( !enable_dns == true and (!is_dns_local == false or !dns_domain) )   then set policy new_policy [!node_type][ip] = !dns
+else if !tcp_bind == true                                                            then set policy new_policy [!node_type][ip] = !ip
+
+if !tcp_bind == false and !overlay_ip                    then  set policy new_policy [!node_type][local_ip] = !overlay_ip
+else if !tcp_bind == false and !enable_dns == true and (!is_dns_local == false or !dns_domain)  then  set policy new_policy [!node_type][local_ip] = !dns
+else if !tcp_bind == false                               then set policy new_policy [!node_type][local_ip] = !ip
 
 set policy new_policy [!node_type][port] = !anylog_server_port.int
 set policy new_policy [!node_type][rest_port] = !anylog_rest_port.int
@@ -89,6 +96,10 @@ if !loc then set policy new_policy [!node_type][loc] = !loc
 if !country then set policy new_policy [!node_type][country] = !country
 if !state then set policy new_policy [!node_type][state] = !state
 if !city then set policy new_policy [!node_type][city] = !city
+
+if !node_type == operator and !branch then set policy new_policy [!node_type][branch]
+if !node_type == operator and !dept then set policy new_policy [!node_type][dept]
+
 
 :publish-policy:
 if !debug_mode == true then print "Publish policy"

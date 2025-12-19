@@ -22,13 +22,22 @@ if !debug_mode == true then set debug on
 
 :required-params:
 company_name = "New Company"
-ledger_conn = 127.0.0.1:32048
 hostname = get hostname
+ledger_conn = 127.0.0.1:32048
 
+set is_hidden =false
+set master_configs = false
+
+if $NODE_TYPE == master-hidden or $NODE_TYPE == query-hidden then set is_hidden = true
+if $NODE_TYPE == master or $NODE_TYPE == master-operator or $NODE_TYPE == master-publisher then set master_configs = true
 if $NODE_TYPE == master-operator then set node_type = operator
 else if $NODE_TYPE == master-publisher then set node_type = publisher
+else if $NODE_TYPE == master-hidden then set node_type = master
+else if $NODE_TYPE == query-hidden then set node_type = query
 else if $NODE_TYPE then set node_type = $NODE_TYPE
-else goto missing-node-type
+
+if not !node_type then goto  missing-node-type
+
 
 if $NODE_NAME then node_name = $NODE_NAME
 else node_name = !hostname + " " + !node_type
@@ -37,8 +46,8 @@ set node name !node_name
 
 if $COMPANY_NAME then company_name = $COMPANY_NAME
 
-if $LEDGER_CONN then ledger_conn=$LEDGER_CONN
 
+if $LICENSE_KEY then license_key = $LICENSE_KEY
 
 :general-params:
 loc_info = rest get where url = https://ipinfo.io/json
@@ -46,6 +55,8 @@ if $LOCATION then loc = $LOCATION
 if $COUNTRY then country = $COUNTRY
 if $STATE then state = $STATE
 if $CITY then city = $CITY
+if $BRANCH then branch= $BRANCH
+if $DEPT then dept = $DEPT
 
 if !loc_info and not !loc then loc = from !loc_info bring [loc]
 if not !loc_info and not !loc then loc = 0.0, 0.0
@@ -57,7 +68,12 @@ if !loc_info and not !city then city = from !loc_info bring [city]
 if not !loc_info and not !city then city = Unknown
 
 :networking:
-set configure_dns=false
+set nic_type = ""
+set enable_dns = false
+set enable_external_dns = false
+set dns_domain = ""
+
+
 config_name = !node_type.name + - + !company_name.name + -configs
 if $ANYLOG_BROKER_PORT then config_name = !node_type.name + - + !company_name.name + -configs-broker
 set anylog_server_port = ""
@@ -70,7 +86,20 @@ rest_timeout=30
 broker_bind = false
 broker_threads=6
 
-if $CONFIGURE_DNS == true or $CONFIGURE_DNS == True or $CONFIGURE_DNS == TRUE then set configure_dns = true
+if $NIC_TYPE then
+do set nic_type = $NIC_TYPE
+do on error call nic-error
+do set internal ip with !nic_type
+do on error ignore
+
+if $ENABLE_DNS == true  or $ENABLE_DNS == True or $ENABLE_DNS == TRUE then set  enable_dns = true
+if $ENABLE_EXTERNAL_DNS == true  or $ENABLE_EXTERNAL_DNS == True or $ENABLE_EXTERNAL_DNS == TRUE then set enable_external_dns = true
+if $DNS_DOMAIN then dns_domain = $DNS_DOMAIN
+
+# check if the !dns value ends with .local if so and user defines a domain, then it uses hostname.domain
+is_dns_local = python !dns.endswith('local')
+if !is_dns_local == true and !dns_domain then dns = !hostname.!dns_domain
+
 if $ANYLOG_SERVER_PORT then anylog_server_port = $ANYLOG_SERVER_PORT
 if $ANYLOG_REST_PORT then anylog_rest_port = $ANYLOG_REST_PORT
 
@@ -107,6 +136,13 @@ if not $NIC_TYPE and $OVERLAY_IP then overlay_ip = $OVERLAY_IP
 if $PROXY_IP then proxy_ip = $PROXY_IP
 if $CONFIG_NAME then config_name = $CONFIG_NAME
 
+# option to not set ledger_conn for master
+if $LEDGER_CONN then ledger_conn=$LEDGER_CONN
+else if !master_configs == true and !overlay_ip then ledger_conn = !overlay_ip + : + !anylog_server_port
+else if !master_configs == true and not !overlay_ip then ledger_conn = !ip + : + !anylog_server_port
+else if !master_configs == false and !overlay_ip then ledger_conn = !overlay_ip + :32048
+else if !master_configs == false and not !overlay_ip then ledger_conn = !ip + :32048
+
 :authentication:
 set enable_auth = false
 if !is_edgelake == false and ($ENABLE_AUTH == true or $ENABLE_AUTH == True or $ENABLE_AUTH == TRUE) then set enable_auth = true
@@ -140,32 +176,57 @@ if !node_type == query or $SYSTEM_QUERY == true or $SYSTEM_QUERY == True or $SYS
 do set system_query = true
 do if $MEMORY == false or $MEMORY == False or $MEMORY == FALSE then set memory=false
 
+set enable_mcp = false
+if $ENABLE_MCP == true or $ENABLE_MCP == True or $ENABLE_MCP == TRUE then set enable_mcp = true
+
 system_query_db = sqlite
 if $SYSTEM_QUERY_DB == psql or $SYSTEM_QUERY_DB == sqlite then system_query_db = $SYSTEM_QUERY_DB
 
-:nosql-database:
-set enable_nosql = false
-nosql_type = mongo
-nosql_ip = 127.0.0.1
-nosql_port = 27017
-set blobs_dbms = false
-set blobs_folder = true
+:blob-storage:
+# store blobs in data store - mongo, s3, akave, minio, etc.
+set blobs_storage = false
+# store blobs in local file
+# compress blobs
 set blobs_compress = true
+# reuse repeating blobs
 set blobs_reuse = true
 
-if $ENABLE_NOSQL == true or $ENABLE_NOSQL == True or $ENABLE_NOSQL == TRUE then
-do set enable_nosql=true
-do set blobs_dbms = true
-# if $BLOBS_DBMS == true or $BLOBS_DBMS == True or $BLOBS_DBMS == TRUE  then set blobs_dbms = true
+# store blobs in storage that's not local file system
+if $BLOBS_STORAGE == true or $BLOBS_STORAGE == True or $BLOBS_STORAGE == TRUE then
+do set blobs_storage = true
+do set blobs_folder = false
+
+# by default we're storing blobs to local files, so disable that option - either by user or us
+# - user can force disable by setting folder as False
+# - user can force enable by setting  folder as True
+if  !blobs_storage == false or ($BLOBS_FOLDER == true or $BLOBS_FOLDER == True or $BLOBS_FOLDER == TRUE) then set blobs_folder=true
+
+
+# compress blob content when stored (true by default)
+if $BLOBS_COMPRESS == false or $BLOBS_COMPRESS == False or $BLOBS_COMPRESS == FALSE then set blobs_compress = false
+
+# reuse blob content if it contains the same hash value (true by default)
 if $BLOBS_REUSE == false or $BLOBS_REUSE == False or $BLOBS_REUSE == FALSE then set blobs_reuse = false
 
-# if $NOSQL_TYPE then set nosql_type = $NOSQL_TYPE
-# if !nosql_type != mongo then  goto invalid-nosql-database
+# Storage type (mongo, akave, s3 , etc)
+if $BLOB_STORAGE_TYPE then blob_storage_type = $BLOB_STORAGE_TYPE
 
-if $NOSQL_IP then nosql_ip = $NOSQL_IP
-if $NOSQL_PORT then nosql_port = $NOSQL_PORT
-if $NOSQL_USER then nosql_user = $NOSQL_USER
-if $NOSQL_PASSWD then nosql_passwd = $NOSQL_PASSWD
+# URL or IP address to access blob storage
+if $BLOB_STORAGE_IP then blob_storage_ip = $BLOB_STORAGE_IP
+if $BLOB_STORAGE_PORT then blob_storage_port = $BLOB_STORAGE_PORT
+
+
+:blob-dbms:
+# MongoDB access credentials
+if $BLOB_STORAGE_USER then blob_storage_user = $BLOB_STORAGE_USER
+if $BLOB_STORAGE_PASSWORD then blob_storage_password = $BLOB_STORAGE_PASSWORD
+
+:blob-bucket:
+if $BUCKET_GROUP then bucket_group = $BUCKET_GROUP
+if $BUCKET_ID then bucket_id = $BUCKET_ID
+if $BUCKET_ACCESS_KEY then bucket_access_key = $BUCKET_ACCESS_KEY
+if $BUCKET_SECRETE_KEY then bucket_secrete_key = $BUCKET_SECRETE_KEY
+if $BUCKET_REGION then bucket_region = $BUCKET_REGION
 
 :blockchain-basic:
 # blockchain platform - either master (node) or optimism
@@ -200,7 +261,7 @@ if $CONTRACT then contract = $CONTRACT
 set enable_partitions = true
 table_name=*
 partition_column = insert_timestamp
-partition_interval = day
+partition_interval = 14 days
 partition_keep = 3
 partition_sync = 1 day
 
@@ -257,17 +318,31 @@ if $MSG_TIMESTAMP_COLUMN then msg_timestamp_column=$MSG_TIMESTAMP_COLUMN
 if $MSG_VALUE_COLUMN_TYPE then msg_value_column_type=$MSG_VALUE_COLUMN_TYPE
 if $MSG_VALUE_COLUMN then msg_value_column=$MSG_VALUE_COLUMN
 
-:node-monitoring:
-set monitor_nodes = true
-set store_monitoring = false
 
-if $MONITOR_NODES == false or $MONITOR_NODES == False or $MONITOR_NODES == FALSE then set monitor_nodes = false
+:monitoring:
+set node_monitoring     = false
+set syslog_monitoring   = false
+set docker_monitoring   = false
+store_monitoring        = false
+monitoring_storage_dest = ""
+view_monitoring_dest    = ""
+
+monitoring_frequency = "30 seconds"
+docker_frequency = 5
+
+
+if $NODE_MONITORING == true   or $NODE_MONITORING == True   or $NODE_MONITORING == TRUE   then set node_monitoring   = true
+if $SYSLOG_MONITORING == true or $SYSLOG_MONITORING == True or $SYSLOG_MONITORING == TRUE then set syslog_monitoring = true
+if $DOCKER_MONITORING == true or $DOCKER_MONITORING == True or $DOCKER_MONITORING == TRUE then set docker_monitoring = true
+
 if $STORE_MONITORING == true or $STORE_MONITORING == True or $STORE_MONITORING == TRUE then set store_monitoring = true
-if $MONITORING_OPERATOR then monitoring_operator = $MONITORING_OPERATOR
+# if not set - will be declare using `blockchain get operator bring.last`
+if $NODE_STORAGE_DEST then monitoring_storage_dest = $NODE_STORAGE_DEST
+# if not set - will be declare using `blockchain get query bring.ip_port`
+if $VIEW_MONITORING_DEST then view_monitoring_dest = $VIEW_MONITORING_DEST
 
-:docker-monitoring:
-set docker_continuous = true
-if $DOCKER_CONTINUOUS == false or $DOCKER_CONTINUOUS == False or $DOCKER_CONTINUOUS == FALSE then  set docker_continuous = false
+if $MONITORING_FREQUENCY then monitoring_frequency = $MONITORING_FREQUENCY
+if $DOCKER_FREQUENCY     then docker_frequency     = $DOCKER_FREQUENCY
 
 :opcua-configs:
 set enable_opcua=false
@@ -281,7 +356,7 @@ if $OPCUA_FREQUENCY then opcua_frequency=$OPCUA_FREQUENCY
 
 :etherip-conifgs:
 set enable_etherip=false
-set set_etherip_tags=false 
+set set_etherip_tags=false
 if $ENABLE_ETHERIP == true or $ENABLE_ETHERIP == True or $ENABLE_ETHERIP == TRUE then set enable_etherip = true
 if $ETHERIP_URL then etherip_url = $ETHERIP_URL
 else if !enable_etherip and ($SIMULATOR_MODE == true or $SIMULATOR_MODE == True or $SIMULATOR_MODE == TRUE) then etherip_url=127.0.0.1
@@ -303,7 +378,6 @@ if $AGGREGATION_VALUE_COLUMN then aggregation_value_column = $AGGREGATION_VALUE_
 
 :other-settings:
 set deploy_local_script = false
-set syslog_monitoring = false
 set create_table = true
 set update_tsd_info = true
 set archive = true
@@ -323,11 +397,7 @@ threshold_time = 60 seconds
 threshold_volume = 10KB
 
 if $DEPLOY_LOCAL_SCRIPT == true or $DEPLOY_LOCAL_SCRIPT == True or $DEPLOY_LOCAL_SCRIPT == TRUE then set deploy_local_script=true
-if $SYSLOG_MONITORING == true or $SYSLOG_MONITORING == True or $SYSLOG_MONITORING == TRUE then set syslog_monitoring = true
 
-if !SYSLOG_MONITORING == true and not !anylog_broker_port then
-do echo "Unable to deploy syslog support - broker port is required"
-do set SYSLOG_MONITORING = false
 
 if $COMPRESS_FILE == false or $COMPRESS_FILE == False or $COMPRESS_FILE == FALSE then set compress_file=false
 if $WRITE_IMMEDIATE == false or $WRITE_IMMEDIATE == False or $WRITE_IMMEDIATE == FALSE then set write_immediate=false
@@ -361,6 +431,11 @@ goto terminate-scripts
 # :missing-node-name:
 # print "Missing node name, cannot continue..."
 # goto terminate-scripts
+
+:nic-error:
+echo "Invalid NIC type " + !nic_Type
+return
+
 
 :missing-license-key:
 print "Missing license key, cannot continue..."
