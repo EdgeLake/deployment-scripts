@@ -266,6 +266,8 @@ partition_keep = 3
 partition_sync = 1 day
 
 if $MEMBER and $MEMBER.int then member = $MEMBER
+if $IS_MAIN and ($IS_MAIN == true or $IS_MAIN == True or $IS_MAIN == TRUE) then set is_main = true
+else if $IS_MAIN ($IS_MAIN == false or $IS_MAIN == False  or $IS_MAIN == FALSE) then set is_main = false
 
 if $ENABLE_PARTITIONS == false or $ENABLE_PARTITIONS == False or $ENABLE_PARTITIONS == FALSE then set enable_partitions=false
 
