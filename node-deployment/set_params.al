@@ -339,7 +339,7 @@ if $DOCKER_MONITORING == true or $DOCKER_MONITORING == True or $DOCKER_MONITORIN
 
 if $STORE_MONITORING == true or $STORE_MONITORING == True or $STORE_MONITORING == TRUE then set store_monitoring = true
 # if not set - will be declare using `blockchain get operator bring.last`
-if $NODE_STORAGE_DEST then monitoring_storage_dest = $NODE_STORAGE_DEST
+if $MONITORING_STORAGE_DEST then monitoring_storage_dest = $MONITORING_STORAGE_DEST
 # if not set - will be declare using `blockchain get query bring.ip_port`
 if $VIEW_MONITORING_DEST then view_monitoring_dest = $VIEW_MONITORING_DEST
 
