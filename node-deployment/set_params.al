@@ -363,18 +363,81 @@ else if !enable_etherip and ($SIMULATOR_MODE == true or $SIMULATOR_MODE == True 
 if $ETHERIP_FREQUENCY then etherip_frequency = $ETHERIP_FREQUENCY
 if $SET_ETHERIP_TAGS == true or $SET_ETHERIP_TAGS == True or $SET_ETHERIP_TAGS == TRUE then set set_etherip_tags=true
 
-:aggregations:
-set enable_aggregations = false
-aggregations_intervals  = 10
-aggregations_time = 1 minute
-aggregation_time_column = insert_timestamp
-aggregation_value_column = value
 
-if $ENABLE_AGGREGATIONS == true or $ENABLE_AGGREGATIONS == True or $ENABLE_AGGREGATIONS == TRUE then set enable_aggregations = true
-if $AGGREGATIONS_INTERVALS then aggregations_intervals = $AGGREGATIONS_INTERVALS
-if $AGGREGATIONS_TIME then aggregations_time = $AGGREGATIONS_TIME
-if $AGGREGATION_TIME_COLUMN then aggregation_time_column = $AGGREGATION_TIME_COLUMN
-if $AGGREGATION_VALUE_COLUMN then aggregation_value_column = $AGGREGATION_VALUE_COLUMN
+:aggregations:
+#-----------------------------------------------------------------------------#
+# Default aggregation parameters                                               #
+#-----------------------------------------------------------------------------#
+# enable aggregations
+set enable_aggregations = false
+if $ENABLE_AGGREGATIONS and ($ENABLE_AGGREGATIONS == true or $ENABLE_AGGREGATIONS == True or $ENABLE_AGGREGATIONS == TRUE) then set enable_aggregations = true
+else goto other-settings
+
+
+# Logical database to aggregate against
+set aggregations_dbms = !default_dbms
+
+# Logical table to aggregate against
+set aggregations_table = *
+
+# Number of aggregation intervals to keep
+set aggregations_intervals = 10
+
+# Time window for each aggregation
+set aggregations_time = 1 minute
+
+# Timestamp column used for aggregation
+set aggregation_time_column = insert_timestamp
+
+# Value column to aggregate
+set aggregation_value_column = value
+
+if $AGGREGATIONS_DBMS then set aggregations_dbms = $AGGREGATIONS_DBMS
+if $AGGREGATIONS_TABLE then set aggregations_table = $AGGREGATIONS_TABLE
+if $AGGREGATIONS_INTERVALS then set aggregations_intervals = $AGGREGATIONS_INTERVALS
+if $AGGREGATIONS_TIME then set aggregations_time = $AGGREGATIONS_TIME
+if $AGGREGATION_TIME_COLUMN then set aggregation_time_column = $AGGREGATION_TIME_COLUMN
+if $AGGREGATION_VALUE_COLUMN then set aggregation_value_column = $AGGREGATION_VALUE_COLUMN
+
+
+#-----------------------------------------------------------------------------#
+# Ingestion behavior                                                           #
+#-----------------------------------------------------------------------------#
+
+# Whether to enable ingestion for aggregation tables
+set enable_ingest_aggregations = false
+
+
+# Ingest raw (non-aggregated) data
+set ingest_raw_data = true
+
+# Ingest aggregated data
+set ingest_aggregations = false
+
+
+if $ENABLE_INGEST_AGGREGATIONS and ($ENABLE_INGEST_AGGREGATIONS == true or $ENABLE_INGEST_AGGREGATIONS == True or $ENABLE_INGEST_AGGREGATIONS == TRUE) then set enable_ingest_aggregations = true
+if $INGEST_RAW_DATA then set ingest_raw_data = $INGEST_RAW_DATA
+if $INGEST_AGGREGATIONS then set ingest_aggregations = $INGEST_AGGREGATIONS
+
+
+#-----------------------------------------------------------------------------#
+# Optional encoding configuration                                              #
+#-----------------------------------------------------------------------------#
+
+# Enable value encoding (true / false)
+set enable_encoding = false
+
+# Encoding tolerance (numeric)
+set encoding_tolerance = ""
+
+# bounds - all entries in the time interval are replaced with a single entry representing:
+# arle - Approximated Run-Length Encoding, the entries in the time interval are represented in a sequence of entries. Each entry includes:
+encoding_type = bounds
+
+if $ENABLE_ENCODING and ($ENABLE_ENCODING == true or $ENABLE_ENCODING == True or $ENABLE_ENCODING == TRUE) then set enable_encoding = true
+if $ENCODING_TOLERANCE then set encoding_tolerance = $ENCODING_TOLERANCE
+if $ENCODING_TYPE then encoding_type = $ENCODING_TYPE
+
 
 :other-settings:
 set deploy_local_script = false
