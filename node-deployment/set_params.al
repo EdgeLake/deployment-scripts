@@ -401,7 +401,7 @@ if $AGGREGATION_VALUE_COLUMN then set aggregation_value_column = $AGGREGATION_VA
 
 
 #-----------------------------------------------------------------------------#
-# Ingestion behavior                                                           #
+# Ingestion behavior                                                          #
 #-----------------------------------------------------------------------------#
 
 # Whether to enable ingestion for aggregation tables

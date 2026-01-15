@@ -150,7 +150,7 @@ This process should run on either a **Publisher** or **Operator** node — which
 ```
 
 ### Python Call
-1. Locate [set_aggregations.py](aggregations/set_aggregations.py) script
+1. Locate [set_aggregations.py](aggregations/aggregations.py) script
 ```shell
 docker volume inspect docker-makefiles_my-operator-local-scripts
 ```
