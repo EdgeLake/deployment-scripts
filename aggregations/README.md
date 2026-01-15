@@ -73,7 +73,7 @@ python3 /app/deployment-scripts/aggregations/aggregations.py --help
     --encoding-type             ENCODING_TYPE               Tolerance bounding
         * bounds - all entries in the time interval are replaced with a single entry representing
         * arle - Approximated Run-Length Encoding, the entries in the time interval are represented in a sequence of entries. Each entry includes
-    <<
+<<
 ```
 
 **Sample Call**: 
