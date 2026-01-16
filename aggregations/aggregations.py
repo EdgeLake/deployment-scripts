@@ -42,6 +42,7 @@ def main():
     parse.add_argument("--encoding-tolerance", type=validate_encoding_tolerance, default=None, help="Encoding tolerance as numeric percentage")
     parse.add_argument("--encoding-type", type=str, choices=["bounds", "arle"], default="bounds",
                        help="Tolerance bounding - \n\tbounds - all entries in the time interval are replaced with a single entry representing\n\tarle - Approximated Run-Length Encoding, the entries in the time interval are represented in a sequence of entries. Each entry includes")
+    parse.add_argument("--blockchain-policy", type=bool, nargs='?', const=True, default=False, help="Create /execute blockchain policy for aggregations")
     args = parse.parse_args()
 
     tables_info = {args.table_name: {"timestamp": args.timestamp_column, "columns": args.value_column.split(",")}}
