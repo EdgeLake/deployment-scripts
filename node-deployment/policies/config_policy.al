@@ -115,7 +115,7 @@ goto publish-policy
     "if !operator_id and !blockchain_source != master then run operator where create_table=!create_table and update_tsd_info=!update_tsd_info and compress_json=!compress_file and compress_sql=!compress_sql and archive_json=!archive and archive_sql=!archive_sql and blockchain=!blockchain_source and policy=!operator_id and threads=!operator_threads",
     "if !operator_id and !blockchain_source == master then run operator where create_table=!create_table and update_tsd_info=!update_tsd_info and compress_json=!compress_file and compress_sql=!compress_sql and archive_json=!archive and archive_sql=!archive_sql and master_node=!ledger_conn and policy=!operator_id and threads=!operator_threads",
     "if !system_query == true and !enable_mcp == true then run mcp server",
-    "if !enable_aggregations == true then process !anylog_path/deployment-scripts/sample-scripts/aggregations.al",
+    "if !enable_aggregations == true then process !anylog_path/deployment-scripts/sample-scripts/aggregation.al",
     "if !enable_mqtt == true then process !anylog_path/deployment-scripts/sample-scripts/basic_msg_client.al",
     "process !anylog_path/deployment-scripts/southbound-monitoring/deploy_monitoring.al",
     "if !deploy_local_script == true then process !local_scripts/local_script.al",
