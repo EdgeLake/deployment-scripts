@@ -46,20 +46,20 @@ if !enable_ingest_aggregations == true then
 #-----------------------------------------------------------------------------#
 #  Apply encoding on the values assigned to each time interval                #
 #-----------------------------------------------------------------------------#
-#on error call configure-encoding-error
-#if !enable_encoding and !encoding_tolerance then
-#<do set aggregations encoding where
-#    dbms=!aggregations_dbms and
-#    table=!aggregations_table and
-#    value_column=!aggregation_value_column and
-#    encoding = !encoding_type and
-#    tolerance = !encoding_tolerance>
-#else if !enable_encoding then
-#<do set aggregations encoding where
-#    dbms=!aggregations_dbms and
-#    table=!aggregations_table and
-#    value_column=!aggregation_value_column and
-#    encoding = !encoding_type>
+on error call configure-encoding-error
+if !enable_encoding and !encoding_tolerance then
+do set aggregation encoding where
+    dbms=!aggregations_dbms and
+    table=!aggregations_table and
+    value_column=!aggregation_value_column and
+    encoding = !encoding_type and
+    tolerance = !encoding_tolerance>
+else if !enable_encoding then
+<do set aggregations encoding where
+    dbms=!aggregations_dbms and
+    table=!aggregations_table and
+    value_column=!aggregation_value_column and
+    encoding = !encoding_type>
 
 
 
