@@ -32,7 +32,7 @@ def main():
     parse.add_argument("--table-name", type=str, default="*", help="logical table name")
     parse.add_argument("--timestamp-column", type=str, default="insert_timestamp", help="timestamp column name")
     parse.add_argument("--value-column", type=str, default="value", help="value column name (can be comma separated)")
-    parse.add_argument("--aggregations-intervals", type=int, default=10, help="number of aggregation intervals to keep")
+    parse.add_argument("--aggregations-interval", type=int, default=10, help="number of aggregation intervals to keep")
     parse.add_argument("--aggregations-time", type=str, default="1 minute", help="time window for each aggregation")
     parse.add_argument("--automate-process", type=bool, nargs='?', const=True, default=False, help="Automatically get get table name(s) and columns from blockchain")
     parse.add_argument("--enable-ingest", type=bool, nargs='?', const=True, default=False, help="Whether to enable ingestion for aggregation tables")

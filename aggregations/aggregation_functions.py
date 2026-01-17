@@ -27,10 +27,10 @@ def declare_aggregations(conn:str, db_name:str, table_name:str="*", timestamp_co
         raise Exception if fails
     """
     headers = {
-        "command": f"set aggregation where dbms={db_name} and table={table_name} and intervals{aggregations_interval} and time={aggregations_time} and time_column={timestamp_column} and value_column={value_column}",
+        "command": f"set aggregation where dbms={db_name} and table={table_name} and intervals={aggregations_interval} and time={aggregations_time} and time_column={timestamp_column} and value_column={value_column}",
         "User-Agent": "AnyLog/1.23"
     }
-
+    print(headers["command"])
     rest_request(request_type="POST", conn=conn, headers=headers)
 
 

@@ -55,7 +55,7 @@ do set aggregation encoding where
     encoding = !encoding_type and
     tolerance = !encoding_tolerance>
 else if !enable_encoding then
-<do set aggregations encoding where
+<do set aggregation encoding where
     dbms=!aggregations_dbms and
     table=!aggregations_table and
     value_column=!aggregation_value_column and
