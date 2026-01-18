@@ -76,5 +76,11 @@ on error ignore
     time_column = timestamp and
     value_column = weight>
 
+:ingest-data:
+<set aggregation ingest where
+    dbms=!default_dbms and
+    table=* and
+	source = true and
+	derived = false>
 :end-script:
 end script
