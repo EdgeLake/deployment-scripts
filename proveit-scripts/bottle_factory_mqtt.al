@@ -30,3 +30,6 @@ on error ignore
    column.temperature.float = "bring [temperature]" and
    column.weight.float = "bring [weight]"
 )>
+
+:end-script:
+end script

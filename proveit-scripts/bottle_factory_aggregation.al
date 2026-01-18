@@ -75,3 +75,6 @@ on error ignore
     time = "1 minute" and
     time_column = timestamp and
     value_column = weight>
+
+:end-script:
+end script

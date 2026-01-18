@@ -22,3 +22,6 @@ on error ignore
     table =* and
     value_column = value and
     encoding = bounds>
+
+:end-script:
+end script

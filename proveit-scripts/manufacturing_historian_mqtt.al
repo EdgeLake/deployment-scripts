@@ -10,3 +10,5 @@ on error ignore
    column.timestamp.timestamp = "bring [timestamp]" and
    column.value.str="bring [value]"
 )>
+:end-script:
+end script
