@@ -13,6 +13,8 @@
 # process /app/deployment-scripts/sample-scripts/aggregations.al
 
 on error ignore
+if !aggregation_policy then config from policy where id = !aggregation_policy
+else if not !enable_aggregation then goto end-script
 
 :enable-aggregations:
 #-----------------------------------------------------------------------------#
