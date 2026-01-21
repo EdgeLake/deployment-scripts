@@ -406,7 +406,6 @@ if $AGGREGATION_VALUE_COLUMN then set aggregation_value_column = $AGGREGATION_VA
 #-----------------------------------------------------------------------------#
 # Ingest raw (non-aggregated) data
 set ingest_raw_data = true
-
 # Ingest aggregated data
 set ingest_aggregations = false
 
