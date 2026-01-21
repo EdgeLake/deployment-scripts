@@ -2,7 +2,7 @@ import ast
 import json
 from support import rest_call
 
-def get_policy_id(conn:str, db_name:str, table_name:str, value_column:str=None):
+def get_policy_id(conn:str, db_name:str, table_name:str, value_column:str=None, per_column:bool=False):
     """
     Based on a few WHERE conditions, get the policy ID if policy exists
     :args:
@@ -20,7 +20,7 @@ def get_policy_id(conn:str, db_name:str, table_name:str, value_column:str=None):
         "command": f"blockchain get aggregation where dbms={db_name} and table={table_name} bring [*][id]",
         "User-Agent": "AnyLog/1.23"
     }
-    if value_column:
+    if per_column:
         headers["command"] = headers["command"].replace(f"table={table_name}", f"table={table_name} and value_column={value_column}")
 
     response = rest_call(request_type="GET", conn=conn, headers=headers)
