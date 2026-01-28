@@ -240,8 +240,6 @@ if $BLOCKCHAIN_SYNC then blockchain_sync = $BLOCKCHAIN_SYNC
 if $BLOCKCHAIN_SOURCE then blockchain_source=$BLOCKCHAIN_SOURCE
 if $DESTINATION then set blockchain_destination=$DESTINATION
 if !node_type == master and !blockchain_source != master then set is_relay = true
-if $LEDGER_CONN ledger_conn = $LEDGER_CONN
-
 if blockchain_source == master then goto operator-settings
 
 :blockchain-connect:
