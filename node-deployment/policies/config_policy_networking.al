@@ -25,6 +25,7 @@ else if !rest_bind == true                           then set policy new_policy 
 
 set policy new_policy [config][rest_port]     = '!anylog_rest_port.int'
 set policy new_policy [config][rest_threads]  = !rest_threads.int
+set policy new_policy [config][rest_timeout] = '!rest_timeout.int'
 set policy new_policy [config][rest_bind]     = '!rest_bind.bool'
 
 if not !anylog_broker_port then goto end-script
