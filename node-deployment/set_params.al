@@ -346,7 +346,7 @@ if $DOCKER_FREQUENCY     then docker_frequency     = $DOCKER_FREQUENCY
 set enable_opcua=false
 set set_opcua_tags = false
 if $SET_OPCUA_TAGS == true or $SET_OPCUA_TAGS == True or $SET_OPCUA_TAGS == TRUE then set set_opcua_tags=true
-if $ENABLE_OPCUA aen opcua_url=$OPCUA_URL
+if $ENABLE_OPCUA then opcua_url=$OPCUA_URL
 if $OPCUA_NODE then opcua_node=$OPCUA_NODE
 if $OPCUA_FREQUENCY then opcua_frequency=$OPCUA_FREQUENCY
 
