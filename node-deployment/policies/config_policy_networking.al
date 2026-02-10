@@ -24,7 +24,7 @@ else if !rest_bind == true and ( !enable_dns == true and (!is_dns_local == false
 else if !rest_bind == true                           then set policy new_policy [config][rest_ip] = '!ip'
 
 set policy new_policy [config][rest_port]     = '!anylog_rest_port.int'
-set policy new_policy [config][rest_threads]  = !rest_threads.int
+set policy new_policy [config][rest_threads]  = '!rest_threads.int'
 set policy new_policy [config][rest_timeout] = '!rest_timeout.int'
 set policy new_policy [config][rest_bind]     = '!rest_bind.bool'
 
