@@ -140,16 +140,16 @@ if $CONFIG_NAME then config_name = $CONFIG_NAME
 default_ledger =  "127.0.0.1:" + !anylog_server_port
 
 # master is False and no LEDGER_CONN defined
-if not $LEDGER_CONN and !master_configs == false and !overlay_ip then ledger_conn = !overlay_ip + :32048
-else if not $LEDGER_CONN and !master_configs == false and not !overlay_ip then ledger_conn = !ip + :32048
+if !tcp_bind == true and not $LEDGER_CONN and !master_configs == false and !overlay_ip then ledger_conn = !overlay_ip + :32048
+else if !tcp_bind == true and not $LEDGER_CONN and !master_configs == false and not !overlay_ip then ledger_conn = !ip + :32048
 
 # master is True and no LEDGER_CONN defined
-else if not $LEDGER_CONN and !master_configs == true and !overlay_ip then ledger_conn = !overlay_ip + : + !anylog_server_port
-else if not $LEDGER_CONN and !master_configs == true and not !overlay_ip then ledger_conn = !ip + : + !anylog_server_port
+else if !tcp_bind == true and not $LEDGER_CONN and !master_configs == true and !overlay_ip then ledger_conn = !overlay_ip + : + !anylog_server_port
+else if !tcp_bind == true and not $LEDGER_CONN and !master_configs == true and not !overlay_ip then ledger_conn = !ip + : + !anylog_server_port
 
 # master is True and LEDGER_CONN == default_ledger
-else if $LEDGER_CONN == !default_ledger and !master_configs == true and !overlay_ip then ledger_conn = !overlay_ip + : + !anylog_server_port
-else if $LEDGER_CONN == !default_ledger and !master_configs == true and not !overlay_ip then ledger_conn = !ip + : + !anylog_server_port
+else if !tcp_bind == true and $LEDGER_CONN == !default_ledger and !master_configs == true and !overlay_ip then ledger_conn = !overlay_ip + : + !anylog_server_port
+else if !tcp_bind == true and $LEDGER_CONN == !default_ledger and !master_configs == true and not !overlay_ip then ledger_conn = !ip + : + !anylog_server_port
 
 # all other cases
 else if $LEDGER_CONN then ledger_conn=$LEDGER_CONN
