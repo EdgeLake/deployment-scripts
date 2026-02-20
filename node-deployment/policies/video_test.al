@@ -1,7 +1,10 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # Minimal video streaming - Twitch only. No YOLO, no storage. Just display the stream.
 # Run: process !local_scripts/policies/video_test.al
-# View at: http://localhost:8888 (or your host:8888 if running in Docker)
+#
+# View at: http://localhost:8888
+# If in Docker: port 8888 must be exposed. Rebuild: make dry-run ANYLOG_TYPE=generic && make up ANYLOG_TYPE=generic
+# Try also: http://localhost:8888/ or http://localhost:8888/stream (MJPEG stream path may vary)
 #-----------------------------------------------------------------------------------------------------------------------
 on error ignore
 
