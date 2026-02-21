@@ -1,5 +1,5 @@
 #!/bin/sh
-# Read stream list from readtest.txt (format: name,url per line) and generate
+# Read stream list from videostreams.txt (format: name,url per line) and generate
 # video_streams_generated.al with video connect + run video stream blocks.
 #
 # Usage: ./generate_video_streams.sh <input_txt> <output_al>

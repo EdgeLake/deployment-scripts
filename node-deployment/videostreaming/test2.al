@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------------------------------------------------
-# Small test script - run manually via: process !local_scripts/policies/test2.al
+# Small test script - run manually via: process !local_scripts/videostreaming/test2.al
 #-----------------------------------------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------------------------#
 # The following demonstrates connecting to a live video stream (via Youtube or Twitch) and getting insights from it

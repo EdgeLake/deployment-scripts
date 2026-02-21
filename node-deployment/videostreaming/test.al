@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------------------------------------------------
-# Small test script - run manually via: process !local_scripts/policies/test.al
+# Small test script - run manually via: process !local_scripts/videostreaming/test.al
 #-----------------------------------------------------------------------------------------------------------------------
 ##### Ubuntu Akave Video Streaming Demo ######
 ###### connect dbms customers where type = bucket and provider = akave and access_key = $AKAVE_ACCESS_KEY and secret_key = $AKAVE_SECRET_KEY and region = akave-network and endpoint = $AKAVE_ENDPOINT and network_id = xx01xx
