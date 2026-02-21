@@ -4,10 +4,8 @@
 #-----------------------------------------------------------------------------------------------------------------------
 on error ignore
 
-if not !anylog_path then anylog_path = /app
-if not !local_scripts then local_scripts = !anylog_path + "/deployment-scripts/node-deployment"
 
-file_path = !local_scripts + "/policies/readtest.txt"
+file_path = !local_scripts/policies/readtest.txt
 content = python "open('" + !file_path + "').read()"
 print !content
 
