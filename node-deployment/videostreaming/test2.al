@@ -89,6 +89,7 @@ do run video stream where name=youtube and import_display = imshow
 
 
 :end-script:
+print "We made it to the end"
 end script
 
 :missing-url:
