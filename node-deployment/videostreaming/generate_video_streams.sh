@@ -1,7 +1,7 @@
 #!/bin/sh
 # Read stream list from videostreams.txt (format: name,url per line) and generate
 # video_streams_generated.al with video connect + run video stream blocks.
-# Optional 3rd arg: detections or true = enable YOLO object detection (person, car, truck, bus)
+# Optional 3rd arg: detections or true = enable YOLO object detection (boxes overlay on live stream only, no DB storage)
 #
 # Usage: ./generate_video_streams.sh <input_txt> <output_al> [detections]
 
@@ -32,19 +32,7 @@ DETECTIONS="${3:-false}"
     echo "    interface = url and"
     echo "    address = \"$url_escaped\" and"
     echo "    video_dbms = !default_dbms and"
-    if [ "$ENABLE_DETECT" = "1" ]; then
-      echo "    video_table = video_table and"
-      echo "    detection_dbms = video_dbms and"
-      echo "    detection_table = detection_table and"
-      echo "    detection_column = person and"
-      echo "    detection_column = car and"
-      echo "    detection_column = truck and"
-      echo "    detection_column = bus and"
-      echo "    recording_segment_time = 1 and"
-      echo "    detection_ignore_time = 10"
-    else
-      echo "    video_table = video_table"
-    fi
+    echo "    video_table = video_table"
     echo ">"
     if [ "$ENABLE_DETECT" = "1" ]; then
       echo "run video stream where name = $name and import_detect = initiate_yolo and import_display = imshow"

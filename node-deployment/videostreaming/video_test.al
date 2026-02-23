@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # Video streaming from videostreams.txt. Format: name,url per line (e.g. bobross,https://www.twitch.tv/bobross)
 # Parses Twitch/YouTube/etc from URL automatically. View at: http://localhost:8888/stream/{name}
-# Set ENABLE_DETECTIONS=true for YOLO object detection (person, car, truck, bus). Requires YOLOv5 gRPC server.
+# Set ENABLE_DETECTIONS=true for YOLO object detection (boxes overlay on live stream only, no DB storage).
 # Run: process !local_scripts/videostreaming/video_test.al
 # Docker: port 8888 must be exposed (-p 8888:8888)
 #-----------------------------------------------------------------------------------------------------------------------
