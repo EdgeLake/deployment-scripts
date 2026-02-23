@@ -14,7 +14,7 @@ if not !local_scripts then local_scripts = !anylog_path + "/deployment-scripts/n
 streams_txt = !local_scripts + "/videostreaming/videostreams.txt"
 streams_generated = !local_scripts + "/videostreaming/video_streams_generated.al"
 
-set enable_detections = false
+set enable_detections = true
 if $ENABLE_DETECTIONS == true or $ENABLE_DETECTIONS == True or $ENABLE_DETECTIONS == TRUE then set enable_detections = true
 print "ENABLE_DETECTIONS = " + !enable_detections
 
