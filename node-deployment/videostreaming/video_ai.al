@@ -12,11 +12,13 @@ video_port = 8888
 set default_dbms = test
 
 :display:
+on error goto display-error
 import function where import_name = imshow and lib = external_lib.video_processing.cv2_stream_imshow and method = init_class
 set function params where import_name = imshow and param_name = port and param_type = int and param_value = !video_port
 set function params where import_name = imshow and param_name = host and param_value = !video_host
 
 :yolo:
+on error goto yolo-error
 import function where import_name = initiate_yolo and lib = external_lib.frame_modeling.yolo_detection and method = init_class
 set function params where import_name = initiate_yolo and param_name = module_type and param_value = darknet
 set function params where import_name = initiate_yolo and param_name = classes and param_type = list and param_value = []
@@ -25,6 +27,7 @@ set function params where import_name = initiate_yolo and param_name = module_pa
 set function params where import_name = initiate_yolo and param_name = coco_path and param_value = https://raw.githubusercontent.com/pjreddie/darknet/master/data/coco.names
 
 :stream:
+on error goto stream-error
 <do video connect where
     name = timessquare and
     protocol = https and
@@ -34,7 +37,18 @@ set function params where import_name = initiate_yolo and param_name = coco_path
     video_table = video_table
 >
 do run video stream where name = timessquare and import_detect = initiate_yolo and import_display = imshow
+goto end-script
 
 :end-script:
 echo "Times Square stream with YOLO - view at http://localhost:8888/stream/timessquare"
 end script
+
+:display-error:
+echo "Failed to setup video display (imshow)"
+goto end-script
+:yolo-error:
+echo "Failed to setup YOLO detection"
+goto end-script
+:stream-error:
+echo "Failed to connect or start Times Square stream"
+goto end-script
