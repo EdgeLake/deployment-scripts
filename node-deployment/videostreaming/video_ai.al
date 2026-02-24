@@ -9,6 +9,8 @@ on error ignore
 
 print "video_ai.al: Starting..."
 
+set debug interactive
+
 :set-paths:
 if not !anylog_path then anylog_path = /app
 if not !local_scripts then local_scripts = !anylog_path + "/deployment-scripts/node-deployment"
