@@ -42,7 +42,7 @@ print "video_ai.al: YOLO setup complete"
 :load-streams:
 on error goto load-error
 print "video_ai.al: Processing streams script (video_ai_streams.al)..."
-thread !local_scripts/videostreaming/video_ai_streams.al
+process !local_scripts/videostreaming/video_ai_streams.al
 print "video_ai.al: Done - view at http://localhost:8888/stream/timessquare"
 goto end-script
 
