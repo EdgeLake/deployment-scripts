@@ -23,7 +23,6 @@ video_host = 0.0.0.0
 video_port = 8888
 set default_dbms = test
 print "video_ai.al: Setting up video display (imshow)..."
-set debug interactive
 import function where import_name = imshow and lib = external_lib.video_processing.cv2_stream_imshow and method = init_class
 set function params where import_name = imshow and param_name = port and param_type = int and param_value = !video_port
 set function params where import_name = imshow and param_name = host and param_value = !video_host
@@ -43,7 +42,7 @@ print "video_ai.al: YOLO setup complete"
 :load-streams:
 on error goto load-error
 print "video_ai.al: Processing streams script (video_ai_streams.al)..."
-process !streams_generated
+thread !local_scripts/videostreaming/video_ai_streams.al
 print "video_ai.al: Done - view at http://localhost:8888/stream/timessquare"
 goto end-script
 
