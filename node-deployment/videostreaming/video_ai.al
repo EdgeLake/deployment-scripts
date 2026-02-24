@@ -9,7 +9,7 @@ on error ignore
 
 print "video_ai.al: Starting..."
 
-set debug interactive
+set debug on
 
 :set-paths:
 if not !anylog_path then anylog_path = /app
@@ -23,6 +23,7 @@ video_host = 0.0.0.0
 video_port = 8888
 set default_dbms = test
 print "video_ai.al: Setting up video display (imshow)..."
+set debug interactive
 import function where import_name = imshow and lib = external_lib.video_processing.cv2_stream_imshow and method = init_class
 set function params where import_name = imshow and param_name = port and param_type = int and param_value = !video_port
 set function params where import_name = imshow and param_name = host and param_value = !video_host
