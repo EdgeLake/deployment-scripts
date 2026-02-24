@@ -1,5 +1,5 @@
 on error ignore
-set debug interactive
+set debug on
 # Times Square - hardcoded stream (loaded by video_ai.al)
 <video connect where
     name = timessquare and
