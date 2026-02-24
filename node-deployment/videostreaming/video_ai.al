@@ -19,7 +19,7 @@ print "video_ai.al: Paths set, streams script = " + !streams_generated
 
 :setup-display:
 on error goto setup-error
-video_host = 0.0.0.0
+video_host = !ip
 video_port = 8888
 set default_dbms = test
 print "video_ai.al: Setting up video display (imshow)..."
