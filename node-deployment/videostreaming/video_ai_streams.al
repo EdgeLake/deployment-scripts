@@ -17,7 +17,7 @@ set debug on
     recording_segment_time = 1 and
     detection_ignore_time = 10
 >
-<run grpc client where name=yolov5 and ip = !ip and port = 50051 and grpc_dir = /app/AnyLog-Network/external_lib/frame_modeling/ 
+<run grpc client where name=yolov5 and ip = !ip and port = 50051 and grpc_dir = !anylog_path/AnyLog-Network/external_lib/frame_modeling 
 and proto = infer and function = PredictStream and request = "PredictRequest" and response = "PredictResponse" 
 and service = InferenceService and debug = false and invoke = true>
 
