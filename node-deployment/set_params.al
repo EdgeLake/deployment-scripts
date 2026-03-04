@@ -28,16 +28,13 @@ ledger_conn = 127.0.0.1:32048
 set is_hidden =false
 set master_configs = false
 
-if $NODE_TYPE == master-hidden or $NODE_TYPE == query-hidden then set is_hidden = true
-if $NODE_TYPE == master or $NODE_TYPE == master-operator or $NODE_TYPE == master-publisher then set master_configs = true
-if $NODE_TYPE == master-operator then set node_type = operator
-else if $NODE_TYPE == master-publisher then set node_type = publisher
-else if $NODE_TYPE == master-hidden then set node_type = master
-else if $NODE_TYPE == query-hidden then set node_type = query
-else if $NODE_TYPE then set node_type = $NODE_TYPE
+if not $NODE_TYPE then goto missing-node-type
+else if $NODE_TYPE == master-operator  then node_type = operator
+else if $NODE_TYPE == master-publisher then node_type = publisher
+else set node_type = $NODE_TYPE
 
-if not !node_type then goto  missing-node-type
-
+if $NODE_TYPE == master-operator or $NODE_TYPE == master-publisher or $NODE_TYPE == master then set master_configs = true
+if !node_type != operator and $IS_HIDDEN == true or $IS_HIDDEN == True or $IS_HIDDEN == TRUE then is_hidden = true
 
 if $NODE_NAME then node_name = $NODE_NAME
 else node_name = !hostname + " " + !node_type
@@ -114,6 +111,7 @@ if !node_type == publisher and not !anylog_rest_port then anylog_rest_port = 322
 if not !anylog_server_port then anylog_server_port = 32548
 if not !anylog_rest_port then anylog_rest_port = 32549
 
+if $ANYLOG_BROKER_PORT then anylog_broker_port = $ANYLOG_BROKER_PORT
 
 if $TCP_BIND == true or $TCP_BIND == True or $TCP_BIND == TRUE then tcp_bind = true
 if $TCP_THREADS then tcp_threads = $TCP_THREADS
@@ -125,7 +123,6 @@ if !rest_threads.int < 1 then rest_threads = 1
 if $REST_TIMEOUT then rest_timeout = $REST_TIMEOUT
 if !rest_timeout.int < 0 then rest_timeout = 0 # continuous
 
-if $ANYLOG_BROKER_PORT then anylog_broker_port = $ANYLOG_BROKER_PORT
 if $BROKER_BIND == true or $BROKER_BIND == True or $BROKER_BIND == TRUE then broker_bind = true
 if !broker_threads.int < 1 then broker_threads = 1
 
@@ -166,7 +163,6 @@ if $USER_PASSWORD then user_passsword = $USER_PASSWORD
 :sql-database:
 db_type = sqlite
 set autocommit = true
-set unlog = false
 default_dbms=!company_name.name
 set system_query = false
 set memory = true
@@ -182,7 +178,6 @@ if $DB_IP then db_ip = $DB_IP
 if $DB_PORT then db_port = $DB_PORT
 
 if $AUTOCOMMIT == false or $AUTOCOMMIT == False or $AUTOCOMMIT == FALSE then set autocommit = false
-if $UNLOG == true or $UNLOG == True or $UNLOG == TRUE then set unlog =  true
 if !node_type == query or $SYSTEM_QUERY == true or $SYSTEM_QUERY == True or $SYSTEM_QUERY == TRUE  then
 do set system_query = true
 do if $MEMORY == false or $MEMORY == False or $MEMORY == FALSE then set memory=false
@@ -212,7 +207,6 @@ do set blobs_folder = false
 # - user can force enable by setting  folder as True
 if  !blobs_storage == false or ($BLOBS_FOLDER == true or $BLOBS_FOLDER == True or $BLOBS_FOLDER == TRUE) then set blobs_folder=true
 
-
 # compress blob content when stored (true by default)
 if $BLOBS_COMPRESS == false or $BLOBS_COMPRESS == False or $BLOBS_COMPRESS == FALSE then set blobs_compress = false
 
@@ -225,7 +219,6 @@ if $BLOB_STORAGE_TYPE then blob_storage_type = $BLOB_STORAGE_TYPE
 # URL or IP address to access blob storage
 if $BLOB_STORAGE_IP then blob_storage_ip = $BLOB_STORAGE_IP
 if $BLOB_STORAGE_PORT then blob_storage_port = $BLOB_STORAGE_PORT
-
 
 :blob-dbms:
 # MongoDB access credentials
@@ -311,12 +304,13 @@ msg_value_column_type = float
 msg_value_column = "bring [value]"
 
 if $ENABLE_MQTT == true or $ENABLE_MQTT == True or $ENABLE_MQTT == TRUE then set enable_mqtt = true
-if !enable_mqtt == true then
-if $DEFAULT_DBMS then set msg_dbms = $DEFAULT_DBMS
+if !enable_mqtt == false then goto monitoring
+
 if $MQTT_BROKER then mqtt_broker=$MQTT_BROKER
 if $MQTT_PORT then mqtt_port=$MQTT_PORT
 if $MQTT_USER then mqtt_user=$MQTT_USER
 if $MQTT_PASSWD then mqtt_passwd=$MQTT_PASSWD
+if $MQTT_LOG == true or $MQTT_LOG == True or $MQTT_LOG == TRUE then set msg_log =true
 if $MSG_TOPIC then msg_topic=$MSG_TOPIC
 
 if $DEFAULT_DBMS then msg_dbms=$DEFAULT_DBMS
@@ -353,73 +347,76 @@ if $VIEW_MONITORING_DEST then view_monitoring_dest = $VIEW_MONITORING_DEST
 if $MONITORING_FREQUENCY then monitoring_frequency = $MONITORING_FREQUENCY
 if $DOCKER_FREQUENCY     then docker_frequency     = $DOCKER_FREQUENCY
 
-:opcua-configs:
-set enable_opcua=false
-set set_opcua_tags = false
-if $SET_OPCUA_TAGS == true or $SET_OPCUA_TAGS == True or $SET_OPCUA_TAGS == TRUE then set set_opcua_tags=true
-if $ENABLE_OPCUA then opcua_url=$OPCUA_URL
-if $OPCUA_NODE then opcua_node=$OPCUA_NODE
+# :opcua-configs:
+# set enable_opcua=false
+# set set_opcua_tags = false
+
+# if $ENABLE_OPCUA == true or $ENABLE_OPCUA == True or $ENABLE_OPCUA == True then set enable_opcua = true
+# if !enable_opcua == false then goto etherip-conifgs
+
+# if $SET_OPCUA_TAGS == true or $SET_OPCUA_TAGS == True or $SET_OPCUA_TAGS == TRUE then set set_opcua_tags=true
+# if $OPCUA_URL opcua_url=$OPCUA_URL
+# else goto
+# if $OPCUA_NODE then opcua_node=$OPCUA_NODE
 if $OPCUA_FREQUENCY then opcua_frequency=$OPCUA_FREQUENCY
 
 
-:etherip-conifgs:
-set enable_etherip=false
-set set_etherip_tags=false
-if $ENABLE_ETHERIP == true or $ENABeLATOR_MODE == true or $SIMULATOR_MODE == True or $SIMULATOR_MODE == TRUE) then etherip_url=127.0.0.1
-if $ETHERIP_FREQUENCY then etherip_frequency = $ETHERIP_FREQUENCY
-if $SET_ETHERIP_TAGS == true or $SET_ETHERIP_TAGS == True or $SET_ETHERIP_TAGS == TRUE then set set_etherip_tags=true
+# :etherip-conifgs:
+# set enable_etherip=false
+# set set_etherip_tags=false
+# if $ENABLE_ETHERIP == true or $ENABeLATOR_MODE == true or $SIMULATOR_MODE == True or $SIMULATOR_MODE == TRUE) then etherip_url=127.0.0.1
+# if $ETHERIP_FREQUENCY then etherip_frequency = $ETHERIP_FREQUENCY
+# if $SET_ETHERIP_TAGS == true or $SET_ETHERIP_TAGS == True or $SET_ETHERIP_TAGS == TRUE then set set_etherip_tags=true
 
 
-:aggregations:
+# :aggregations:
 # deploy aggregation based on policy - need policy key
-aggregation_policy = ""
-if $AGGREGATION_POLICY then aggregation_policy = $AGGREGATION_POLICY
+# aggregation_policy = ""
+# if $AGGREGATION_POLICY then aggregation_policy = $AGGREGATION_POLICY
 
 #-----------------------------------------------------------------------------#
 # Default aggregation parameters                                               #
 #-----------------------------------------------------------------------------#
 # enable aggregations
-set enable_aggregations = false
-if $ENABLE_AGGREGATIONS and ($ENABLE_AGGREGATIONS == true or $ENABLE_AGGREGATIONS == True or $ENABLE_AGGREGATIONS == TRUE) then set enable_aggregations = true
-else goto other-settings
+# set enable_aggregations = false
+# if $ENABLE_AGGREGATIONS and ($ENABLE_AGGREGATIONS == true or $ENABLE_AGGREGATIONS == True or $ENABLE_AGGREGATIONS == TRUE) then set enable_aggregations = true
+# else goto other-settings
 
 
 # Logical database to aggregate against
-set aggregations_dbms = !default_dbms
+# set aggregations_dbms = !default_dbms
 
 # Logical table to aggregate against
-set aggregations_table = *
+# set aggregations_table = *
 
 # Number of aggregation intervals to keep
-set aggregations_intervals = 10
+# set aggregations_intervals = 10
 
 # Time window for each aggregation
-set aggregations_time = 1 minute
+# set aggregations_time = 1 minute
 
 # Timestamp column used for aggregation
-set aggregation_time_column = insert_timestamp
+# set aggregation_time_column = insert_timestamp
 
 # Value column to aggregate
-set aggregation_value_column = value
+# set aggregation_value_column = value
 
-if $AGGREGATIONS_DBMS then set aggregations_dbms = $AGGREGATIONS_DBMS
-if $AGGREGATIONS_TABLE then set aggregations_table = $AGGREGATIONS_TABLE
-if $AGGREGATIONS_INTERVALS then set aggregations_intervals = $AGGREGATIONS_INTERVALS
-if $AGGREGATIONS_TIME then set aggregations_time = $AGGREGATIONS_TIME
-if $AGGREGATION_TIME_COLUMN then set aggregation_time_column = $AGGREGATION_TIME_COLUMN
-if $AGGREGATION_VALUE_COLUMN then set aggregation_value_column = $AGGREGATION_VALUE_COLUMN
-
-
+# if $AGGREGATIONS_DBMS then set aggregations_dbms = $AGGREGATIONS_DBMS
+# if $AGGREGATIONS_TABLE then set aggregations_table = $AGGREGATIONS_TABLE
+# if $AGGREGATIONS_INTERVALS then set aggregations_intervals = $AGGREGATIONS_INTERVALS
+# if $AGGREGATIONS_TIME then set aggregations_time = $AGGREGATIONS_TIME
+# if $AGGREGATION_TIME_COLUMN then set aggregation_time_column = $AGGREGATION_TIME_COLUMN
+# if $AGGREGATION_VALUE_COLUMN then set aggregation_value_column = $AGGREGATION_VALUE_COLUMN
 #-----------------------------------------------------------------------------#
 # Ingestion behavior                                                          #
 #-----------------------------------------------------------------------------#
 # Ingest raw (non-aggregated) data
-set ingest_raw_data = true
+# set ingest_raw_data = true
 # Ingest aggregated data
-set ingest_aggregations = false
+# set ingest_aggregations = false
 
-if $INGEST_RAW_DATA then set ingest_raw_data = $INGEST_RAW_DATA
-if $INGEST_AGGREGATIONS then set ingest_aggregations = $INGEST_AGGREGATIONS
+# if $INGEST_RAW_DATA then set ingest_raw_data = $INGEST_RAW_DATA
+# if $INGEST_AGGREGATIONS then set ingest_aggregations = $INGEST_AGGREGATIONS
 
 
 #-----------------------------------------------------------------------------#
@@ -427,19 +424,18 @@ if $INGEST_AGGREGATIONS then set ingest_aggregations = $INGEST_AGGREGATIONS
 #-----------------------------------------------------------------------------#
 
 # Enable value encoding (true / false)
-set enable_encoding = false
+# set enable_encoding = false
 
 # Encoding tolerance (numeric)
-set encoding_tolerance = ""
+# set encoding_tolerance = ""
 
 # bounds - all entries in the time interval are replaced with a single entry representing:
 # arle - Approximated Run-Length Encoding, the entries in the time interval are represented in a sequence of entries. Each entry includes:
-encoding_type = bounds
+# encoding_type = bounds
 
-if $ENABLE_ENCODING and ($ENABLE_ENCODING == true or $ENABLE_ENCODING == True or $ENABLE_ENCODING == TRUE) then set enable_encoding = true
-if $ENCODING_TOLERANCE then set encoding_tolerance = $ENCODING_TOLERANCE
-if $ENCODING_TYPE then encoding_type = $ENCODING_TYPE
-
+# if $ENABLE_ENCODING and ($ENABLE_ENCODING == true or $ENABLE_ENCODING == True or $ENABLE_ENCODING == TRUE) then set enable_encoding = true
+# if $ENCODING_TOLERANCE then set encoding_tolerance = $ENCODING_TOLERANCE
+# if $ENCODING_TYPE then encoding_type = $ENCODING_TYPE
 
 :other-settings:
 set deploy_local_script = false
