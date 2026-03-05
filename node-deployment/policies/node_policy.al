@@ -60,7 +60,6 @@ do set policy new_policy [!node_type][ip] = !external_ip
 do if !overlay_ip then set policy new_policy [!node_type][local_ip] = !overlay_ip
 do else set policy new_policy [!node_type][local_ip] = !ip
 
-
 set policy new_policy [!node_type][port] = !anylog_server_port.int
 set policy new_policy [!node_type][rest_port] = !anylog_rest_port.int
 if !anylog_broker_port then set policy new_policy [!node_type][broker_port] = !anylog_broker_port.int
