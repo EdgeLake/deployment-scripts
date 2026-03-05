@@ -55,10 +55,11 @@ set policy new_policy [config][ip] = !external_ip
 if !enable_dns == true and !external_dns   then set policy new_policy [!node_type][ip] = !external_dns
 else if !tcp_bind == true and !overlay_ip  then set policy new_policy [!node_type][ip] = !overlay_ip
 else if !tcp_bind == true                  then set policy new_policy [!node_type][ip] = !ip
-else if !tcp_bind == false                 then set policy new_policy [!node_type][ip] = !external_ip
-else if $DNS_DOMAIN or $DNS                then set policy new_policy [config][local_ip] = '!dns'
-else if !tcp_bind == false and !overlay_ip  then set policy new_policy [!node_type][local_ip] = !overlay_ip
-else set policy new_policy [!node_type][local_ip] = !ip
+else  set policy new_policy [!node_type][ip] = !external_ip
+
+if !enable_dns == true and ($DNS_DOMAIN or $DNS) then set policy new_policy [config][local_ip] = '!dns'
+else if !tcp_bind == false and !overlay_ip       then set policy new_policy [!node_type][local_ip] = !overlay_ip
+else if !tcp_bind == fals                        then set policy new_policy [!node_type][local_ip] = !ip
 
 set policy new_policy [!node_type][port] = !anylog_server_port.int
 set policy new_policy [!node_type][rest_port] = !anylog_rest_port.int
