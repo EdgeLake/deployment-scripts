@@ -10,14 +10,13 @@ if section == broker then goto broker-params
 :tcp-params:
 # public/advertised ip
 
-if !enable_dns == true and !external_dns then set policy new_policy [config][ip] = '!external_dns'
-else if !tcp_bind == true then
-do if !overlay_ip then set policy new_policy [config][ip] = '!overlay_ip'
-do else  set policy new_policy [config][ip] = '!ip'
-else if !tcp_bind == false then
-do set policy new_policy [config][ip] = '!external_ip'
-do if !overlay_ip then set policy new_policy [config][local_ip] = '!overlay_ip'
-do else set policy new_policy [config][local_ip] = '!ip'
+set policy new_policy [config][ip] = '!external_ip'
+if !enable_dns == true and !external_dns   then set policy new_policy [config][ip] = '!external_dns'
+else if !tcp_bind == true and !overlay_ip  then set policy new_policy [config][ip] = '!overlay_ip'
+else if !tcp_bind == true                  then set policy new_policy [config][ip] = '!ip'
+
+else if !tcp_bind == false and !overlay_ip  then set policy new_policy [config][local_ip] = '!overlay_ip'
+else if !tcp_bind == false                  then set policy new_policy [config][local_ip] = '!ip'
 
 if !rest_bind == true then
 do if !enable_dns == true then set policy new_policy [config][rest_ip] = '!external_dns'
