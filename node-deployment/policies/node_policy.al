@@ -59,7 +59,7 @@ else if !tcp_bind == false                 then set policy new_policy [!node_typ
 
 if !enable_dns == true and ($DNS_DOMAIN or $DNS) then set policy new_policy [config][local_ip] = !dns
 else if !tcp_bind == false and !overlay_ip       then set policy new_policy [!node_type][local_ip] = !overlay_ip
-else if !tcp_bind == fals                        then set policy new_policy [!node_type][local_ip] = !ip
+else if !tcp_bind == false                        then set policy new_policy [!node_type][local_ip] = !ip
 
 set policy new_policy [!node_type][port] = !anylog_server_port.int
 set policy new_policy [!node_type][rest_port] = !anylog_rest_port.int
