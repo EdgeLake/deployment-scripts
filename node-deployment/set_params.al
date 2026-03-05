@@ -67,9 +67,6 @@ if not !loc_info and not !city then city = Unknown
 :networking:
 set nic_type = ""
 set enable_dns = false
-set enable_external_dns = false
-set dns_domain = ""
-
 
 config_name = !node_type.name + - + !company_name.name + -configs
 if $ANYLOG_BROKER_PORT then config_name = !node_type.name + - + !company_name.name + -configs-broker
@@ -90,13 +87,12 @@ do set internal ip with !nic_type
 do on error ignore
 
 if $ENABLE_DNS == true  or $ENABLE_DNS == True or $ENABLE_DNS == TRUE then set  enable_dns = true
-if $DNS_DOMAIN then set dns_domain = $DNS_DOMAIN
-if $LOCAL_DNS then set local_dns = $LOCAL_DNS
-else local_dens = get dns name
+if $EXTERNAL_DNS then set external_dns = $EXTERNAL_DNS
+if DNS then set dns = $DNS
 
 # check if the !dns value ends with .local if so and user defines a domain, then it uses hostname.domain
-is_dns_local = python !dns.endswith('local')
-if !is_dns_local == true and !dns_domain then dns = !hostname.!dns_domain
+# is_dns_local = python !dns.endswith('local')
+# if !is_dns_local == true and !dns_domain then dns = !hostname.!dns_domain
 
 if $ANYLOG_SERVER_PORT then anylog_server_port = $ANYLOG_SERVER_PORT
 if $ANYLOG_REST_PORT then anylog_rest_port = $ANYLOG_REST_PORT
@@ -131,26 +127,25 @@ if !broker_threads.int < 1 then broker_threads = 1
 if $NIC_TYPE then set internal ip with $NIC_TYPE
 # useer OVERLAY IP address
 if not $NIC_TYPE and $OVERLAY_IP then overlay_ip = $OVERLAY_IP
-if $PROXY_IP then proxy_ip = $PROXY_IP
 if $CONFIG_NAME then config_name = $CONFIG_NAME
 
+:ledger-config:
+if $LEDGER_CONN then
 # option to not set ledger_conn for master
-default_ledger =  "127.0.0.1:" + !anylog_server_port
+do set env_ledger = $LEDGER_CONN
+do if !env_ledger then env_ledger_start = python !env_ledger.split(":")[0]
 
-# master is False and no LEDGER_CONN defined
-if !tcp_bind == true and not $LEDGER_CONN and !master_configs == false and !overlay_ip then ledger_conn = !overlay_ip + :32048
-else if !tcp_bind == true and not $LEDGER_CONN and !master_configs == false and not !overlay_ip then ledger_conn = !ip + :32048
+if !env_ledger_start != "127.0.0.1" and $LEDGER_CONN then
+do set ledger_conn = $LEDGER_CONN
+do goto authentication
 
-# master is True and no LEDGER_CONN defined
-else if !tcp_bind == true and not $LEDGER_CONN and !master_configs == true and !overlay_ip then ledger_conn = !overlay_ip + : + !anylog_server_port
-else if !tcp_bind == true and not $LEDGER_CONN and !master_configs == true and not !overlay_ip then ledger_conn = !ip + : + !anylog_server_port
+if !master_configs == true and !enable_dns then default_ledger = !external_dns + ":" + !anylog_server_port
+else if !master_configs == false and !enable_dns then default_ledger = !external_dns + ":32048"
+else if !master_configs == true and !overlay_ip then default_ledger = !overlay_ip + ":" + !anylog_server_port
+else if !master_configs == false and !overlay_ip then default_ledger = !overlay_ip + ":32048"
+else if !master_configs == true then default_ledger = !ip + ":" + !anylog_server_port
+else if !master_configs == false then default_ledger = !ip + ":32048"
 
-# master is True and LEDGER_CONN == default_ledger
-else if !tcp_bind == true and $LEDGER_CONN == !default_ledger and !master_configs == true and !overlay_ip then ledger_conn = !overlay_ip + : + !anylog_server_port
-else if !tcp_bind == true and $LEDGER_CONN == !default_ledger and !master_configs == true and not !overlay_ip then ledger_conn = !ip + : + !anylog_server_port
-
-# all other cases
-else if $LEDGER_CONN then ledger_conn=$LEDGER_CONN
 
 :authentication:
 set enable_auth = false
