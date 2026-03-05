@@ -281,6 +281,23 @@ if $ENABLE_HA == true or $ENABLE_HA == TRUE or $ENABLE_HA == True then set enabl
 if $START_DATE then start_date = $START_DATE
 if !start_date.int then start_date = - + $START_DATE + d
 
+:video-streaming-configs:
+#--- Video Streaming ---
+set enable_video_streaming = false
+set enable_detections = false
+video_url = ""
+video_name = fstream
+yolo_model_port = 5001
+video_port = 32800
+
+if $ENABLE_VIDEO_STREAMING == true or $ENABLE_VIDEO_STREAMING == True or $ENABLE_VIDEO_STREAMING == TRUE or then enable_video_streaming=true
+if $ENABLE_DETECTIONS == true or $ENABLE_DETECTIONS == True or or $ENABLE_DETECTIONS == TRUE then set enable_detections=true
+
+if $VIDEO_URL then set video_url = $VIDEO_URL
+if $VIDEO_PORT then set video_port = $VIDEOPORT
+if $VIDEO_NAME then set video_name=$VIDEO_NAME
+if $YOLO_MODEL_PORT then set yolo_model_port=$YOLO_MODEL_PORT
+
 :mqtt:
 set enable_mqtt = false
 mqtt_broker = 139.144.46.246
