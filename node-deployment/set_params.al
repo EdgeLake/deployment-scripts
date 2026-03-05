@@ -86,17 +86,10 @@ do on error call nic-error
 do set internal ip with !nic_type
 do on error ignore
 
-if $ENABLE_DNS == true  or $ENABLE_DNS == True or $ENABLE_DNS == TRUE then
-do set  enable_dns = true
-do
+if $ENABLE_DNS == true  or $ENABLE_DNS == True or $ENABLE_DNS == TRUE then set  enable_dns = true
 if $EXTERNAL_DNS then set external_dns = $EXTERNAL_DNS
 if $DNS then set dns = $DNS
 else if $DNS_DOMAIN then dns = !hostname.$DNS_DOMAIN
-
-
-# check if the !dns value ends with .local if so and user defines a domain, then it uses hostname.domain
-# is_dns_local = python !dns.endswith('local')
-# if !is_dns_local == true and !dns_domain then dns = !hostname.!dns_domain
 
 if $ANYLOG_SERVER_PORT then anylog_server_port = $ANYLOG_SERVER_PORT
 if $ANYLOG_REST_PORT then anylog_rest_port = $ANYLOG_REST_PORT
@@ -143,8 +136,8 @@ if !env_ledger_start != "127.0.0.1" and $LEDGER_CONN then
 do set ledger_conn = $LEDGER_CONN
 do goto authentication
 
-if !master_configs == true and !enable_dns then ledger_conn = !external_dns + ":" + !anylog_server_port
-else if !master_configs == false and !enable_dns then ledger_conn = !external_dns + ":32048"
+if !master_configs == true and !enable_dns == true then ledger_conn = !external_dns + ":" + !anylog_server_port
+else if !master_configs == false and !enable_dns == true then ledger_conn = !external_dns + ":32048"
 else if !master_configs == true and !overlay_ip then ledger_conn = !overlay_ip + ":" + !anylog_server_port
 else if !master_configs == false and !overlay_ip then ledger_conn = !overlay_ip + ":32048"
 else if !master_configs == true then ledger_conn = !ip + ":" + !anylog_server_port
