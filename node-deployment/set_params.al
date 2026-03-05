@@ -130,8 +130,8 @@ if not $NIC_TYPE and $OVERLAY_IP then overlay_ip = $OVERLAY_IP
 if $CONFIG_NAME then config_name = $CONFIG_NAME
 
 :ledger-config:
-if $LEDGER_CONN then
 # option to not set ledger_conn for master
+if $LEDGER_CONN then
 do set env_ledger = $LEDGER_CONN
 do if !env_ledger then env_ledger_start = python !env_ledger.split(":")[0]
 
@@ -139,12 +139,12 @@ if !env_ledger_start != "127.0.0.1" and $LEDGER_CONN then
 do set ledger_conn = $LEDGER_CONN
 do goto authentication
 
-if !master_configs == true and !enable_dns then default_ledger = !external_dns + ":" + !anylog_server_port
-else if !master_configs == false and !enable_dns then default_ledger = !external_dns + ":32048"
-else if !master_configs == true and !overlay_ip then default_ledger = !overlay_ip + ":" + !anylog_server_port
-else if !master_configs == false and !overlay_ip then default_ledger = !overlay_ip + ":32048"
-else if !master_configs == true then default_ledger = !ip + ":" + !anylog_server_port
-else if !master_configs == false then default_ledger = !ip + ":32048"
+if !master_configs == true and !enable_dns then ledger_conn = !external_dns + ":" + !anylog_server_port
+else if !master_configs == false and !enable_dns then ledger_conn = !external_dns + ":32048"
+else if !master_configs == true and !overlay_ip then ledger_conn = !overlay_ip + ":" + !anylog_server_port
+else if !master_configs == false and !overlay_ip then ledger_conn = !overlay_ip + ":32048"
+else if !master_configs == true then ledger_conn = !ip + ":" + !anylog_server_port
+else if !master_configs == false then ledger_conn = !ip + ":32048"
 
 
 :authentication:
