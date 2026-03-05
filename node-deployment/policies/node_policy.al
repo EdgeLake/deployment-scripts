@@ -21,6 +21,8 @@
 #----------------------------------------------------------------------------------------------------------------------#
 # process !local_scripts/policies/node_policy.al
 
+set debug on
+
 if !debug_mode == true then set debug on
 
 on error ignore
