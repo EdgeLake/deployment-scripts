@@ -29,7 +29,7 @@ else if !tcp_bind == true then
     company=!company_name and
     name=!node_name and
     ip = !external_ip and
-    local_ip = !overlay_ip and
+    local_ip = !ip and
     port = !anylog_server_port bring.first>
 do goto end-script
 else if !tcp_bind == false then
