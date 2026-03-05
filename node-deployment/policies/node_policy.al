@@ -51,25 +51,15 @@ if $HZN_DEVICE_ID then set policy new_policy [!node_type][hzn_device_id] = $HZN_
 :network-node_type:
 if !debug_mode == true then print "Declare network configuration in new policy variables"
 
-set policy new_policy [!node_type][ip] = !external_ip
-if !tcp_bind == false and !enable_dns == true and !enable_external_dns == true then set policy new_policy [!node_type][ip] = !external_dns
-else if !tcp_bind == true  and !overlay_ip then set policy new_policy [!node_type][ip] = !overlay_ip
-else if !tcp_bind == true  and ( !enable_dns == true and (!is_dns_local == false or !dns_domain) )   then set policy new_policy [!node_type][ip] = !dns
-else if !tcp_bind == true then set policy new_policy [!node_type][ip] = !ip
+if !enable_dns == true and !external_dns then set policy new_policy [!node_type][ip] = !external_dns
+else if !tcp_bind == true then
+do if !overlay_ip then set policy new_policy [config][ip] = !overlay_ip
+do else  set policy new_policy [!node_type][ip] = !ip
+else if !tcp_bind == false then
+do set policy new_policy [!node_type][ip] = !external_ip
+do if !overlay_ip then set policy new_policy [!node_type][local_ip] = !overlay_ip
+do else set policy new_policy [!node_type][local_ip] = !ip
 
-if !tcp_bind == false and !overlay_ip then set policy new_policy [!node_type][local_ip] = !overlay_ip
-else if !tcp_bind == false and !overlay_ip then set policy new_policy [!node_type][local_ip] = !overlay_ip
-
-
-
-if !tcp_bind == false and !use_external_dns == true                                  then set policy new_policy [!node_type][ip] = !external_dns
-else if !tcp_bind == true and !overlay_ip                                            then set policy new_policy [!node_type][ip] = !overlay_ip
-else if !tcp_bind == true and ( !enable_dns == true and (!is_dns_local == false or !dns_domain) )   then set policy new_policy [!node_type][ip] = !dns
-else if !tcp_bind == true                                                            then set policy new_policy [!node_type][ip] = !ip
-
-if !tcp_bind == false and !overlay_ip                    then  set policy new_policy [!node_type][local_ip] = !overlay_ip
-else if !tcp_bind == false and !enable_dns == true and (!is_dns_local == false or !dns_domain)  then  set policy new_policy [!node_type][local_ip] = !dns
-else if !tcp_bind == false                               then set policy new_policy [!node_type][local_ip] = !ip
 
 set policy new_policy [!node_type][port] = !anylog_server_port.int
 set policy new_policy [!node_type][rest_port] = !anylog_rest_port.int

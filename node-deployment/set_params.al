@@ -90,8 +90,9 @@ do set internal ip with !nic_type
 do on error ignore
 
 if $ENABLE_DNS == true  or $ENABLE_DNS == True or $ENABLE_DNS == TRUE then set  enable_dns = true
-if $ENABLE_EXTERNAL_DNS == true  or $ENABLE_EXTERNAL_DNS == True or $ENABLE_EXTERNAL_DNS == TRUE then set enable_external_dns = true
-if $DNS_DOMAIN then dns_domain = $DNS_DOMAIN
+if $DNS_DOMAIN then set dns_domain = $DNS_DOMAIN
+if $LOCAL_DNS then set local_dns = $LOCAL_DNS
+else local_dens = get dns name
 
 # check if the !dns value ends with .local if so and user defines a domain, then it uses hostname.domain
 is_dns_local = python !dns.endswith('local')
