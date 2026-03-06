@@ -53,6 +53,11 @@ test_dir = !local_scripts/test
 if $LOCAL_SCRIPTS then set local_scripts = $LOCAL_SCRIPTS
 if $TEST_DIR then set test_dir = $TEST_DIR
 
+is_dir = file test !local_scripts
+if !is_dir == false then
+do print "missing local scripts directory": !local_scripts
+do goto terminate-scripts
+
 if !debug_mode == true then print "Create work directories"
 create work directories
 
@@ -70,6 +75,10 @@ if !debug_mode == true then print "Validate everything is running as expected"
 get processes
 if !enable_mqtt == true then get msg client
 end script
+
+:terminate-scripts:
+exit scripts
+
 
 :edgelake-error:
 print "Node type `publisher` not supported with EdgeLake deployment"
