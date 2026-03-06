@@ -1,7 +1,7 @@
 #---------------------------------------------------------------------------------------------------------------------#
 # process to initiate viewing video feed and recording insurances
 #---------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/southbound-video-streaming/video_ai_streams.al
+# process $DEPLOYMENT_SCRIPTS/deployment-scripts/southbound-video-streaming/video_ai_streams.al
 
 on error ignore
 

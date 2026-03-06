@@ -8,8 +8,8 @@
 on error ignore
 
 :set-paths:
-if not !anylog_path then anylog_path = /app
-if not !local_scripts then local_scripts = !anylog_path + "/deployment-scripts/node-deployment"
+if not $DEPLOYMENT_SCRIPTS then anylog_path = /app
+if not !local_scripts then local_scripts = $DEPLOYMENT_SCRIPTS + "/deployment-scripts/node-deployment"
 
 streams_txt = !local_scripts + "/videostreaming/videostreams.txt"
 streams_generated = !local_scripts + "/videostreaming/video_streams_generated.al"

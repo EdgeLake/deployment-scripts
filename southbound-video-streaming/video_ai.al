@@ -6,7 +6,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # Modeled after video_test.al: setup display + YOLO first, then process video_ai_streams.al
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/southbound-video-streaming/video_ai.al
+# process $DEPLOYMENT_SCRIPTS/deployment-scripts/southbound-video-streaming/video_ai.al
 on error ignore
 
 print "video_ai.al: Starting..."
@@ -14,7 +14,7 @@ print "video_ai.al: Starting..."
 set debug on
 
 :set-paths:
-streams_generated = !anylog_path/deployment-scripts/southbound-video-streaming/video_ai_streams.al
+streams_generated = $DEPLOYMENT_SCRIPTS/deployment-scripts/southbound-video-streaming/video_ai_streams.al
 is_file = file check !streams_generated
 if !is_file == false then goto missing-file
 
@@ -26,7 +26,7 @@ video_host = !ip
 
 # print "video_ai.al: Setting up video display (imshow)..."
 import function where import_name = imshow and lib = external_lib.video_processing.cv2_stream_imshow and method = init_class
-set function params where import_name = imshow and param_name = port and param_type = int and param_value = !video_port
+set function params where import_name = imshow and param_name = port and param_type = int and param_value = !video_port.int
 set function params where import_name = imshow and param_name = host and param_value = !video_host
 # print "video_ai.al: Display setup complete"
 
@@ -44,7 +44,7 @@ set function params where import_name = initiate_yolo and param_name = coco_path
 :load-streams:
 on error goto load-error
 # print "video_ai.al: Processing streams script (video_ai_streams.al)..."
-process !local_scripts/videostreaming/video_ai_streams.al
+process !streams_generated
 # print "video_ai.al: Done - view at http://localhost:8888/stream/timessquare"
 goto end-script
 

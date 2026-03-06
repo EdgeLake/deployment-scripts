@@ -295,7 +295,7 @@ if $ENABLE_VIDEO_STREAMING == true or $ENABLE_VIDEO_STREAMING == True or $ENABLE
 if $ENABLE_DETECTIONS == true or $ENABLE_DETECTIONS == True or or $ENABLE_DETECTIONS == TRUE then set enable_detections=true
 
 if $VIDEO_URL then set video_url = $VIDEO_URL
-if $VIDEO_PORT then set video_port = $VIDEOPORT
+if $VIDEO_PORT then set video_port = $VIDEO_PORT
 if $VIDEO_NAME then set video_name=$VIDEO_NAME
 if $YOLO_MODEL_PORT then set yolo_model_port=$YOLO_MODEL_PORT
 
