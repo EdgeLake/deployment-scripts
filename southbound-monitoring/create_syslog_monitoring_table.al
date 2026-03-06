@@ -20,7 +20,7 @@
 # CREATE INDEX syslog_insert_timestamp_index ON syslog(insert_timestamp);
 # CREATE INDEX syslog_source_ip_index ON syslog(source_ip);
 #-----------------------------------------------------------------------------------------------------------------------
-# process  !anylog_path/deployment-scripts/southbound-monitoring/create_syslog_monitoring_table.al
+# process  !local_scripts/southbound-monitoring/create_syslog_monitoring_table.al
 
 on error ignore
 set create_table = false
@@ -40,7 +40,7 @@ else if not !is_table and !create_table == true then goto declare-policy-error
 }>
 
 :publish-policy:
-process !anylog_path/deployment-scripts/policies/publish_policy.al
+process !local_scripts/policies/publish_policy.al
 if not !error_code.int then
 do set create_table = true
 goto check-table-policy

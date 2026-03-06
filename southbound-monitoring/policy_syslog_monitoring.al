@@ -5,7 +5,7 @@
 #   2. set variables `syslog_name` and `syslog_ip`
 #   3. execute - `config from policy where id=syslog-monitoring`
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/southbound-monitoring/policy_syslog_monitoring.al
+# process !local_scripts/southbound-monitoring/policy_syslog_monitoring.al
 
 on error ignore
 
@@ -31,8 +31,8 @@ if not !is_policy and !create_policy == true then goto declare-policy-error
         "id": !config_id,
         "name": "Syslog Monitoring",
         "script": [
-            "if !node_type == operator then process !anylog_path/deployment-scripts/southbound-monitoring/configure_message_broker.al",
-            "if !node_type == operator then process !anylog_path/deployment-scripts/southbound-monitoring/create_syslog_monitoring_table.al",
+            "if !node_type == operator then process !local_scripts/southbound-monitoring/configure_message_broker.al",
+            "if !node_type == operator then process !local_scripts/southbound-monitoring/create_syslog_monitoring_table.al",
             "set msg rule !syslog_name if ip = !syslog_ip then dbms = monitoring and table = syslog and extend = ip and syslog = true"
         ]
     }
@@ -41,7 +41,7 @@ if not !is_policy and !create_policy == true then goto declare-policy-error
 
 :publish-policy:
 on error ignore
-process !anylog_path/deployment-scripts/policies/publish_policy.al
+process !local_scripts/policies/publish_policy.al
 if not !error_code.int then
 do set create_policy = true
 goto check-policy

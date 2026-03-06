@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------------------------------------------------#
 # Set buffer threshold
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/policies/config_threshold.al
+# process !local_scripts/policies/config_threshold.al
 
 if !debug_mode == true then set debug on
 

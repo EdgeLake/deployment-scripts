@@ -87,10 +87,10 @@
 # }
 #
 # :documents:
-#   - Generic MQTT script: !anylog_path/deployment-scripts/deployment_scripts/mqtt.al
+#   - Generic MQTT script: !local_scripts/deployment_scripts/mqtt.al
 #   - Documentation: https://github.com/AnyLog-co/documentation/blob/master/image%20mapping.md
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/demo-scripts/blobs_car_videos.al
+# process !local_scripts/demo-scripts/blobs_car_videos.al
 
 # declare policy
 :prepare-policy:
@@ -156,7 +156,7 @@ test_policy = json !new_policy test
 if !test_policy == false then goto test-policy-error
 
 :publish-policy:
-process !anylog_path/deployment-scripts/policies/publish_policy.al
+process !local_scripts/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error
 if !error_code == 2 then goto prepare-policy-error
 if !error_code == 3 then goto declare-policy-error

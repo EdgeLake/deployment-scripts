@@ -5,7 +5,7 @@
 #   3. create OPC-UA call
 #   4. start OPC-UA service
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/connectors/opcua_client.al
+# process !local_scripts/connectors/opcua_client.al
 
 :check-vars:
 on error ignore

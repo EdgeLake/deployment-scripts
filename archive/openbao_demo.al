@@ -2,7 +2,7 @@
 # The following provides a sample script for utilizing OpenBao to declare params.
 # The sample only connect to a TCP and REST connection
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/demo-scripts/openbao_demo
+# process !local_scripts/demo-scripts/openbao_demo
 
 :prepare:
 on error ignore
@@ -15,8 +15,8 @@ else if $EDGELAKE_PATH then set anylog_path = $EDGELAKE_PATH
 
 set anylog home !anylog_path
 
-local_scripts = !anylog_path/deployment-scripts/node-deployment
-test_dir = !anylog_path/deployment-scripts/test
+local_scripts = !local_scripts/node-deployment
+test_dir = !local_scripts/test
 if $LOCAL_SCRIPTS then set local_scripts = $LOCAL_SCRIPTS
 if $TEST_DIR then set test_dir = $TEST_DIR
 
@@ -64,7 +64,7 @@ rest_timeout = from !opennbao_params bring [data][data][!section_name][REST_TIME
 rest_threads =  from !opennbao_params bring [data][data][!section_name][REST_THREADS]
 
 :connect-network:
-process !anylog_path/deployment-scripts/connect_networking.al
+process !local_scripts/connect_networking.al
 
 :get-process:
 get processes

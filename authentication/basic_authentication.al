@@ -7,7 +7,7 @@
 #   -u ${USERNAME}:${PASSWORD} \
 #   -w "\n"
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/authentication/basic_authentication.al
+# process !local_scripts/authentication/basic_authentication.al
 on error ignore
 if !debug_mode.int == 1 then set debug on
 else if !debug_mode.int == 2 then set debug interactive

@@ -20,7 +20,7 @@
 #  }
 # ]}
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/customers/nov_telegraf.al
+# process !local_scripts/customers/nov_telegraf.al
 
 on error ignore
 
@@ -66,7 +66,7 @@ if !create_policy == true  and not !policy then goto declare-policy-error
 }}>
 
 :publish-policy:
-process !anylog_path/deployment-scripts/policies/publish_policy.al
+process !local_scripts/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error
 if !error_code == 2 then goto prepare-policy-error
 if !error_code == 3 then goto declare-policy-error

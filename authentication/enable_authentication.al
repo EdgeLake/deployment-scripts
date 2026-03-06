@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # Create password for node and enable authentication
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/authentication/enable_authentication.al
+# process !local_scripts/authentication/enable_authentication.al
 on error ignore
 if !debug_mode.int == 1 then set debug on
 else if !debug_mode.int == 2 then set debug interactive

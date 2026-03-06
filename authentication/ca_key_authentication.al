@@ -4,7 +4,7 @@
 #   -> AnyLog-Network/data/ca-new-company-private-key.key
 #   -> AnyLog-Network/data/ca-new-company-private-key.crt
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/authentication/ca_key_authentication.al
+# process !local_scripts/authentication/ca_key_authentication.al
 on error ignore
 
 if !debug_mode.int == 1 then set debug on

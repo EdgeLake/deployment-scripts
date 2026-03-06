@@ -32,7 +32,7 @@
 # CREATE INDEX node_insight_insert_timestamp_index ON node_insight(insert_timestamp);
 # CREATE INDEX node_insight_node_name_index ON node_insight(node_name);
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/southbound-monitoring/create_node_monitoring_table.al
+# process !local_scripts/southbound-monitoring/create_node_monitoring_table.al
 on error ignore
 
 set create_table = false
@@ -52,7 +52,7 @@ else if not !is_table and !create_table == true then goto declare-policy-error
 }>
 
 :publish-policy:
-process !anylog_path/deployment-scripts/policies/publish_policy.al
+process !local_scripts/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error
 if not !error_code.int then
 do set create_table = true

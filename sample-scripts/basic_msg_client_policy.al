@@ -3,7 +3,7 @@
 # By default, the Message client params (in set_params.al) are based rand data coming into AnyLog's
 # MQTT message broker
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/demo-scripts/basic_msg_client_policy.al
+# process !local_scripts/demo-scripts/basic_msg_client_policy.al
 
 on error ignore
 
@@ -35,7 +35,7 @@ if !create_policy == true then goto declare-policy-error
 }>
 
 :publish-policy:
-process !anylog_path/deployment-scripts/policies/publish_policy.al
+process !local_scripts/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error
 if !error_code == 2 then goto prepare-policy-error
 if !error_code == 3 then goto declare-policy-error
