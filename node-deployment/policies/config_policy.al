@@ -94,8 +94,8 @@ do goto publish-policy
     "run publisher where archive_json=true and compress_json=!compress_file and compress_sql=!compress_file and dbms_name=!dbms_file_location and table_name=!table_file_location",
     "schedule name=remove_archive and time=1 day and task delete archive where days = !archive_delete",
     "if !system_query == true and !enable_mcp == true then run mcp server",
-    "if !enable_aggregations == true then process !anylog_path/deployment-scripts/sample-scripts/aggregation.al",
-    "if !enable_mqtt == true then process !anylog_path/deployment-scripts/sample-scripts/basic_msg_client.al",
+    "if !enable_aggregations == true then process !local_scripts/sample-scripts/aggregation.al",
+    "if !enable_mqtt == true then process !local_scripts/sample-scripts/basic_msg_client.al",
     "if !enable_video_streaming == true then process !local_scripts/southbound-video-streaming/video_ai.al",
     "if !deploy_local_script == true then process !local_scripts/node-deployment/local_script.al",
     "if !is_edgelake == false then process !local_scripts/node-deployment/policies/license_policy.al"
@@ -118,7 +118,7 @@ goto publish-policy
     "if !system_query == true and !enable_mcp == true then run mcp server",
     "if !enable_aggregations == true then process !anylog_path/deployment-scripts/sample-scripts/aggregation.al",
     "if !enable_mqtt == true then process !anylog_path/deployment-scripts/sample-scripts/basic_msg_client.al",
-    "if !enable_video_streaming == true then process !local_scripts/southbound-video-streaming/video_ai.al",
+    "if !enable_video_streaming == true then process !anylog_path/deployment-scripts/southbound-video-streaming/video_ai.al",
     "process !anylog_path/deployment-scripts/southbound-monitoring/deploy_monitoring.al",
     "if !deploy_local_script == true then process !local_scripts/node-deployment/local_script.al",
     "if !is_edgelake == false then process !local_scripts/node-deployment/policies/license_policy.al"
