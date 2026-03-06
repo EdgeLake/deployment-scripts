@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------------------------------------------#
 # Configuration policy related to industrial data sources
 #-----------------------------------------------------------------------------------------------------------------#
-# process !local_scripts/policies/southbound_industrial_policies.al
+# process !anylog_path/deployment-scripts/policies/southbound_industrial_policies.al
 
 on error ignore
 set create_config = false
@@ -29,7 +29,7 @@ if not !is_policy and !create_config == true then goto declare-policy-error
 
 :publish-policy:
 set is_config = true
-process !local_scripts/policies/publish_policy.al
+process !anylog_path/deployment-scripts/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error
 if !error_code == 2 then goto prepare-policy-error
 if !error_code == 3 then goto declare-policy-error
@@ -41,7 +41,7 @@ goto get-monitoring-config
 
 :publish-policy:
 set is_config = true
-process !local_scripts/policies/publish_policy.al
+process !anylog_path/deployment-scripts/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error
 if !error_code == 2 then goto prepare-policy-error
 if !error_code == 3 then goto declare-policy-error

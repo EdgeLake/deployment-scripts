@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # Based on node_type create relevant databases / tables for system_query
 #-----------------------------------------------------------------------------------------------------------------------
-# process !local_scripts/database/configure_dbms_system_query.al
+# process !local_scripts/node-deployment/database/configure_dbms_system_query.al
 on error ignore
 if !debug_mode == true then set debug on
 

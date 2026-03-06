@@ -13,7 +13,7 @@
 #   --> node-monitoring (ex. enable monitoring, node that receives monitoring and company associated with that node)
 #   --> settings (ex. streaming speed / size, deploy local/personalized script)
 #-----------------------------------------------------------------------------------------------------------------------
-# process !local_scripts/deployment_scripts/set_params.al
+# process !anylog_path/deployment-scripts/node-deployment//set_params.al
 on error ignore
 set debug off
 if !debug_mode == true then set debug on

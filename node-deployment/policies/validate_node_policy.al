@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # Validate if policy exists
 #-----------------------------------------------------------------------------------------------------------------------
-# process !local_scripts/policies/validate_node_policy.al
+# process !local_scripts/node-deployment/policies/validate_node_policy.al
 
 on error ignore
 if !debug_mode == true then set debug on

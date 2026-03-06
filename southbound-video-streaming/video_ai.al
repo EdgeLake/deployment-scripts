@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # Video AI - stream with optional YOLO detection (boxes overlay, no DB storage)
 # Env vars (advance_configs.env): VIDEO_URL, VIDEO_PORT, VIDEO_NAME, ENABLE_DETECTIONS, YOLO_MODEL_PORT
-# Run: process !local_scripts/videostreaming/video_ai.al
+# Run: process !anylog_path/deployment-scripts/videostreaming/video_ai.al
 # View: http://localhost:{VIDEO_PORT}/stream/{VIDEO_NAME}
 #-----------------------------------------------------------------------------------------------------------------------
 # Modeled after video_test.al: setup display + YOLO first, then process video_ai_streams.al

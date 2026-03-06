@@ -11,18 +11,18 @@
 #              'rest_threads' : '!rest_threads.int',
 #              'rest_timeout' : '!rest_timeout.int',
 #              'script' : [
-#                   'process !local_scripts/policies/master_policy.al',
-#                   'process !local_scripts/database/deploy_database.al',
+#                   'process !local_scripts/node-deployment/policies/master_policy.al',
+#                   'process !local_scripts/node-deployment/database/deploy_database.al',
 #                   'run scheduler 1',
 #                   'run blockchain sync where source=!blockchain_source and time=!blockchain_sync and dest=!blockchain_source != master and connection=!ledger_conn',
-#                   'process !local_scripts/policies/monitoring_policy.al',
-#                   'if !deploy_local_script == true then process !local_scripts/loca'l_script.al'
+#                   'process !local_scripts/node-deployment/policies/monitoring_policy.al',
+#                   'if !deploy_local_script == true then process !local_scripts/node-deployment/loca'l_script.al'
 #               ],
 #              'id' : 'fd547a557d63e18d10335d8df59c2cfb',
 #              'date' : '2024-02-05T01:14:22.204991Z',
 #              'ledger' : 'global'}}]
 #----------------------------------------------------------------------------------------------------------------------#
-# process !local_scripts/policies/config_policy.al
+# process !local_scripts/node-deployment/policies/config_policy.al
 
 reset error log
 reset echo queue
@@ -51,7 +51,7 @@ set policy new_policy [config][node_type] = !node_type
 
 
 :network-configs:
-process !local_scripts/policies/config_policy_networking.al
+process !local_scripts/node-deployment/policies/config_policy_networking.al
 
 if !node_type == operator then goto operator-scripts
 else if !node_type == publisher then goto publisher-scripts
@@ -61,33 +61,33 @@ else if !node_type == master or node_type == query then goto master-query
 if !node_type == generic then
 <do set policy new_policy [config][script] = [
     "if !blockchain_source == master then blockchain seed from !ledger_conn",
-    "process !local_scripts/database/deploy_database.al",
+    "process !local_scripts/node-deployment/database/deploy_database.al",
     "run scheduler 1",
     "if !system_query == true and !enable_mcp == true then run mcp server",
-    "if !deploy_local_script == true then process !local_scripts/local_script.al",
-    "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
+    "if !deploy_local_script == true then process !local_scripts/node-deployment/local_script.al",
+    "if !is_edgelake == false then process !local_scripts/node-deployment/policies/license_policy.al"
 ]>
 do goto publish-policy
 
 :master-query:
 if !node_type == master or !node_type == query then
 <do set policy new_policy [config][script] = [
-    "process !local_scripts/database/deploy_database.al",
-    "process !local_scripts/connect_blockchain.al",
-    "if !is_hidden == false then process !local_scripts/policies/node_policy.al",
+    "process !local_scripts/node-deployment/database/deploy_database.al",
+    "process !local_scripts/node-deployment/connect_blockchain.al",
+    "if !is_hidden == false then process !local_scripts/node-deployment/policies/node_policy.al",
     "run scheduler 1",
     "if !system_query == true and !enable_mcp == true then run mcp server",
-    "if !deploy_local_script == true then process !local_scripts/local_script.al",
-    "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
+    "if !deploy_local_script == true then process !local_scripts/node-deployment/local_script.al",
+    "if !is_edgelake == false then process !local_scripts/node-deployment/policies/license_policy.al"
 ]>
 do goto publish-policy
 
 :publisher-scripts:
 
 <set policy new_policy [config][script] = [
-    "process !local_scripts/database/deploy_database.al",
-    "process !local_scripts/connect_blockchain.al",
-    "process !local_scripts/policies/node_policy.al",
+    "process !local_scripts/node-deployment/database/deploy_database.al",
+    "process !local_scripts/node-deployment/connect_blockchain.al",
+    "process !local_scripts/node-deployment/policies/node_policy.al",
     "run scheduler 1",
     "set buffer threshold where time=!threshold_time and volume=!threshold_volume and write_immediate=false",
     "run streamer",
@@ -97,17 +97,17 @@ do goto publish-policy
     "if !enable_aggregations == true then process !anylog_path/deployment-scripts/sample-scripts/aggregation.al",
     "if !enable_mqtt == true then process !anylog_path/deployment-scripts/sample-scripts/basic_msg_client.al",
     "if !enable_video_streaming == true then process $DEPLOYMENT_SCRIPTS/deployment-scripts/southbound-video-streaming/video_ai.al",
-    "if !deploy_local_script == true then process !local_scripts/local_script.al",
-    "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
+    "if !deploy_local_script == true then process !local_scripts/node-deployment/local_script.al",
+    "if !is_edgelake == false then process !local_scripts/node-deployment/policies/license_policy.al"
 ]>
 goto publish-policy
 
 :operator-scripts:
 <set policy new_policy [config][script] = [
-    "process !local_scripts/database/deploy_database.al",
-    "process !local_scripts/connect_blockchain.al",
-    "process !local_scripts/policies/cluster_policy.al",
-    "process !local_scripts/policies/node_policy.al",
+    "process !local_scripts/node-deployment/database/deploy_database.al",
+    "process !local_scripts/node-deployment/connect_blockchain.al",
+    "process !local_scripts/node-deployment/policies/cluster_policy.al",
+    "process !local_scripts/node-deployment/policies/node_policy.al",
     "run scheduler 1",
     "set buffer threshold where time=!threshold_time and volume=!threshold_volume and write_immediate=!write_immediate",
     "run streamer",
@@ -120,15 +120,15 @@ goto publish-policy
     "if !enable_mqtt == true then process !anylog_path/deployment-scripts/sample-scripts/basic_msg_client.al",
     "if !enable_video_streaming == true then process !anylog_path/deployment-scripts/southbound-video-streaming/video_ai.al",
     "process !anylog_path/deployment-scripts/southbound-monitoring/deploy_monitoring.al",
-    "if !deploy_local_script == true then process !local_scripts/local_script.al",
-    "if !is_edgelake == false then process !local_scripts/policies/license_policy.al"
+    "if !deploy_local_script == true then process !local_scripts/node-deployment/local_script.al",
+    "if !is_edgelake == false then process !local_scripts/node-deployment/policies/license_policy.al"
 ]>
 
 :publish-policy:
 if !debug_mode == true then print "Declare policy on blockchain"
 
 set is_config = true
-process !local_scripts/policies/publish_policy.al
+process !local_scripts/node-deployment/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error
 if !error_code == 2 then goto prepare-policy-error
 if !error_code == 3 then goto declare-policy-error

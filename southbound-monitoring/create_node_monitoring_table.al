@@ -52,7 +52,7 @@ else if not !is_table and !create_table == true then goto declare-policy-error
 }>
 
 :publish-policy:
-process !local_scripts/policies/publish_policy.al
+process !anylog_path/deployment-scripts/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error
 if not !error_code.int then
 do set create_table = true

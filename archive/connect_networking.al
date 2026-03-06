@@ -1,6 +1,6 @@
 # Connect to TCP, REST and Broker (if configured) using default params
 #----------------------------------------------------------------------------------------------------------------------#
-# process !local_scripts/connect_networking.al
+# process !anylog_path/deployment-scripts/connect_networking.al
 
 on error ignore
 set debug off

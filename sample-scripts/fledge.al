@@ -3,7 +3,7 @@
 # For demonstration, FLEDGE is running Random data generator (topic: fledge-random) and OpenWeather data
 # (topic: fledge-weather).
 # :documents:
-#   - Generic MQTT script: !local_scripts/deployment_scripts/mqtt.al
+#   - Generic MQTT script: !anylog_path/deployment-scripts/deployment_scripts/mqtt.al
 #   - Documentation: https://github.com/AnyLog-co/documentation/blob/master/mapping%20data%20to%20tables.md
 #   - Deploying FLEDGE: https://github.com/AnyLog-co/lfedge-code/tree/main/fledges
 #   - AnyLog Northbound Plugin on FLEDGE: https://github.com/AnyLog-co/lfedge-code/tree/main/fledge

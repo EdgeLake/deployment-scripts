@@ -64,7 +64,7 @@ rest_timeout = from !opennbao_params bring [data][data][!section_name][REST_TIME
 rest_threads =  from !opennbao_params bring [data][data][!section_name][REST_THREADS]
 
 :connect-network:
-process !local_scripts/connect_networking.al
+process !anylog_path/deployment-scripts/connect_networking.al
 
 :get-process:
 get processes

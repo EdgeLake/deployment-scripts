@@ -86,7 +86,7 @@ if not !is_policy and !create_policy == true then goto declare-policy-error
 
 :publish-policy:
 on error ignore
-process !local_scripts/policies/publish_policy.al
+process !anylog_path/deployment-scripts/policies/publish_policy.al
 
 if not !error_code.int then
 do set create_policy = true

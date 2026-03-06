@@ -133,7 +133,7 @@ test_policy = json !new_policy test
 if !test_policy == false then goto test-policy-error
 
 :publish-policy:
-process !local_scripts/policies/publish_policy.al
+process !anylog_path/deployment-scripts/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error
 if !error_code == 2 then goto prepare-policy-error
 if !error_code == 3 then goto declare-policy-error

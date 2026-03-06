@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # The following is intended to deploy an AnyLog instance based on user configurations
 # If !policy_based_networking == true, the deployment is executed in the following way
-# Script: !local_scripts/start_node_policy_based.al
+# Script: !anylog_path/deployment-scripts/start_node_policy_based.al
 #   1. set params
 #   2. config node based on node type
 #       - set network configs (tcp/port)
@@ -48,7 +48,7 @@ else if $EDGELAKE_PATH then set anylog_path = $EDGELAKE_PATH
 if !debug_mode == true then print "set home path"
 set anylog home !anylog_path
 
-local_scripts = !anylog_path/deployment-scripts/node-deployment
+local_scripts = !anylog_path/deployment-scripts/
 test_dir = !anylog_path/deployment-scripts/test
 if $LOCAL_SCRIPTS then set local_scripts = $LOCAL_SCRIPTS
 if $TEST_DIR then set test_dir = $TEST_DIR
@@ -58,12 +58,12 @@ create work directories
 
 :set-params:
 if !debug_mode == true then print "Set environment params"
-process !local_scripts/set_params.al
+process !anylog_path/deployment-scripts/node-deployment/set_params.al
 
 
 :set-configs:
 if !debug_mode == true then print "declare configs"
-process !local_scripts/policies/config_policy.al
+process !anylog_path/deployment-scripts/node-deployment/policies/config_policy.al
 
 :end-script:
 if !debug_mode == true then print "Validate everything is running as expected"

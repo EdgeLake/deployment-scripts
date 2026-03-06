@@ -2,17 +2,17 @@
 # Video streaming from videostreams.txt. Format: name,url per line (e.g. bobross,https://www.twitch.tv/bobross)
 # Parses Twitch/YouTube/etc from URL automatically. View at: http://localhost:8888/stream/{name}
 # Set ENABLE_DETECTIONS=true for YOLO object detection (boxes overlay on live stream only, no DB storage).
-# Run: process !local_scripts/videostreaming/video_test.al
+# Run: process !anylog_path/deployment-scripts/videostreaming/video_test.al
 # Docker: port 8888 must be exposed (-p 8888:8888)
 #-----------------------------------------------------------------------------------------------------------------------
 on error ignore
 
 :set-paths:
 if not $DEPLOYMENT_SCRIPTS then anylog_path = /app
-if not !local_scripts then local_scripts = $DEPLOYMENT_SCRIPTS + "/deployment-scripts/node-deployment"
+if not !anylog_path/deployment-scripts then local_scripts = $DEPLOYMENT_SCRIPTS + "/deployment-scripts/node-deployment"
 
-streams_txt = !local_scripts + "/videostreaming/videostreams.txt"
-streams_generated = !local_scripts + "/videostreaming/video_streams_generated.al"
+streams_txt = !anylog_path/deployment-scripts + "/videostreaming/videostreams.txt"
+streams_generated = !anylog_path/deployment-scripts + "/videostreaming/video_streams_generated.al"
 
 set enable_detections = true
 if $ENABLE_DETECTIONS == true or $ENABLE_DETECTIONS == True or $ENABLE_DETECTIONS == TRUE then set enable_detections = true
@@ -21,7 +21,7 @@ print "ENABLE_DETECTIONS = " + !enable_detections
 :generate-script:
 on error goto generate-error
 # Run shell script to generate video_streams_generated.al from videostreams.txt
-script_path = !local_scripts + "/videostreaming/generate_video_streams.sh"
+script_path = !anylog_path/deployment-scripts + "/videostreaming/generate_video_streams.sh"
 detect_arg = ""
 if !enable_detections == true then detect_arg = " detections"
 gen_cmd = "sh " + !script_path + " " + !streams_txt + " " + !streams_generated + !detect_arg

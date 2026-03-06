@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # generic process to declare policy on blockchain (using node key)
 #-----------------------------------------------------------------------------------------------------------------------
-# process !local_scripts/policies/publish_policy.al
+# process !local_scripts/node-deployment/policies/publish_policy.al
 on error ignore
 if !debug_mode == true then set debug on
 

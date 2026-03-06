@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------------------------------------------------#
 # Create network params for policy
 #----------------------------------------------------------------------------------------------------------------------#
-# process !local_scripts/policies/config_policy_networking.al
+# process !local_scripts/node-deployment/policies/config_policy_networking.al
 
 
 on error ignore
