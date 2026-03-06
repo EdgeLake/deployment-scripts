@@ -48,7 +48,7 @@ else if $EDGELAKE_PATH then set anylog_path = $EDGELAKE_PATH
 if !debug_mode == true then print "set home path"
 set anylog home !anylog_path
 
-local_scripts = !local_scripts/
+local_scripts = !anylog_path/deployment-scripts
 test_dir = !local_scripts/test
 if $LOCAL_SCRIPTS then set local_scripts = $LOCAL_SCRIPTS
 if $TEST_DIR then set test_dir = $TEST_DIR
