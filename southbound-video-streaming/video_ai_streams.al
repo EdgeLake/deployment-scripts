@@ -57,9 +57,10 @@ on error goto video-stream-error
     name = !video_name and
     protocol = https and
     interface = url and
-    address = !video_url and
-    video_dbms = !video_dbms and
-    table_dbms = !default_dbms
+    address = !video_url >
+    # and
+    # video_dbms = !video_dbms and
+    # table_dbms = !default_dbms
 >
 run video stream where name = !video_name and import_display = imshow
 
