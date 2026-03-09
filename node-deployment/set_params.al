@@ -290,6 +290,7 @@ video_name = fstream
 yolo_model_port = 5001
 video_port = 32800
 video_grpc_dir = !anylog_path/AnyLog-Network/external_lib/frame_modeling
+video_dbms = !default_dbms + "_blobs"
 
 if $ENABLE_VIDEO_STREAMING == true or $ENABLE_VIDEO_STREAMING == True or $ENABLE_VIDEO_STREAMING == TRUE or then enable_video_streaming=true
 if $ENABLE_DETECTIONS == true or $ENABLE_DETECTIONS == True or or $ENABLE_DETECTIONS == TRUE then set enable_detections=true
