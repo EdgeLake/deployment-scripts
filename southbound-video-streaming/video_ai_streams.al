@@ -20,7 +20,7 @@ on error goto video-connect-error
     interface = url and
     address = !video_url and
     video_dbms = !default_dbms and
-    video_table = video_table and
+    video_table = !video_name and
     detection_dbms = customers and
     detection_table = detection_table and
     detection_column = person and
@@ -52,13 +52,15 @@ goto end-script
 
 :video-streams:
 on error goto video-stream-error
+
+
 <video connect where
     name = !video_name and
     protocol = https and
     interface = url and
     address = !video_url and
     video_dbms = !default_dbms and
-    table_name = !video_name
+    video_table = !video_name
 >
 run video stream where name = !video_name and import_display = imshow
 
