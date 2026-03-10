@@ -10,8 +10,7 @@ is_file = file check !video_grpc_dir
 if !is_file == false then goto grpc-error
 
 # Only run detections if enabled
-if !enable_detections == true then goto detection-video-streams
-goto video-streams
+if !enable_detections == false then goto video-streams
 
 :detection-video-streams:
 on error goto video-connect-error
@@ -47,7 +46,7 @@ on error goto grpc-error
     invoke = true
 >
 
-do on error goto video-stream-error
+on error goto video-stream-error
 run video stream where name = !video_name and import_display = imshow and grpc_name = yolov5
 goto end-script
 
@@ -58,7 +57,8 @@ on error goto video-stream-error
     protocol = https and
     interface = url and
     address = !video_url and
-    video_dbms = !default_dbms
+    video_dbms = !default_dbms and
+    table_name = !video_name
 >
 run video stream where name = !video_name and import_display = imshow
 
