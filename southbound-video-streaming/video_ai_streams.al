@@ -6,7 +6,7 @@
 on error ignore
 
 # Check video GRPC directory
-is_file = file check !video_grpc_dir
+is_file = file test !video_grpc_dir
 if !is_file == false then goto grpc-error
 
 # Only run detections if enabled
@@ -64,6 +64,10 @@ run video stream where name = !video_name and import_display = imshow
 
 :end-script:
 end script
+
+:terminate-scripts:
+# not used, but provided as example
+exit scripts
 
 :grpc-error:
 print "ERROR - GRPC client failed"
