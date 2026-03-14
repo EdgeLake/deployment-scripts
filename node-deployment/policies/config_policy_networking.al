@@ -6,7 +6,6 @@
 
 on error ignore
 if section == broker then goto broker-params
-set new_policy [config][version] = !config_version
 :tcp-params:
 # public/advertised ip
 

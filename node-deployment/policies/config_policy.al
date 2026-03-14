@@ -48,6 +48,7 @@ set policy new_policy [config] = {}
 set policy new_policy [config][name] = !config_name
 set policy new_policy [config][company] = !company_name
 set policy new_policy [config][node_type] = !node_type
+set policy new_policy [config][version] = !config_version
 
 
 :network-configs:
