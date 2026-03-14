@@ -25,7 +25,7 @@ jobs:
           python-version: "3.x"
 
       - name: Run version update script
-        run: python generate_git_id.py    # 👈 replace with your actual path
+        run: python .github/workflows/generate_git_id.py    # 👈 replace with your actual path
 
       - name: Commit updated setup.cfg
         run: |

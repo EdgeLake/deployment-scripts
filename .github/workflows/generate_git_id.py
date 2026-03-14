@@ -2,7 +2,7 @@ import os
 import subprocess
 from datetime import datetime
 
-CONFIG_FILE = os.path.join(os.path.dirname(__file__), "setup.cfg")
+CONFIG_FILE = os.path.join(os.path.dirname(__file__).split(".github", 1)[0], "setup.cfg")
 
 def get_git_commit_id():
     try:
