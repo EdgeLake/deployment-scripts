@@ -4,12 +4,12 @@
 # - database keeps 36 hours of data
 # - file storage keeps 3 days of data
 #-----------------------------------------------------------------------------------------------------------------------
-# process !local_scripts/database/configure_dbms_operator.al
+# process !local_scripts/node-deployment/database/configure_dbms_operator.al
 
 on error ignore
 :connect-dbms:
 db_name = monitoring
-# process !local_scripts/database/connect_dbms_sql.al
+# process !local_scripts/node-deployment/database/connect_dbms_sql.al
 connect dbms !db_name where type=sqlite
 
 :data-partitioning:

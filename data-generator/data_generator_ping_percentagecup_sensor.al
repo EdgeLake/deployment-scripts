@@ -11,7 +11,7 @@
 #        "timestamp": "2023-06-27T19:07:14.178393Z"
 #    }
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/demo-scripts/data_generator_ping_percentagecup_sensor.al
+# process !local_scripts/demo-scripts/data_generator_ping_percentagecup_sensor.al
 
 :set-params:
 on error ignore

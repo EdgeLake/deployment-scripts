@@ -3,7 +3,7 @@
 # :supported:
 #   - MongoDB
 #----------------------------------------------------------------------------------------------------------------------#
-# process !local_scripts/database/connect_dbms_nosql.al
+# process !local_scripts/node-deployment/database/connect_dbms_nosql.al
 
 if not !blob_storage_ip or not !blob_storage_port then goto missing-conn-info
 

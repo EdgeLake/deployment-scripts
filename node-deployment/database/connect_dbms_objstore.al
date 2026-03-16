@@ -5,7 +5,7 @@
 #   - S3
 #   - MinIO (?)
 #----------------------------------------------------------------------------------------------------------------------#
-# process !local_scripts/database/connect_dbms_objstore.al
+# process !local_scripts/node-deployment/database/connect_dbms_objstore.al
 
 :declare-provider:
 on error goto declare-provider-error

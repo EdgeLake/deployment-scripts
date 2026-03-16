@@ -4,7 +4,7 @@
 #   - PostgresSQL
 #   - SQLite
 #-----------------------------------------------------------------------------------------------------------------------
-# process !local_scripts/database/connect_dbms_sql.al
+# process !local_scripts/node-deployment/database/connect_dbms_sql.al
 
 :check-db:
 err_code = 0

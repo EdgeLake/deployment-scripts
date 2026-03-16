@@ -1,13 +1,13 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # Based on node_type create relevant databases / tables for operator node
 #-----------------------------------------------------------------------------------------------------------------------
-# process !local_scripts/database/configure_dbms_operator.al
+# process !local_scripts/node-deployment/database/configure_dbms_operator.al
 
 on error ignore
 :connect-dbms:
 if not !default_dbms then goto connect-dbms-error
 db_name = !default_dbms
-process !local_scripts/database/connect_dbms_sql.al
+process !local_scripts/node-deployment/database/connect_dbms_sql.al
 
 :data-partitioning:
 if !debug_mode == true then print "Set Partitioning"

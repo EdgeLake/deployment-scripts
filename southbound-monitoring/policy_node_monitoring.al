@@ -28,7 +28,7 @@
 #    'Network Error' : 0
 # }
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/southbound-monitoring/policy_node_monitoring.al
+# process !local_scripts/southbound-monitoring/policy_node_monitoring.al
 
 :set-params:
 schedule_id = node-monitoring
@@ -49,7 +49,7 @@ if not !is_policy and !create_policy == true then goto declare-policy-error
         "id": !schedule_id,
         "name": "Node Monitoring Schedule",
         "script": [
-            "if !node_type == operator then process !anylog_path/deployment-scripts/southbound-monitoring/create_node_monitoring_table.al",
+            "if !node_type == operator then process !local_scripts/southbound-monitoring/create_node_monitoring_table.al",
 
             "if !node_type != operator and !store_monitoring == true and not !monitoring_storage_dest then schedule name=get-storage-dest and time = 300 seconds task if not !monitoring_storage_dest then monitoring_storage_dest = blockchain get operator bring.last [*][ip] : [*][port]",
             "if not !view_monitoring_dest then schedule name = get-view-dest  and time = 300 seconds task if not !view_monitoring_dest then view_monitoring_dest = blockchain get query bring.ip_port",

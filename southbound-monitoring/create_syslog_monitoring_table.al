@@ -20,7 +20,7 @@
 # CREATE INDEX syslog_insert_timestamp_index ON syslog(insert_timestamp);
 # CREATE INDEX syslog_source_ip_index ON syslog(source_ip);
 #-----------------------------------------------------------------------------------------------------------------------
-# process  !anylog_path/deployment-scripts/southbound-monitoring/create_syslog_monitoring_table.al
+# process  !local_scripts/southbound-monitoring/create_syslog_monitoring_table.al
 
 on error ignore
 set create_table = false

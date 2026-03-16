@@ -2,7 +2,7 @@
 # Configure docker monitoring
 # NOTE: not supported for non-operator nodes - can work with publisher if user defines distribution
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/southbound-monitoring/policy_docker_monitoring.al
+# process !local_scripts/southbound-monitoring/policy_docker_monitoring.al
 
 on error ignore
 
