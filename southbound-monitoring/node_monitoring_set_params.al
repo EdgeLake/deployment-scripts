@@ -31,7 +31,7 @@ if $NODE_TYPE == master-operator or  $NODE_TYPE == master-publisher then
     name = view-monitoring-dest1 and
     time = !schedule_time and
     task if not !view_monitoring_dest then view_monitoring_dest = blockchain get (operator, publisher, query) bring.ip_port>
-elif !node_type == master and !system_query == true then
+else if !node_type == master and !system_query == true then
 <do schedule
     name = view-monitoring-dest2 and
     time = !schedule_time and
