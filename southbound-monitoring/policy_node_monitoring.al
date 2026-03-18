@@ -74,9 +74,9 @@ if not !is_policy and !create_policy == true then goto declare-policy-error
             "schedule name = local_monitor_node and time = 30 seconds task monitor operators where info = !node_insight",
             "schedule name = clean_status and time = 30 seconds task node_insight[status]='Active'",
 
-            "if $NODE_TYPE != master-operator and  $NODE_TYPE != master-publisher and !node_type != query then schedule name = monitor_node and time = 30 seconds task if !view_monitoring_dest then run client (!view_monitoring_dest) monitor operators where info = !node_insight",
+            "schedule name = monitor_node and time = 30 seconds task if !view_monitoring_dest then run client (!view_monitoring_dest) monitor operators where info = !node_insight",
             "if !store_monitoring == true and !node_type == operator then schedule name = operator_monitor_node and time = 30 seconds task stream !node_insight where dbms=monitoring and table=node_insight",
-            "if !store_monitoring == true and !node_type != operator then schedule name = operator_monitor_node and time = 30 seconds task if !monitoring_storage_dest then run client (!store_monitoring_dest) stream !node_insight where dbms=monitoring and table=node_insight"
+            "if !store_monitoring == true and !node_type != operator then schedule name = operator_monitor_node and time = 30 seconds task if !store_monitoring_dest then run client (!store_monitoring_dest) stream !node_insight where dbms=monitoring and table=node_insight"
         ]
     }
 }>
