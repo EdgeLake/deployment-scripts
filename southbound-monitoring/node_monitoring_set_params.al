@@ -27,7 +27,7 @@ if not !view_monitoring_dest and ($NODE_TYPE == master-operator or  $NODE_TYPE =
 <do schedule
     name = view-monitoring-dest and
     time = !schedule_time and
-    task if not !view_monitoring_dest then view_monitoring_dest = blockchain get (operator, publisher, query) bring.ip_port>>
+    task if not !view_monitoring_dest then view_monitoring_dest = blockchain get (operator, publisher, query) bring.ip_port>
 else if not !view_monitoring_dest then
 <do schedule
     name = view-monitoring-dest and
