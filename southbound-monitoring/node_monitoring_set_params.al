@@ -37,4 +37,3 @@ else if not !view_monitoring_dest then
 
 :end-script:
 end script
-if !system_query
