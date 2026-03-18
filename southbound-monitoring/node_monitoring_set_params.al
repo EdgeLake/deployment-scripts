@@ -36,8 +36,7 @@ else if !node_type == master and !system_query == true then
     name = view-monitoring-dest2 and
     time = !schedule_time and
     task if not !view_monitoring_dest then view_monitoring_dest = blockchain get (master, query) bring.ip_port>
-else
-<do schedule
+<else schedule
     name = view-monitoring-dest3 and
     time = !schedule_time and
     task if not !view_monitoring_dest then view_monitoring_dest = blockchain get query bring.ip_port>
