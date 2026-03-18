@@ -53,7 +53,7 @@ if not !is_policy and !create_policy == true then goto declare-policy-error
 
             "if !node_type != operator and !store_monitoring == true and not !store_monitoring_dest then schedule name=get-storage-dest and time = 300 seconds task if not !store_monitoring_dest then store_monitoring_dest = blockchain get operator bring.last [*][ip] : [*][port]",
             "if not !view_monitoring_dest and $NODE_TYPE == master-operator or  $NODE_TYPE == master-publisher then task if not !view_monitoring_dest then view_monitoring_dest = blockchain get (operator, publisher, query) bring.ip_port",
-            "if not !view_monitoring_dest and $NODE_TYPE != master-operator and $NODE_TYPE != master-publisher then task if not !view_monitoring_dest then view_monitoring_dest = blockchain get query bring.ip_port"
+            "if not !view_monitoring_dest and $NODE_TYPE != master-operator and $NODE_TYPE != master-publisher then task if not !view_monitoring_dest then view_monitoring_dest = blockchain get query bring.ip_port",
 
             "schedule name = get_stats and time=!monitoring_frequency and task node_insight = get stats where service = operator and topic = summary  and format = json",
             "schedule name = get_timestamp and time=!monitoring_frequency and task node_insight[timestamp] = get datetime local now()",
