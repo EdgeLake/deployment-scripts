@@ -51,8 +51,9 @@ if not !is_policy and !create_policy == true then goto declare-policy-error
         "script": [
             "if !node_type == operator then process !local_scripts/southbound-monitoring/create_node_monitoring_table.al",
 
-            "if !node_type != operator and !store_monitoring == true and not !monitoring_storage_dest then schedule name=get-storage-dest and time = 300 seconds task if not !monitoring_storage_dest then monitoring_storage_dest = blockchain get operator bring.last [*][ip] : [*][port]",
-            "if not !view_monitoring_dest then schedule name = get-view-dest  and time = 300 seconds task if not !view_monitoring_dest then view_monitoring_dest = blockchain get query bring.ip_port",
+            "if !node_type != operator and !store_monitoring == true and not !store_monitoring_dest then schedule name=get-storage-dest and time = 300 seconds task if not !store_monitoring_dest then store_monitoring_dest = blockchain get operator bring.last [*][ip] : [*][port]",
+            "if not !view_monitoring_dest and $NODE_TYPE == master-operator or  $NODE_TYPE == master-publisher then task if not !view_monitoring_dest then view_monitoring_dest = blockchain get (operator, publisher, query) bring.ip_port",
+            "if not !view_monitoring_dest and $NODE_TYPE != master-operator and $NODE_TYPE != master-publisher then task if not !view_monitoring_dest then view_monitoring_dest = blockchain get query bring.ip_port"
 
             "schedule name = get_stats and time=!monitoring_frequency and task node_insight = get stats where service = operator and topic = summary  and format = json",
             "schedule name = get_timestamp and time=!monitoring_frequency and task node_insight[timestamp] = get datetime local now()",
@@ -76,9 +77,9 @@ if not !is_policy and !create_policy == true then goto declare-policy-error
             "schedule name = local_monitor_node and time = 30 seconds task monitor operators where info = !node_insight",
             "schedule name = clean_status and time = 30 seconds task node_insight[status]='Active'",
 
-            "schedule name = monitor_node and time = 30 seconds task if !view_monitoring_dest then run client (!view_monitoring_dest) monitor operators where info = !node_insight",
+            "if $NODE_TYPE != master-operator and  $NODE_TYPE != master-publisher and !node_type != query then schedule name = monitor_node and time = 30 seconds task if !view_monitoring_dest then run client (!view_monitoring_dest) monitor operators where info = !node_insight",
             "if !store_monitoring == true and !node_type == operator then schedule name = operator_monitor_node and time = 30 seconds task stream !node_insight where dbms=monitoring and table=node_insight",
-            "if !store_monitoring == true and !node_type != operator then schedule name = operator_monitor_node and time = 30 seconds task if !monitoring_storage_dest then run client (!monitoring_storage_dest) stream !node_insight where dbms=monitoring and table=node_insight"
+            "if !store_monitoring == true and !node_type != operator then schedule name = operator_monitor_node and time = 30 seconds task if !monitoring_storage_dest then run client (!store_monitoring_dest) stream !node_insight where dbms=monitoring and table=node_insight"
         ]
     }
 }>
