@@ -50,9 +50,7 @@ if not !is_policy and !create_policy == true then goto declare-policy-error
         "name": "Node Monitoring Schedule",
         "script": [
             "if !node_type == operator then process !local_scripts/southbound-monitoring/create_node_monitoring_table.al",
-
-            "if !node_type != operator and !store_monitoring == true and not !monitoring_storage_dest then schedule name=get-storage-dest and time = 300 seconds task if not !monitoring_storage_dest then monitoring_storage_dest = blockchain get operator bring.last [*][ip] : [*][port]",
-            "if not !view_monitoring_dest then schedule name = get-view-dest  and time = 300 seconds task if not !view_monitoring_dest then view_monitoring_dest = blockchain get query bring.ip_port",
+            "process !local_scripts/southbound-monitoring/node_monitoring_set_params.al",
 
             "schedule name = get_stats and time=!monitoring_frequency and task node_insight = get stats where service = operator and topic = summary  and format = json",
             "schedule name = get_timestamp and time=!monitoring_frequency and task node_insight[timestamp] = get datetime local now()",
@@ -78,7 +76,7 @@ if not !is_policy and !create_policy == true then goto declare-policy-error
 
             "schedule name = monitor_node and time = 30 seconds task if !view_monitoring_dest then run client (!view_monitoring_dest) monitor operators where info = !node_insight",
             "if !store_monitoring == true and !node_type == operator then schedule name = operator_monitor_node and time = 30 seconds task stream !node_insight where dbms=monitoring and table=node_insight",
-            "if !store_monitoring == true and !node_type != operator then schedule name = operator_monitor_node and time = 30 seconds task if !monitoring_storage_dest then run client (!monitoring_storage_dest) stream !node_insight where dbms=monitoring and table=node_insight"
+            "if !store_monitoring == true and !node_type != operator then schedule name = operator_monitor_node and time = 30 seconds task if !store_monitoring_dest then run client (!store_monitoring_dest) stream !node_insight where dbms=monitoring and table=node_insight"
         ]
     }
 }>
@@ -86,7 +84,7 @@ if not !is_policy and !create_policy == true then goto declare-policy-error
 
 :publish-policy:
 on error ignore
-process !local_scripts/policies/publish_policy.al
+process !local_scripts/node-deployment/policies/publish_policy.al
 
 if not !error_code.int then
 do set create_policy = true
