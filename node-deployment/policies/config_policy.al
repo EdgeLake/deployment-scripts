@@ -73,6 +73,7 @@ do goto publish-policy
 :master-query:
 if !node_type == master or !node_type == query then
 <do set policy new_policy [config][script] = [
+    "if !blockchain_source == master and ! then blockchain seed from !ledger_conn",
     "process !local_scripts/node-deployment/database/deploy_database.al",
     "process !local_scripts/node-deployment/connect_blockchain.al",
     "if !is_hidden == false then process !local_scripts/node-deployment/policies/node_policy.al",

@@ -65,10 +65,6 @@ create work directories
 if !debug_mode == true then print "Set environment params"
 process !local_scripts/node-deployment/set_params.al
 
-:blockchain-seed:
-on error call blockchain-seed-error
-blockchain seed from !ledger_conn
-
 :set-configs:
 on error ignore
 if !debug_mode == true then print "declare configs"
