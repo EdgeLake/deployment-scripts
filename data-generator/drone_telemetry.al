@@ -105,7 +105,7 @@ set new_policy = ""
                 "bring": "[time_in_flight_s]"
             },
             "status": {
-                "type": "char(2)",
+                "type": "char(8)",
                 "bring": "[status]"
             },
             "sequence": {
