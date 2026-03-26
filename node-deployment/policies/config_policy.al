@@ -61,7 +61,6 @@ else if !node_type == master or node_type == query then goto master-query
 :generic-node:
 if !node_type == generic then
 <do set policy new_policy [config][script] = [
-    "if !blockchain_source == master then blockchain seed from !ledger_conn",
     "process !local_scripts/node-deployment/database/deploy_database.al",
     "run scheduler 1",
     "if !system_query == true and !enable_mcp == true then run mcp server",
@@ -73,7 +72,7 @@ do goto publish-policy
 :master-query:
 if !node_type == master or !node_type == query then
 <do set policy new_policy [config][script] = [
-    "if !blockchain_source == master and ! then blockchain seed from !ledger_conn",
+    "if !blockchain_source == master and !master_configs != true then blockchain seed from !ledger_conn",
     "process !local_scripts/node-deployment/database/deploy_database.al",
     "process !local_scripts/node-deployment/connect_blockchain.al",
     "if !is_hidden == false then process !local_scripts/node-deployment/policies/node_policy.al",
@@ -87,6 +86,7 @@ do goto publish-policy
 :publisher-scripts:
 
 <set policy new_policy [config][script] = [
+    "if !blockchain_source == master and !master_configs != true then blockchain seed from !ledger_conn",
     "process !local_scripts/node-deployment/database/deploy_database.al",
     "process !local_scripts/node-deployment/connect_blockchain.al",
     "process !local_scripts/node-deployment/policies/node_policy.al",
@@ -106,6 +106,7 @@ goto publish-policy
 
 :operator-scripts:
 <set policy new_policy [config][script] = [
+    "if !blockchain_source == master and !master_configs != true then blockchain seed from !ledger_conn",
     "process !local_scripts/node-deployment/database/deploy_database.al",
     "process !local_scripts/node-deployment/connect_blockchain.al",
     "process !local_scripts/node-deployment/policies/cluster_policy.al",

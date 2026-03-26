@@ -84,10 +84,6 @@ exit scripts
 print "Node type `publisher` not supported with EdgeLake deployment"
 goto terminate-scripts
 
-:blockchain-seed-error:
-print "Failed to run blockchain seed"
-return
-
 :license-error:
 print "Failed set license"
 goto end-script
