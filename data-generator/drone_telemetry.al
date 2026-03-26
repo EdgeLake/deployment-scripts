@@ -42,7 +42,7 @@
 #   - Generic MQTT script: !local_scripts/deployment_scripts/mqtt.al
 #   - Documentation: https://github.com/AnyLog-co/documentation/blob/master/image%20mapping.md
 #-----------------------------------------------------------------------------------------------------------------------
-# process !local_scripts/demo-scripts/blobs_people_videos.al
+# process !local_scripts/data-generator/drone_telemetry.al
 
 on error ignore
 
@@ -125,7 +125,8 @@ test_policy = json !new_policy test
 if !test_policy == false then goto test-policy-error
 
 :publish-policy:
-process !local_scripts/policies/publish_policy.al
+
+process !local_scripts/node-deployment/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error
 if !error_code == 2 then goto prepare-policy-error
 if !error_code == 3 then goto declare-policy-error
