@@ -134,18 +134,7 @@ if !error_code == 3 then goto declare-policy-error
 :msg-call:
 if !is_demo == true then goto end-script
 on error goto msg-error
-if !anylog_broker_port then
-<do run msg client where broker=local and port=!anylog_broker_port and log=false and topic=(
-    name=!policy_id and
-    policy=!policy_id
-)>
-else if not !anylog_broker_port and !user_name and !user_password then
-<do run msg client where broker=rest and port=!anylog_rest_port and user=!user_name and password=!user_password and user-agent=anylog and log=false and topic=(
-    name=!policy_id and
-    policy=!policy_id
-)>
-else if not !anylog_broker_port then
-<do run msg client where broker=rest and port=!anylog_rest_port and user-agent=anylog and log=false and topic=(
+<run msg client where broker=rest and log=false and user-agent=anylog and topic=(
     name=!policy_id and
     policy=!policy_id
 )>
