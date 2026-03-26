@@ -61,15 +61,15 @@ set new_policy = ""
         "table": "bring [table]",
         "schema": {
             "drone_id": {
-                "type": "varchar",
+                "type": "string",
                 "bring": "[drone_id]"
             },
             "role": {
-                "type": "char(8)",
+                "type": "string",
                 "bring": "[role]"
             },
             "leader_id": {
-                "type": "varchar",
+                "type": "string",
                 "bring": "[leader_id]"
             },
             "latitude": {
@@ -105,7 +105,7 @@ set new_policy = ""
                 "bring": "[time_in_flight_s]"
             },
             "status": {
-                "type": "char(8)",
+                "type": "string",
                 "bring": "[status]"
             },
             "sequence": {
