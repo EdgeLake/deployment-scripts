@@ -91,6 +91,12 @@ if !city then set policy new_policy [!node_type][city] = !city
 if !node_type == operator and !branch then set policy new_policy [!node_type][branch]
 if !node_type == operator and !dept then set policy new_policy [!node_type][dept]
 
+:set-hzn-info:
+if !debug_mode == true then print "Declare OpenHorizon info in policy"
+
+if $HZN_DEVICE_ID then set policy new_policy [!node_type][hzn_node_id] = $HZN_DEVICE_ID
+else if $HZN_NODE_ID then set policy new_policy [!node_type][hzn_node_id] = $HZN_NODE_ID
+if $HZN_ORGANIZATION then set policy new_policy [!node_type][hzn_org] = $HZN_ORGANIZATION
 
 :publish-policy:
 if !debug_mode == true then print "Publish policy"
@@ -109,6 +115,8 @@ if !debug_mode == true then print "For operator node  get policy ID for `run ope
 if !node_type != operator then goto end-script
 operator_id = from !is_policy bring.last [*][id]
 if not !operator_id then goto config-policy-error
+
+if ($HZN_DEVICE_ID or $HZN_NODE_ID) and $HZN_ORGANIZATION then goto process !local_scripts/node-deployment/policies/hzn_policy.al
 
 :end-script:
 if !is_relay == true then set node_type = master
