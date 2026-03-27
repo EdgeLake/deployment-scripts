@@ -101,7 +101,7 @@ set new_policy = ""
                 "bring": "[battery_pct]"
             },
             "time_in_flight_s": {
-                "type": "decimal",
+                "type": "float",
                 "bring": "[time_in_flight_s]"
             },
             "status": {
@@ -115,7 +115,15 @@ set new_policy = ""
             "timestamp": {
                 "type": "timestamp",
                 "default": "now()"
-            }
+            },
+            "estimated_leader_latitude" {
+                "type": "float",
+                "bring": "[estimated_leader_latitude]"
+            },
+            "estimated_leader_longitude" {
+                "type": "float",
+                "bring": "[estimated_leader_longitude]"
+            },
         }
     }
 }>
