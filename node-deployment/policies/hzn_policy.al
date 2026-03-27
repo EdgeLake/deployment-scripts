@@ -29,11 +29,12 @@ if $HZN_HOST_IPS then set policy new_policy [hzn][ips] = $HZN_HOST_IPS
 if $HZN_ARCH then set policy new_policy [hzn][arch] = $HZN_ARCH
 if $HZN_HARDWAREID then set policy new_policy [hzn][hardware] = $HZN_HARDWAREID
 
+
 set  is_privileged = ""
 if $HZN_PRIVILEGED and $HZN_PRIVILEGED == true or $HZN_PRIVILEGED == True or $HZN_PRIVILEGED == TRUE then set is_privileged = true
 if $HZN_PRIVILEGED and $HZN_PRIVILEGED == false or $HZN_PRIVILEGED == False or $HZN_PRIVILEGED == FALSE then set is_privileged = false
 
-if !is_privileged then set policy new_policy [hzn][privileged] = !is_privileged
+if !is_privileged then set policy new_policy [hzn][privileged] = !is_privileged.bool
 
 if $HZN_PATTERN then set policy new_policy [hzn][pattern] = $HZN_PATTERN
 
