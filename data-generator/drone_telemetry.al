@@ -123,7 +123,7 @@ set new_policy = ""
             "estimated_leader_longitude": {
                 "type": "float",
                 "bring": "[estimated_leader_longitude]"
-            },
+            }
         }
     }
 }>
