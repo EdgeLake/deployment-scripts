@@ -8,6 +8,13 @@ set debug on
 
 on error ignore
 
+:check-socket:
+is_docker = file check /var/run/docker.sock
+
+if not !is_docker then
+do echo "Missing docker.socket cannot configure docker monitoring"
+do goto end-script
+
 :set-params:
 schedule_id = docker-monitoring
 set create_policy = false
