@@ -17,6 +17,7 @@ if not !is_policy and !create_policy == true then goto create-error
 else if !is_policy then goto end-script
 
 :create-policy:
+set new_policy = ""
 set policy new_policy [hzn] = {}
 
 if $HZN_DEVICE_ID then set policy new_policy [hzn][node_id] = !node_name
@@ -27,7 +28,10 @@ if $HZN_EXCHANGE_URL then set policy new_policy [hzn][url] = $HZN_EXCHANGE_URL
 if $HZN_HOST_IPS then set policy new_policy [hzn][ips] = $HZN_HOST_IPS
 if $HZN_ARCH then set policy new_policy [hzn][arch] = $HZN_ARCH
 if $HZN_HARDWAREID then set policy new_policy [hzn][hardware] = $HZN_HARDWAREID
-if $HZN_PRIVILEGED then set policy new_policy [hzn][privileged] = $HZN_PRIVILEGED
+
+if $HZN_PRIVILEGED and $HZN_PRIVILEGED == true or $HZN_PRIVILEGED == True or $HZN_PRIVILEGED == TRUE then set policy new_policy [hzn][privileged] = true
+if $HZN_PRIVILEGED and $HZN_PRIVILEGED == false or $HZN_PRIVILEGED == False or $HZN_PRIVILEGED == FALSE then set policy new_policy [hzn][privileged] = false
+
 if $HZN_PATTERN then set policy new_policy [hzn][pattern] = $HZN_PATTERN
 
 :publish-policy:
