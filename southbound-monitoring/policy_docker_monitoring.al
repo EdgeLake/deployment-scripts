@@ -10,10 +10,7 @@ on error ignore
 
 :check-socket:
 is_docker = file check /var/run/docker.sock
-
-if not !is_docker then
-do echo "Missing docker.socket cannot configure docker monitoring"
-do goto end-script
+if not !is_docker then goto missing-socket-error
 
 :set-params:
 schedule_id = docker-monitoring
@@ -61,6 +58,10 @@ end script
 
 :terminate-scripts:
 exit scripts
+
+:missing-socket-error:
+echo "Missing docker.socket cannot configure docker monitoring"
+do goto end-script
 
 :store-monitoring-error:
 print "Failed to store "
