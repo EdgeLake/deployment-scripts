@@ -116,11 +116,11 @@ set new_policy = ""
                 "type": "timestamp",
                 "default": "now()"
             },
-            "estimated_leader_latitude" {
+            "estimated_leader_latitude": {
                 "type": "float",
                 "bring": "[estimated_leader_latitude]"
             },
-            "estimated_leader_longitude" {
+            "estimated_leader_longitude": {
                 "type": "float",
                 "bring": "[estimated_leader_longitude]"
             },
