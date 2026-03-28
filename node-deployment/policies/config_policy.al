@@ -89,7 +89,7 @@ do goto publish-policy
     "if !blockchain_source == master and !master_configs != true then blockchain seed from !ledger_conn",
     "process !local_scripts/node-deployment/database/deploy_database.al",
     "process !local_scripts/node-deployment/connect_blockchain.al",
-    "process !local_scripts/node-deployment/policies/node_policy.al",
+    "!is_hidden == false then process !local_scripts/node-deployment/policies/node_policy.al",
     "run scheduler 1",
     "set buffer threshold where time=!threshold_time and volume=!threshold_volume and write_immediate=false",
     "run streamer",
