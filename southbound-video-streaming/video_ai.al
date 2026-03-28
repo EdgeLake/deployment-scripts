@@ -9,7 +9,7 @@
 # process !local_scripts/southbound-video-streaming/video_ai.al
 on error ignore
 
-print "video_ai.al: Starting..."
+# print "video_ai.al: Starting..."
 
 # set debug on
 
@@ -52,15 +52,15 @@ goto end-script
 end script
 
 :missing-file:
-print "Missing file: " !streams_generated
+echo "Missing file: " !streams_generated
 goto end-script
 
 :setup-error:
-print "video_ai.al: ERROR - Failed to setup video display (imshow)"
+echo "video_ai.al: ERROR - Failed to setup video display (imshow)"
 goto end-script
 :enable-detections-error:
-print "video_ai.al: ERROR - Failed to setup YOLO detection"
+echo "video_ai.al: ERROR - Failed to setup YOLO detection"
 goto end-script
 :load-error:
-print "video_ai.al: ERROR - Failed to load streams"
+echo "video_ai.al: ERROR - Failed to load streams"
 goto end-script

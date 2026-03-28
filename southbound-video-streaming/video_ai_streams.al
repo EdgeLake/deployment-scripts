@@ -72,13 +72,13 @@ end script
 exit scripts
 
 :grpc-error:
-print "ERROR - GRPC client failed"
+echo "ERROR - GRPC client failed"
 goto end-script
 
 :video-connect-error:
-print "ERROR - Failed to connect video for detection"
+echo "ERROR - Failed to connect video for detection"
 goto end-script
 
 :video-stream-error:
-print "ERROR - Video stream failed"
+echo "ERROR - Video stream failed"
 goto end-script
