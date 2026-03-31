@@ -364,26 +364,20 @@ if $VIEW_MONITORING_DEST then view_monitoring_dest = $VIEW_MONITORING_DEST
 if $MONITORING_FREQUENCY then monitoring_frequency = $MONITORING_FREQUENCY
 if $DOCKER_FREQUENCY     then docker_frequency     = $DOCKER_FREQUENCY
 
-# :opcua-configs:
-# set enable_opcua=false
-# set set_opcua_tags = false
+:opcua-configs:
+set enable_opcua = false
+opcua_frequency = 5
 
-# if $ENABLE_OPCUA == true or $ENABLE_OPCUA == True or $ENABLE_OPCUA == True then set enable_opcua = true
-# if !enable_opcua == false then goto etherip-conifgs
+if $ENABLE_OPCUA == true or $ENABLE_OPCUA == True or $ENABLE_OPCUA == TRUE then enable_opcua = true
+if $OPCUA_URL then opcua_url = $OPCUA_URL
+if $OPCUA_NODE then opcua_node = $OPCUA_NODE
 
-# if $SET_OPCUA_TAGS == true or $SET_OPCUA_TAGS == True or $SET_OPCUA_TAGS == TRUE then set set_opcua_tags=true
-# if $OPCUA_URL opcua_url=$OPCUA_URL
-# else goto
-# if $OPCUA_NODE then opcua_node=$OPCUA_NODE
-if $OPCUA_FREQUENCY then opcua_frequency=$OPCUA_FREQUENCY
+if $OPCUA_NAME  then opcua_name = $OPCUA_NAME
 
+if $OPCUA_USERNAME then opcua_username = $OPCUA_USERNAME
+if $OPCUA_PASSWORD then opcua_password = $OPCUA_PASSWORD
 
-# :etherip-conifgs:
-# set enable_etherip=false
-# set set_etherip_tags=false
-# if $ENABLE_ETHERIP == true or $ENABeLATOR_MODE == true or $SIMULATOR_MODE == True or $SIMULATOR_MODE == TRUE) then etherip_url=127.0.0.1
-# if $ETHERIP_FREQUENCY then etherip_frequency = $ETHERIP_FREQUENCY
-# if $SET_ETHERIP_TAGS == true or $SET_ETHERIP_TAGS == True or $SET_ETHERIP_TAGS == TRUE then set set_etherip_tags=true
+if $OPCUA_FREQUENCY then opcua_frequency = $OPCUA_FREQUENCY
 
 
 # :aggregations:
