@@ -12,6 +12,8 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # python3.11 AnyLog-Network/anylog_enterprise/anylog.py process $ANYLOG_PATH/deployment-scripts/node-deployment/main.al
 
+trace level = 3
+
 if $EXCEPTION_TRACEBACK == true or $EXCEPTION_TRACEBACK == True or $EXCEPTION_TRACEBACK == TRUE then set exception traceback on
 
 :debug-mode:
