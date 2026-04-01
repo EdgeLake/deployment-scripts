@@ -112,10 +112,6 @@ goto check-policy
 on error ignore
 if !debug_mode == true then print "For operator node  get policy ID for `run operator`"
 
-if !node_type != operator then goto declare-hzn
-operator_id = from !is_policy bring.last [*][id]
-if not !operator_id then goto config-policy-error
-
 :declare-hzn:
 if ($HZN_DEVICE_ID or $HZN_NODE_ID) and $HZN_ORGANIZATION then process !local_scripts/node-deployment/policies/hzn_policy.al
 
