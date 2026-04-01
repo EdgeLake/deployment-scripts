@@ -40,8 +40,7 @@ else if !tcp_bind == false then
     port = !anylog_server_port bring.first>
 do goto end-script
 
-
-
+if !node_type == operator and !is_policy then operator_id = from !is_policy bring [*][id]
 
 :end-script:
 end script
