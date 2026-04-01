@@ -5,11 +5,12 @@
 on error ignore
 if !debug_mode == true then set debug on
 
-set debug on
-trace level = 3
 
 :set-params:
 error_code = 0
+
+set debug on
+trace level = 3
 
 :private-key:
 if !debug_mode == true then print "Check whether authentication is enabled and that private key exists"
@@ -32,8 +33,12 @@ if !debug_mode == true then print "Declare policy on blockchain"
 
 on error call declare-policy-error
 blockchain prepare policy !new_policy
-blockchain insert where policy=!new_policy and local=true and master=!ledger_conn
 
+policy_type = from !new_policy  bring [*]
+if !policy_type == config then
+do blockchain insert where policy=!new_policy and local=true
+do config_policy = !new_policy
+else blockchain insert where policy=!new_policy and local=true and master=!ledger_conn
 
 :end-script:
 set debug off
