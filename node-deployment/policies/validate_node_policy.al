@@ -6,7 +6,6 @@
 on error ignore
 if !debug_mode == true then set debug on
 
-
 if !debug_mode == true then print "check if node policy exists"
 
 :dns-check:
