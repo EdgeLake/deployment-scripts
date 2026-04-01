@@ -13,7 +13,7 @@
 #   --> node-monitoring (ex. enable monitoring, node that receives monitoring and company associated with that node)
 #   --> settings (ex. streaming speed / size, deploy local/personalized script)
 #-----------------------------------------------------------------------------------------------------------------------
-# process !local_scripts/deployment_scripts/set_params.al
+# process !local_scripts/node-deployment//set_params.al
 on error ignore
 set debug off
 if !debug_mode == true then set debug on
@@ -22,13 +22,19 @@ if !debug_mode == true then set debug on
 
 :required-params:
 company_name = "New Company"
-ledger_conn = 127.0.0.1:32048
 hostname = get hostname
+ledger_conn = 127.0.0.1:32048
 
-if $NODE_TYPE == master-operator then set node_type = operator
-else if $NODE_TYPE == master-publisher then set node_type = publisher
-else if $NODE_TYPE then set node_type = $NODE_TYPE
-else goto missing-node-type
+set is_hidden =false
+set master_configs = false
+
+if not $NODE_TYPE then goto missing-node-type
+else if $NODE_TYPE == master-operator  then node_type = operator
+else if $NODE_TYPE == master-publisher then node_type = publisher
+else set node_type = $NODE_TYPE
+
+if $NODE_TYPE == master-operator or $NODE_TYPE == master-publisher or $NODE_TYPE == master then set master_configs = true
+if !node_type != operator and $IS_HIDDEN == true or $IS_HIDDEN == True or $IS_HIDDEN == TRUE then is_hidden = true
 
 if $NODE_NAME then node_name = $NODE_NAME
 else node_name = !hostname + " " + !node_type
@@ -37,7 +43,6 @@ set node name !node_name
 
 if $COMPANY_NAME then company_name = $COMPANY_NAME
 
-if $LEDGER_CONN then ledger_conn=$LEDGER_CONN
 
 if $LICENSE_KEY then license_key = $LICENSE_KEY
 
@@ -60,7 +65,9 @@ if !loc_info and not !city then city = from !loc_info bring [city]
 if not !loc_info and not !city then city = Unknown
 
 :networking:
-set configure_dns=false
+set nic_type = ""
+set enable_dns = false
+
 config_name = !node_type.name + - + !company_name.name + -configs
 if $ANYLOG_BROKER_PORT then config_name = !node_type.name + - + !company_name.name + -configs-broker
 set anylog_server_port = ""
@@ -73,7 +80,17 @@ rest_timeout=30
 broker_bind = false
 broker_threads=6
 
-if $CONFIGURE_DNS == true or $CONFIGURE_DNS == True or $CONFIGURE_DNS == TRUE then set configure_dns = true
+if $NIC_TYPE then
+do set nic_type = $NIC_TYPE
+do on error call nic-error
+do set internal ip with !nic_type
+do on error ignore
+
+if $ENABLE_DNS == true  or $ENABLE_DNS == True or $ENABLE_DNS == TRUE then set  enable_dns = true
+if $EXTERNAL_DNS then set external_dns = $EXTERNAL_DNS
+if $DNS then set dns = $DNS
+else if $DNS_DOMAIN then dns = !hostname.$DNS_DOMAIN
+
 if $ANYLOG_SERVER_PORT then anylog_server_port = $ANYLOG_SERVER_PORT
 if $ANYLOG_REST_PORT then anylog_rest_port = $ANYLOG_REST_PORT
 
@@ -88,6 +105,7 @@ if !node_type == publisher and not !anylog_rest_port then anylog_rest_port = 322
 if not !anylog_server_port then anylog_server_port = 32548
 if not !anylog_rest_port then anylog_rest_port = 32549
 
+if $ANYLOG_BROKER_PORT then anylog_broker_port = $ANYLOG_BROKER_PORT
 
 if $TCP_BIND == true or $TCP_BIND == True or $TCP_BIND == TRUE then tcp_bind = true
 if $TCP_THREADS then tcp_threads = $TCP_THREADS
@@ -99,7 +117,6 @@ if !rest_threads.int < 1 then rest_threads = 1
 if $REST_TIMEOUT then rest_timeout = $REST_TIMEOUT
 if !rest_timeout.int < 0 then rest_timeout = 0 # continuous
 
-if $ANYLOG_BROKER_PORT then anylog_broker_port = $ANYLOG_BROKER_PORT
 if $BROKER_BIND == true or $BROKER_BIND == True or $BROKER_BIND == TRUE then broker_bind = true
 if !broker_threads.int < 1 then broker_threads = 1
 
@@ -107,13 +124,27 @@ if !broker_threads.int < 1 then broker_threads = 1
 if $NIC_TYPE then set internal ip with $NIC_TYPE
 # useer OVERLAY IP address
 if not $NIC_TYPE and $OVERLAY_IP then overlay_ip = $OVERLAY_IP
-if $PROXY_IP then proxy_ip = $PROXY_IP
 if $CONFIG_NAME then config_name = $CONFIG_NAME
 
+:ledger-config:
 # option to not set ledger_conn for master
-if !node_type == master and not $LEDGER_CONN and !overlay_ip then tmp_ledger = !overlay_ip + ":" + !anylog_server_port
-else if !node_type == master and not $LEDGER_CONN then tmp_ledger = !ip + ":" + !anylog_server_port
-if !node_type == master and not $LEDGER_CONN then ledger_conn = python !tmp_ledger.strip()
+if $LEDGER_CONN then
+do set env_ledger = $LEDGER_CONN
+do if !env_ledger then env_ledger_start = python !env_ledger.split(":")[0]
+
+if !env_ledger_start != "127.0.0.1" and $LEDGER_CONN then
+do set ledger_conn = $LEDGER_CONN
+do goto authentication
+
+if !master_configs == true and !enable_dns == true then ledger_conn = !external_dns + ":" + !anylog_server_port
+else if !master_configs == false and !enable_dns == true then ledger_conn = !external_dns + ":32048"
+else if !master_configs == true and !overlay_ip then ledger_conn = !overlay_ip + ":" + !anylog_server_port
+else if !master_configs == false and !overlay_ip then ledger_conn = !overlay_ip + ":32048"
+else if !master_configs == true then ledger_conn = !ip + ":" + !anylog_server_port
+else if !master_configs == false then ledger_conn = !ip + ":32048"
+
+config_version = system grep -m1 "^version" !local_scripts/setup.cfg | awk -F " = " '{print $2}' | xargs
+print !config_version
 
 :authentication:
 set enable_auth = false
@@ -127,7 +158,6 @@ if $USER_PASSWORD then user_passsword = $USER_PASSWORD
 :sql-database:
 db_type = sqlite
 set autocommit = true
-set unlog = false
 default_dbms=!company_name.name
 set system_query = false
 set memory = true
@@ -143,42 +173,59 @@ if $DB_IP then db_ip = $DB_IP
 if $DB_PORT then db_port = $DB_PORT
 
 if $AUTOCOMMIT == false or $AUTOCOMMIT == False or $AUTOCOMMIT == FALSE then set autocommit = false
-if $UNLOG == true or $UNLOG == True or $UNLOG == TRUE then set unlog =  true
 if !node_type == query or $SYSTEM_QUERY == true or $SYSTEM_QUERY == True or $SYSTEM_QUERY == TRUE  then
 do set system_query = true
 do if $MEMORY == false or $MEMORY == False or $MEMORY == FALSE then set memory=false
 
+set enable_mcp = false
+if $ENABLE_MCP == true or $ENABLE_MCP == True or $ENABLE_MCP == TRUE then set enable_mcp = true
+
 system_query_db = sqlite
 if $SYSTEM_QUERY_DB == psql or $SYSTEM_QUERY_DB == sqlite then system_query_db = $SYSTEM_QUERY_DB
 
-:nosql-database:
-set enable_nosql = false
-nosql_type = mongo
-nosql_ip = 127.0.0.1
-nosql_port = 27017
-set blobs_dbms = false
-set blobs_folder = true
+:blob-storage:
+# store blobs in data store - mongo, s3, akave, minio, etc.
+set blobs_storage = false
+# store blobs in local file
+# compress blobs
 set blobs_compress = true
+# reuse repeating blobs
 set blobs_reuse = true
 
-if $ENABLE_NOSQL == true or $ENABLE_NOSQL == True or $ENABLE_NOSQL == TRUE then
-do set enable_nosql = true
-do set blobs_dbms = true
-else if $BLOBS_DBMS == true or $BLOBS_DBMS == True or $BLOBS_DBMS == TRUE then set blobs_dbms = true
+# store blobs in storage that's not local file system
+if $BLOBS_STORAGE == true or $BLOBS_STORAGE == True or $BLOBS_STORAGE == TRUE then
+do set blobs_storage = true
+do set blobs_folder = false
 
-# disable blobs folder storage
-if $BLOBS_FOLDER == false or $BLOBS_FOLDER == False or $BLOBS_FOLDER == FALSE then set blobs_folder = false
+# by default we're storing blobs to local files, so disable that option - either by user or us
+# - user can force disable by setting folder as False
+# - user can force enable by setting  folder as True
+if  !blobs_storage == false or ($BLOBS_FOLDER == true or $BLOBS_FOLDER == True or $BLOBS_FOLDER == TRUE) then set blobs_folder=true
 
+# compress blob content when stored (true by default)
+if $BLOBS_COMPRESS == false or $BLOBS_COMPRESS == False or $BLOBS_COMPRESS == FALSE then set blobs_compress = false
+
+# reuse blob content if it contains the same hash value (true by default)
 if $BLOBS_REUSE == false or $BLOBS_REUSE == False or $BLOBS_REUSE == FALSE then set blobs_reuse = false
 
-if $NOSQL_IP then nosql_ip = $NOSQL_IP
-if $NOSQL_PORT then nosql_port = $NOSQL_PORT
-if $NOSQL_USER then nosql_user = $NOSQL_USER
-if $NOSQL_PASSWD then nosql_passwd = $NOSQL_PASSWD
+# Storage type (mongo, akave, s3 , etc)
+if $BLOB_STORAGE_TYPE then blob_storage_type = $BLOB_STORAGE_TYPE
 
-:akave-access:
-if $AKAVE_ACCESS_KEY then akave_access_key = $AKAVE_ACCESS_KEY
-if $AKAVE_SECRET_KEY then akave_secret_key = $AKAVE_SECRET_KEY
+# URL or IP address to access blob storage
+if $BLOB_STORAGE_IP then blob_storage_ip = $BLOB_STORAGE_IP
+if $BLOB_STORAGE_PORT then blob_storage_port = $BLOB_STORAGE_PORT
+
+:blob-dbms:
+# MongoDB access credentials
+if $BLOB_STORAGE_USER then blob_storage_user = $BLOB_STORAGE_USER
+if $BLOB_STORAGE_PASSWORD then blob_storage_password = $BLOB_STORAGE_PASSWORD
+
+:blob-bucket:
+if $BUCKET_GROUP then bucket_group = $BUCKET_GROUP
+if $BUCKET_ID then bucket_id = $BUCKET_ID
+if $BUCKET_ACCESS_KEY then bucket_access_key = $BUCKET_ACCESS_KEY
+if $BUCKET_SECRETE_KEY then bucket_secrete_key = $BUCKET_SECRETE_KEY
+if $BUCKET_REGION then bucket_region = $BUCKET_REGION
 
 :blockchain-basic:
 # blockchain platform - either master (node) or optimism
@@ -192,8 +239,6 @@ if $BLOCKCHAIN_SYNC then blockchain_sync = $BLOCKCHAIN_SYNC
 if $BLOCKCHAIN_SOURCE then blockchain_source=$BLOCKCHAIN_SOURCE
 if $DESTINATION then set blockchain_destination=$DESTINATION
 if !node_type == master and !blockchain_source != master then set is_relay = true
-if $LEDGER_CONN ledger_conn = $LEDGER_CONN
-
 if blockchain_source == master then goto operator-settings
 
 :blockchain-connect:
@@ -213,11 +258,13 @@ if $CONTRACT then contract = $CONTRACT
 set enable_partitions = true
 table_name=*
 partition_column = insert_timestamp
-partition_interval = day
+partition_interval = 14 days
 partition_keep = 3
 partition_sync = 1 day
 
 if $MEMBER and $MEMBER.int then member = $MEMBER
+if $IS_MAIN and ($IS_MAIN == true or $IS_MAIN == True or $IS_MAIN == TRUE) then set is_main = true
+else if $IS_MAIN and ($IS_MAIN == false or $IS_MAIN == False  or $IS_MAIN == FALSE) then set is_main = false
 
 if $ENABLE_PARTITIONS == false or $ENABLE_PARTITIONS == False or $ENABLE_PARTITIONS == FALSE then set enable_partitions=false
 
@@ -232,11 +279,32 @@ if $PARTITION_SYNC then set partition_sync = $PARTITION_SYNC
 
 :operator-ha:
 set enable_ha = false
-start_data = -30d
+start_date = -30d
 
 if $ENABLE_HA == true or $ENABLE_HA == TRUE or $ENABLE_HA == True then set enable_ha=true
 if $START_DATE then start_date = $START_DATE
 if !start_date.int then start_date = - + $START_DATE + d
+
+:video-streaming-configs:
+#--- Video Streaming ---
+set enable_video_streaming = false
+set enable_detections = false
+video_url = ""
+video_name = fstream
+yolo_model_port = 5001
+video_port = 32800
+video_grpc_dir = !anylog_path/AnyLog-Network/external_lib/frame_modeling
+# video_dbms = !default_dbms + "_blobs"
+
+if $ENABLE_VIDEO_STREAMING == true or $ENABLE_VIDEO_STREAMING == True or $ENABLE_VIDEO_STREAMING == TRUE then enable_video_streaming=true
+if $ENABLE_DETECTIONS == true or $ENABLE_DETECTIONS == True or $ENABLE_DETECTIONS == TRUE then set enable_detections=true
+
+if $VIDEO_URL then set video_url = $VIDEO_URL
+if $VIDEO_PORT then set video_port = $VIDEO_PORT
+if $VIDEO_NAME then set video_name=$VIDEO_NAME
+if $YOLO_MODEL_PORT then set yolo_model_port=$YOLO_MODEL_PORT
+
+if $VIDEO_GRPC_DIR then video_grpc_dir = $VIDEO_GRPC_DIR
 
 :mqtt:
 set enable_mqtt = false
@@ -254,12 +322,13 @@ msg_value_column_type = float
 msg_value_column = "bring [value]"
 
 if $ENABLE_MQTT == true or $ENABLE_MQTT == True or $ENABLE_MQTT == TRUE then set enable_mqtt = true
-if !enable_mqtt == true then
-if $DEFAULT_DBMS then set msg_dbms = $DEFAULT_DBMS
+if !enable_mqtt == false then goto monitoring
+
 if $MQTT_BROKER then mqtt_broker=$MQTT_BROKER
 if $MQTT_PORT then mqtt_port=$MQTT_PORT
 if $MQTT_USER then mqtt_user=$MQTT_USER
 if $MQTT_PASSWD then mqtt_passwd=$MQTT_PASSWD
+if $MQTT_LOG == true or $MQTT_LOG == True or $MQTT_LOG == TRUE then set msg_log =true
 if $MSG_TOPIC then msg_topic=$MSG_TOPIC
 
 if $DEFAULT_DBMS then msg_dbms=$DEFAULT_DBMS
@@ -270,53 +339,118 @@ if $MSG_TIMESTAMP_COLUMN then msg_timestamp_column=$MSG_TIMESTAMP_COLUMN
 if $MSG_VALUE_COLUMN_TYPE then msg_value_column_type=$MSG_VALUE_COLUMN_TYPE
 if $MSG_VALUE_COLUMN then msg_value_column=$MSG_VALUE_COLUMN
 
-:node-monitoring:
-set monitor_nodes = true
-set store_monitoring = false
 
-if $MONITOR_NODES == false or $MONITOR_NODES == False or $MONITOR_NODES == FALSE then set monitor_nodes = false
+:monitoring:
+set node_monitoring     = false
+set syslog_monitoring   = false
+set docker_monitoring   = false
+store_monitoring        = false
+store_monitoring_dest   = ""
+view_monitoring_dest    = ""
+
+monitoring_frequency = "30 seconds"
+docker_frequency = 5
+
+
+if $NODE_MONITORING == true   or $NODE_MONITORING == True   or $NODE_MONITORING == TRUE   then set node_monitoring   = true
+if $SYSLOG_MONITORING == true or $SYSLOG_MONITORING == True or $SYSLOG_MONITORING == TRUE then set syslog_monitoring = true
+if $DOCKER_MONITORING == true or $DOCKER_MONITORING == True or $DOCKER_MONITORING == TRUE then set docker_monitoring = true
+
 if $STORE_MONITORING == true or $STORE_MONITORING == True or $STORE_MONITORING == TRUE then set store_monitoring = true
-if $MONITORING_OPERATOR then monitoring_operator = $MONITORING_OPERATOR
+# if not set - will be declare using `blockchain get operator bring.last`
+if $STORE_MONITORING_DEST then store_monitoring_dest = $STORE_MONITORING_DEST
+# if not set - will be declare using `blockchain get query bring.ip_port`
+if $VIEW_MONITORING_DEST then view_monitoring_dest = $VIEW_MONITORING_DEST
 
-:docker-monitoring:
-set docker_continuous = true
-if $DOCKER_CONTINUOUS == false or $DOCKER_CONTINUOUS == False or $DOCKER_CONTINUOUS == FALSE then  set docker_continuous = false
+if $MONITORING_FREQUENCY then monitoring_frequency = $MONITORING_FREQUENCY
+if $DOCKER_FREQUENCY     then docker_frequency     = $DOCKER_FREQUENCY
 
 :opcua-configs:
-set enable_opcua=false
-set set_opcua_tags = false
-if $SET_OPCUA_TAGS == true or $SET_OPCUA_TAGS == True or $SET_OPCUA_TAGS == TRUE then set set_opcua_tags=true
-if $ENABLE_OPCUA == true or $ENABLE_OPCUA == True or $ENABLE_OPCUA == TRUE then set enable_opcua = true
-if $OPCUA_URL then opcua_url=$OPCUA_URL
-if $OPCUA_NODE then opcua_node=$OPCUA_NODE
-if $OPCUA_FREQUENCY then opcua_frequency=$OPCUA_FREQUENCY
+set enable_opcua = false
+opcua_frequency = 5
+
+if $ENABLE_OPCUA == true or $ENABLE_OPCUA == True or $ENABLE_OPCUA == TRUE then enable_opcua = true
+if $OPCUA_URL then opcua_url = $OPCUA_URL
+if $OPCUA_NODE then opcua_node = $OPCUA_NODE
+
+if $OPCUA_NAME  then opcua_name = $OPCUA_NAME
+
+if $OPCUA_USERNAME then opcua_username = $OPCUA_USERNAME
+if $OPCUA_PASSWORD then opcua_password = $OPCUA_PASSWORD
+
+if $OPCUA_FREQUENCY then opcua_frequency = $OPCUA_FREQUENCY
 
 
-:etherip-conifgs:
-set enable_etherip=false
-set set_etherip_tags=false
-if $ENABLE_ETHERIP == true or $ENABLE_ETHERIP == True or $ENABLE_ETHERIP == TRUE then set enable_etherip = true
-if $ETHERIP_URL then etherip_url = $ETHERIP_URL
-else if !enable_etherip and ($SIMULATOR_MODE == true or $SIMULATOR_MODE == True or $SIMULATOR_MODE == TRUE) then etherip_url=127.0.0.1
-if $ETHERIP_FREQUENCY then etherip_frequency = $ETHERIP_FREQUENCY
-if $SET_ETHERIP_TAGS == true or $SET_ETHERIP_TAGS == True or $SET_ETHERIP_TAGS == TRUE then set set_etherip_tags=true
+# :aggregations:
+# deploy aggregation based on policy - need policy key
+# aggregation_policy = ""
+# if $AGGREGATION_POLICY then aggregation_policy = $AGGREGATION_POLICY
 
-:aggregations:
-set enable_aggregations = false
-aggregations_intervals  = 10
-aggregations_time = 1 minute
-aggregation_time_column = insert_timestamp
-aggregation_value_column = value
+#-----------------------------------------------------------------------------#
+# Default aggregation parameters                                               #
+#-----------------------------------------------------------------------------#
+# enable aggregations
+# set enable_aggregations = false
+# if $ENABLE_AGGREGATIONS and ($ENABLE_AGGREGATIONS == true or $ENABLE_AGGREGATIONS == True or $ENABLE_AGGREGATIONS == TRUE) then set enable_aggregations = true
+# else goto other-settings
 
-if $ENABLE_AGGREGATIONS == true or $ENABLE_AGGREGATIONS == True or $ENABLE_AGGREGATIONS == TRUE then set enable_aggregations = true
-if $AGGREGATIONS_INTERVALS then aggregations_intervals = $AGGREGATIONS_INTERVALS
-if $AGGREGATIONS_TIME then aggregations_time = $AGGREGATIONS_TIME
-if $AGGREGATION_TIME_COLUMN then aggregation_time_column = $AGGREGATION_TIME_COLUMN
-if $AGGREGATION_VALUE_COLUMN then aggregation_value_column = $AGGREGATION_VALUE_COLUMN
+
+# Logical database to aggregate against
+# set aggregations_dbms = !default_dbms
+
+# Logical table to aggregate against
+# set aggregations_table = *
+
+# Number of aggregation intervals to keep
+# set aggregations_intervals = 10
+
+# Time window for each aggregation
+# set aggregations_time = 1 minute
+
+# Timestamp column used for aggregation
+# set aggregation_time_column = insert_timestamp
+
+# Value column to aggregate
+# set aggregation_value_column = value
+
+# if $AGGREGATIONS_DBMS then set aggregations_dbms = $AGGREGATIONS_DBMS
+# if $AGGREGATIONS_TABLE then set aggregations_table = $AGGREGATIONS_TABLE
+# if $AGGREGATIONS_INTERVALS then set aggregations_intervals = $AGGREGATIONS_INTERVALS
+# if $AGGREGATIONS_TIME then set aggregations_time = $AGGREGATIONS_TIME
+# if $AGGREGATION_TIME_COLUMN then set aggregation_time_column = $AGGREGATION_TIME_COLUMN
+# if $AGGREGATION_VALUE_COLUMN then set aggregation_value_column = $AGGREGATION_VALUE_COLUMN
+#-----------------------------------------------------------------------------#
+# Ingestion behavior                                                          #
+#-----------------------------------------------------------------------------#
+# Ingest raw (non-aggregated) data
+# set ingest_raw_data = true
+# Ingest aggregated data
+# set ingest_aggregations = false
+
+# if $INGEST_RAW_DATA then set ingest_raw_data = $INGEST_RAW_DATA
+# if $INGEST_AGGREGATIONS then set ingest_aggregations = $INGEST_AGGREGATIONS
+
+
+#-----------------------------------------------------------------------------#
+# Optional encoding configuration                                              #
+#-----------------------------------------------------------------------------#
+
+# Enable value encoding (true / false)
+# set enable_encoding = false
+
+# Encoding tolerance (numeric)
+# set encoding_tolerance = ""
+
+# bounds - all entries in the time interval are replaced with a single entry representing:
+# arle - Approximated Run-Length Encoding, the entries in the time interval are represented in a sequence of entries. Each entry includes:
+# encoding_type = bounds
+
+# if $ENABLE_ENCODING and ($ENABLE_ENCODING == true or $ENABLE_ENCODING == True or $ENABLE_ENCODING == TRUE) then set enable_encoding = true
+# if $ENCODING_TOLERANCE then set encoding_tolerance = $ENCODING_TOLERANCE
+# if $ENCODING_TYPE then encoding_type = $ENCODING_TYPE
 
 :other-settings:
 set deploy_local_script = false
-set syslog_monitoring = false
 set create_table = true
 set update_tsd_info = true
 set archive = true
@@ -336,11 +470,7 @@ threshold_time = 60 seconds
 threshold_volume = 10KB
 
 if $DEPLOY_LOCAL_SCRIPT == true or $DEPLOY_LOCAL_SCRIPT == True or $DEPLOY_LOCAL_SCRIPT == TRUE then set deploy_local_script=true
-if $SYSLOG_MONITORING == true or $SYSLOG_MONITORING == True or $SYSLOG_MONITORING == TRUE then set syslog_monitoring = true
 
-if !SYSLOG_MONITORING == true and not !anylog_broker_port then
-do echo "Unable to deploy syslog support - broker port is required"
-do set SYSLOG_MONITORING = false
 
 if $COMPRESS_FILE == false or $COMPRESS_FILE == False or $COMPRESS_FILE == FALSE then set compress_file=false
 if $WRITE_IMMEDIATE == false or $WRITE_IMMEDIATE == False or $WRITE_IMMEDIATE == FALSE then set write_immediate=false
@@ -374,6 +504,11 @@ goto terminate-scripts
 # :missing-node-name:
 # print "Missing node name, cannot continue..."
 # goto terminate-scripts
+
+:nic-error:
+echo "Invalid NIC type " + !nic_Type
+return
+
 
 :missing-license-key:
 print "Missing license key, cannot continue..."

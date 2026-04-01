@@ -20,7 +20,7 @@
 #  }
 # ]}
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/customers/nov_telegraf.al
+# process !local_scripts/customers/nov_telegraf.al
 
 on error ignore
 

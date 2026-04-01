@@ -5,7 +5,7 @@
 # --> BROKER (if set)
 # If an overlay_ip is declared, it wil be used as the internal IP
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/demo-scripts/network_configs.al
+# process !local_scripts/demo-scripts/network_configs.al
 
 :tcp-networking:
 on error goto tcp-networking-error

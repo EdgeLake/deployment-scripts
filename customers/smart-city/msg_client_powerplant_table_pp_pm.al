@@ -40,7 +40,7 @@ if not !default_dbms then default_dbms=cos
         column.b_n_voltage.float="bring [B_N_Voltage]" and
         column.c_current.float="bring [C_Current]" and
         column.c_n_voltage.float="bring [C_N_Voltage]" and
-        column.comms_status.bool="bring [CommsStatus]" and
+        column.comms_status=(type=bool and value="bring [CommsStatus]") and
         column.energy_multiplier.int="bring [EnergyMultiplier]" and
         column.frequency.float="bring [Frequency]" and
         column.power_factor.int="bring [PowerFactor]" and

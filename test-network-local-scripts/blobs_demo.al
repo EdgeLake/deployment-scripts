@@ -1,7 +1,7 @@
 #---------------------------------------------------------------------------------------------------------------------#
 # AnyLog scripts used for demo for blobs data
 #---------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/test-network-local-scripts/blobs_demo.al
+# process !local_scripts/test-network-local-scripts/blobs_demo.al
 on error ignore
 
 :declare-params:
@@ -11,9 +11,9 @@ factory_policy = factory-imgs
 people_policy = people-videos
 
 :declare-policies:
-process !anylog_path/deployment-scripts/data-generator/blobs_car_videos.al
-process !anylog_path/deployment-scripts/data-generator/blobs_factory_images.al
-process !anylog_path/deployment-scripts/data-generator/blobs_people_videos.al
+process !local_scripts/data-generator/blobs_car_videos.al
+process !local_scripts/data-generator/blobs_factory_images.al
+process !local_scripts/data-generator/blobs_people_videos.al
 
 :msg-client:
 on error call msg-client-error

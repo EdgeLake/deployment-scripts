@@ -8,7 +8,7 @@
 #   - Deploying FLEDGE: https://github.com/AnyLog-co/lfedge-code/tree/main/fledges
 #   - AnyLog Northbound Plugin on FLEDGE: https://github.com/AnyLog-co/lfedge-code/tree/main/fledge
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/demo-scripts/fledge.al
+# process !local_scripts/demo-scripts/fledge.al
 
 :set-params:
 if not !mqtt_log then set mqtt_log = false

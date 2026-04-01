@@ -1,9 +1,10 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # generic process to declare policy on blockchain (using node key)
 #-----------------------------------------------------------------------------------------------------------------------
-# process !local_scripts/policies/publish_policy.al
+# process !local_scripts/node-deployment/policies/publish_policy.al
 on error ignore
 if !debug_mode == true then set debug on
+
 
 :set-params:
 error_code = 0
@@ -30,10 +31,11 @@ if !debug_mode == true then print "Declare policy on blockchain"
 on error call declare-policy-error
 blockchain prepare policy !new_policy
 
-if !is_config == true then blockchain insert where policy=!new_policy and local=true
+policy_type = from !new_policy  bring [*]
+if !policy_type == config then
+do blockchain insert where policy=!new_policy and local=true
+do config_policy = !new_policy
 else blockchain insert where policy=!new_policy and local=true and master=!ledger_conn
-# else if !node_policy == true and !blockchain_source == master then blockchain insert where policy=!new_policy and local=true and blockchain=optimism
-# else blockchain insert where policy=!new_policy and local=true
 
 :end-script:
 end script
