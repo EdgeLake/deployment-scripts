@@ -5,6 +5,9 @@
 on error ignore
 if !debug_mode == true then set debug on
 
+set debug on
+trace level = 3
+
 :set-params:
 error_code = 0
 
