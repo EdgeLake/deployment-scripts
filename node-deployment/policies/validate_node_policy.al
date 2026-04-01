@@ -39,7 +39,7 @@ do goto end-script
 else goto mismatch-error
 
 :overlay-check:
-if !tcp_bind == false and !overlay_ip then
+if !tcp_bind == false and !overlay_ip and not !is_policy then
 <do is_policy = blockchain get !node_type where
     company=!company_name and
     name=!node_name and
@@ -56,7 +56,7 @@ do goto end-script
 else goto mismatch-error
 
 :generic-check:
-if !tcp_bind == false then
+if !tcp_bind == false and not !is_policy then
 <do is_policy = blockchain get !node_type where
     company=!company_name and
     name=!node_name and
