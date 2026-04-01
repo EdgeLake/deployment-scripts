@@ -14,6 +14,8 @@
 
 if $EXCEPTION_TRACEBACK == true or $EXCEPTION_TRACEBACK == True or $EXCEPTION_TRACEBACK == TRUE then set exception traceback on
 
+if $TRACE_LEVEL == 1 or $TRACE_LEVEL == 3 then trace level = $TRACE_LEVEL
+
 :debug-mode:
 on error ignore
 set debug_mode = false
@@ -74,9 +76,11 @@ process !local_scripts/node-deployment/policies/config_policy.al
 if !debug_mode == true then print "Validate everything is running as expected"
 get processes
 if !enable_mqtt == true then get msg client
+if $TRACE_LEVEL == 1 or $TRACE_LEVEL == 3 then  trace level = 0
 end script
 
 :terminate-scripts:
+if $TRACE_LEVEL == 1 or $TRACE_LEVEL == 3 then  trace level = 0
 exit scripts
 
 
