@@ -278,7 +278,7 @@ if $PARTITION_SYNC then set partition_sync = $PARTITION_SYNC
 
 :operator-ha:
 set enable_ha = false
-start_data = -30d
+start_date = -30d
 
 if $ENABLE_HA == true or $ENABLE_HA == TRUE or $ENABLE_HA == True then set enable_ha=true
 if $START_DATE then start_date = $START_DATE
