@@ -36,6 +36,7 @@ blockchain insert where policy=!new_policy and local=true and master=!ledger_con
 
 
 :end-script:
+set debug off 
 end script
 
 :private-key-error:
