@@ -3,7 +3,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # process !local_scripts/node-deployment/policies/publish_policy.al
 on error ignore
-if !debug_mode == true then set debug on
+
 
 
 :set-params:

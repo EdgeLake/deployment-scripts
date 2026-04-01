@@ -3,7 +3,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # process !local_scripts/node-deployment/database/configure_dbms_system_query.al
 on error ignore
-if !debug_mode == true then set debug on
+
 
 :system-query-dbms:
 if !debug_mode == true then print "Connect to system_query database"

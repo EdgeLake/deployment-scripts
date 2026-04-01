@@ -14,7 +14,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # process !local_scripts/node-deployment/policies/declare_cluster_policy.al
 on error ignore
-if !debug_mode == true then set debug on
+
 
 set create_policy = false
 

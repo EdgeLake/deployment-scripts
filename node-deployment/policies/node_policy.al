@@ -22,7 +22,7 @@
 # process !local_scripts/node-deployment/policies/node_policy.al
 
 
-if !debug_mode == true then set debug on
+
 
 on error ignore
 set create_policy = false

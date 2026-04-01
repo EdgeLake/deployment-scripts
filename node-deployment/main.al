@@ -16,15 +16,6 @@ if $EXCEPTION_TRACEBACK == true or $EXCEPTION_TRACEBACK == True or $EXCEPTION_TR
 
 if $TRACE_LEVEL == 1 or $TRACE_LEVEL == 3 then trace level = $TRACE_LEVEL
 
-:debug-mode:
-on error ignore
-set debug_mode = false
-if $DEBUG_MODE == true or  $DEBUG_MODE == True or $DEBUG_MODE == TRUE then set debug_mode=true
-if !debug_mode == true then
-do set debug on
-do print "Set Script defined configs"
-else set debug off
-
 :disable-auth:
 set echo queue on
 set authentication off

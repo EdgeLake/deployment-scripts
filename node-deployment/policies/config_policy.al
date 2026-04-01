@@ -26,7 +26,7 @@
 
 on error ignore
 set create_config = false
-if !debug_mode == true then set debug on
+
 
 :check-policy:
 if !debug_mode == true then print "Check whether config policy exists - if exists then goes to declare policy"
