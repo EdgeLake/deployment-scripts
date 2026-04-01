@@ -24,10 +24,6 @@
 #----------------------------------------------------------------------------------------------------------------------#
 # process !local_scripts/node-deployment/policies/config_policy.al
 
-reset error log
-reset echo queue
-reset event log
-
 on error ignore
 set create_config = false
 if !debug_mode == true then set debug on
