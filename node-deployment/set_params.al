@@ -263,7 +263,7 @@ partition_sync = 1 day
 
 if $MEMBER and $MEMBER.int then member = $MEMBER
 if $IS_MAIN and ($IS_MAIN == true or $IS_MAIN == True or $IS_MAIN == TRUE) then set is_main = true
-else if $IS_MAIN ($IS_MAIN == false or $IS_MAIN == False  or $IS_MAIN == FALSE) then set is_main = false
+else if $IS_MAIN and ($IS_MAIN == false or $IS_MAIN == False  or $IS_MAIN == FALSE) then set is_main = false
 
 if $ENABLE_PARTITIONS == false or $ENABLE_PARTITIONS == False or $ENABLE_PARTITIONS == FALSE then set enable_partitions=false
 
@@ -295,8 +295,8 @@ video_port = 32800
 video_grpc_dir = !anylog_path/AnyLog-Network/external_lib/frame_modeling
 # video_dbms = !default_dbms + "_blobs"
 
-if $ENABLE_VIDEO_STREAMING == true or $ENABLE_VIDEO_STREAMING == True or $ENABLE_VIDEO_STREAMING == TRUE or then enable_video_streaming=true
-if $ENABLE_DETECTIONS == true or $ENABLE_DETECTIONS == True or or $ENABLE_DETECTIONS == TRUE then set enable_detections=true
+if $ENABLE_VIDEO_STREAMING == true or $ENABLE_VIDEO_STREAMING == True or $ENABLE_VIDEO_STREAMING == TRUE then enable_video_streaming=true
+if $ENABLE_DETECTIONS == true or $ENABLE_DETECTIONS == True or $ENABLE_DETECTIONS == TRUE then set enable_detections=true
 
 if $VIDEO_URL then set video_url = $VIDEO_URL
 if $VIDEO_PORT then set video_port = $VIDEO_PORT
