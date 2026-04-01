@@ -5,6 +5,7 @@
 on error ignore
 
 
+set debug on
 
 :set-params:
 error_code = 0
