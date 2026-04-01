@@ -3,6 +3,8 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # process !local_scripts/node-deployment/policies/validate_node_policy.al
 
+set debug on
+
 on error ignore
 if !debug_mode == true then set debug on
 
@@ -23,7 +25,7 @@ else if !tcp_bind == true and !overlay_ip then
     ip = !overlay_ip and
     port = !anylog_server_port bring.first>
 do goto end-script
-elise !tcp_bind == false and !overlay_ip then
+else if !tcp_bind == false and !overlay_ip then
 <do is_policy = blockchain get !node_type where
     company=!company_name and
     name=!node_name and
