@@ -23,6 +23,12 @@ else if !tcp_bind == true and !overlay_ip then
     ip = !overlay_ip and
     port = !anylog_server_port bring.first>
 do goto end-script
+elise !tcp_bind == false and !overlay_ip then
+<do is_policy = blockchain get !node_type where
+    company=!company_name and
+    name=!node_name and
+    local_ip = !overlay_ip and
+    port = !anylog_server_port bring.first>
 else if !tcp_bind == true then
 <do is_policy = blockchain get !node_type where
     company=!company_name and
@@ -37,6 +43,7 @@ else if !tcp_bind == false then
     ip = !external_ip and
     local_ip = !ip and
     port = !anylog_server_port bring.first>
+
 do goto end-script
 
 if !node_type == operator and !is_policy then operator_id = from !is_policy bring [*][id]

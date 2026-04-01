@@ -9,9 +9,6 @@ if !debug_mode == true then set debug on
 :set-params:
 error_code = 0
 
-set debug on
-trace level = 3
-
 :private-key:
 if !debug_mode == true then print "Check whether authentication is enabled and that private key exists"
 
@@ -41,8 +38,6 @@ do config_policy = !new_policy
 else blockchain insert where policy=!new_policy and local=true and master=!ledger_conn
 
 :end-script:
-set debug off
-trace level = 0
 end script
 
 :private-key-error:
