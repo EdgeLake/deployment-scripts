@@ -99,7 +99,7 @@ do goto publish-policy
 goto publish-policy
 
 :operator-scripts:
-<set policy new_policy [config][script] = [
+<set policy new_policy [config] = {} and [config][script] = [
     "process !local_scripts/node-deployment/database/deploy_database.al",
     "process !local_scripts/node-deployment/connect_blockchain.al",
     "process !local_scripts/node-deployment/policies/cluster_policy.al",
@@ -118,7 +118,7 @@ goto publish-policy
     "process !anylog_path/deployment-scripts/southbound-monitoring/deploy_monitoring.al",
     "if !deploy_local_script == true then process !local_scripts/node-deployment/local_script.al",
     "if !is_edgelake == false then process !local_scripts/node-deployment/policies/license_policy.al"
-]>
+] >
 
 :publish-policy:
 if !debug_mode == true then print "Declare policy on blockchain"
