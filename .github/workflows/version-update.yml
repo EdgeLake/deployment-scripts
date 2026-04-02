@@ -5,6 +5,7 @@ on:
     branches:
       - os-dev
       - pre-develop
+      - ms-dev
 
 permissions:
   contents: write
