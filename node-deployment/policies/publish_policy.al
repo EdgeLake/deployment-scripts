@@ -34,7 +34,7 @@ blockchain prepare policy !new_policy
 
 policy_type = from !new_policy  bring [*]
 if !policy_type == config then
-do blockchain insert where policy=!new_policy and local=true
+do blockchain insert where policy=!new_policy and local=true and master=!ledger_conn
 do config_policy = !new_policy
 else blockchain insert where policy=!new_policy and local=true and master=!ledger_conn
 
