@@ -12,16 +12,23 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # python3.11 AnyLog-Network/anylog_enterprise/anylog.py process $ANYLOG_PATH/deployment-scripts/node-deployment/main.al
 
-if $EXCEPTION_TRACEBACK == true or $EXCEPTION_TRACEBACK == True or $EXCEPTION_TRACEBACK == TRUE then set exception traceback on
+on error ignore
 
-if $TRACE_LEVEL == 1 or $TRACE_LEVEL == 3 then trace level = $TRACE_LEVEL
+:set-debug:
+on error call set-debug-error
+set debug_mode = false
+if $ENABLE_TRACEBACK == true or $ENABLE_TRACEBACK == True or $ENABLE_TRACEBACK == TRUE then
+do set exception traceback on
+do set debug_mode = true
+if $TRACE_LEVEL then trace level = $TRACE_LEVEL
+if $TRACE_LEVEL and !debug_mode == false then do set debug_mode = true
 
 :disable-auth:
 set echo queue on
 set authentication off
 
 :is-edgelake:
-if !debug_mode == true then print "Check whether if an EdgeLake or AnyLog Deployment"
+#if !debug_mode == true then print "Check whether if an EdgeLake or AnyLog Deployment"
 
 # check whether we're running EdgeLake or AnyLog
 set is_edgelake = false
@@ -31,14 +38,14 @@ if !deployment_type != AnyLog then set is_edgelake = true
 if !is_edgelake == true and $NODE_TYPE == publisher then edgelake-error
 
 :directories:
-if !debug_mode == true then print "Set directory paths"
+#if !debug_mode == true then print "Set directory paths"
 
 # directory where deployment-scripts is stored
 set anylog_path = /app
 if $ANYLOG_PATH then set anylog_path = $ANYLOG_PATH
 else if $EDGELAKE_PATH then set anylog_path = $EDGELAKE_PATH
 
-if !debug_mode == true then print "set home path"
+#if !debug_mode == true then print "set home path"
 set anylog home !anylog_path
 
 local_scripts = !anylog_path/deployment-scripts
@@ -51,24 +58,33 @@ if !is_dir == false then
 do print "missing local scripts directory": !local_scripts
 do goto terminate-scripts
 
-if !debug_mode == true then print "Create work directories"
+#if !debug_mode == true then print "Create work directories"
 create work directories
 
 :set-params:
-if !debug_mode == true then print "Set environment params"
+#if !debug_mode == true then print "Set environment params"
 process !local_scripts/node-deployment/set_params.al
 
 :set-configs:
 on error ignore
-if !debug_mode == true then print "declare configs"
+#if !debug_mode == true then print "declare configs"
 process !local_scripts/node-deployment/policies/config_policy.al
 
 :end-script:
-if !debug_mode == true then print "Validate everything is running as expected"
+#if !debug_mode == true then print "Validate everything is running as expected"
+
+#if !debug_mode == true then
+do set exception traceback off
+do set trace level = 0
+
 get processes
 if !enable_mqtt == true then get msg client
 if $TRACE_LEVEL == 1 or $TRACE_LEVEL == 3 then  trace level = 0
 end script
+
+:set-debug-error:
+echo "Failed to set enable debug state"
+return
 
 :terminate-scripts:
 if $TRACE_LEVEL == 1 or $TRACE_LEVEL == 3 then  trace level = 0
