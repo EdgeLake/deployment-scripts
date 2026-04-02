@@ -124,6 +124,8 @@ print "OPERATOR CONFIGS"
     "if !deploy_local_script == true then process !local_scripts/node-deployment/local_script.al",
     "if !is_edgelake == false then process !local_scripts/node-deployment/policies/license_policy.al"
 ]>
+print "NEW POLICY"
+print !new_policy
 
 :publish-policy:
 if !debug_mode == true then print "Declare policy on blockchain"
