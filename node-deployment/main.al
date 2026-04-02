@@ -73,7 +73,7 @@ process !local_scripts/node-deployment/policies/config_policy.al
 :end-script:
 #if !debug_mode == true then print "Validate everything is running as expected"
 
-#if !debug_mode == true then
+if !debug_mode == true then
 do set exception traceback off
 do set trace level = 0
 

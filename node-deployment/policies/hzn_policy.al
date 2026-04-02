@@ -39,7 +39,7 @@ if !is_privileged then set policy new_policy [hzn][privileged] = !is_privileged.
 if $HZN_PATTERN then set policy new_policy [hzn][pattern] = $HZN_PATTERN
 
 :publish-policy:
-if !debug_mode == true then print "Publish policy"
+#if !debug_mode == true then print "Publish policy"
 
 process !local_scripts/node-deployment/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error

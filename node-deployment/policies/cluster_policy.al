@@ -19,7 +19,7 @@ on error ignore
 set create_policy = false
 
 :check-policy:
-if !debug_mode == true then print "Check whether cluster policy exists"
+#if !debug_mode == true then print "Check whether cluster policy exists"
 
 on error ignore
 cluster_id = blockchain get cluster where name=!cluster_name and company=!company_name bring.first [*][id] 
@@ -27,13 +27,13 @@ if !cluster_id then goto end-script
 if not !cluster_id and !create_policy == true then goto declare-policy-error
 
 :prep-policy:
-if !debug_mode == true then print "Create cluster policy"
+#if !debug_mode == true then print "Create cluster policy"
 
 on error ignore
 new_policy = create policy cluster with defaults where company=!company_name and name=!cluster_name
 
 :publish-policy:
-if !debug_mode == true then print "Declare policy on blockchain"
+#if !debug_mode == true then print "Declare policy on blockchain"
 
 set is_node_policy = true
 process !local_scripts/node-deployment/policies/publish_policy.al

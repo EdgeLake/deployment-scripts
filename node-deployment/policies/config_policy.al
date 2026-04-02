@@ -29,7 +29,7 @@ set create_config = false
 
 
 :check-policy:
-if !debug_mode == true then print "Check whether config policy exists - if exists then goes to declare policy"
+#if !debug_mode == true then print "Check whether config policy exists - if exists then goes to declare policy"
 
 config_id = blockchain get config where company=!company_name and name=!config_name and node_type=!node_type bring.first [*][id]
 if !config_id then goto config-policy
@@ -37,7 +37,7 @@ if not !config_id and !create_config == true then goto declare-policy-error
 
 
 :prepare-new-policy:
-if !debug_mode == true then print "Create base for new config policy"
+#if !debug_mode == true then print "Create base for new config policy"
 
 new_policy = ""
 set policy new_policy [config] = {}
@@ -123,7 +123,7 @@ print "NEW POLICY"
 print !new_policy
 
 :publish-policy:
-if !debug_mode == true then print "Declare policy on blockchain"
+#if !debug_mode == true then print "Declare policy on blockchain"
 
 set is_config = true
 process !local_scripts/node-deployment/policies/publish_policy.al
@@ -137,7 +137,7 @@ set is_config = false
 goto check-policy
 
 :config-policy:
-if !debug_mode == true then print "Deploy Policy"
+#if !debug_mode == true then print "Deploy Policy"
 
 on error goto config-policy-error
 config from policy where id = !config_id

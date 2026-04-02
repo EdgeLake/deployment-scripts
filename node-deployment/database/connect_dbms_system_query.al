@@ -6,7 +6,7 @@ on error ignore
 
 
 :system-query-dbms:
-if !debug_mode == true then print "Connect to system_query database"
+#if !debug_mode == true then print "Connect to system_query database"
 on error goto system-query-db-error
 if !system_query_db == sqlite then connect dbms system_query where type=sqlite and memory=!memory
 <else if !system_query_db == psql then connect dbms system_query where
