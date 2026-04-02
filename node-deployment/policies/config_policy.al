@@ -39,17 +39,12 @@ if not !config_id and !create_config == true then goto declare-policy-error
 :prepare-new-policy:
 if !debug_mode == true then print "Create base for new config policy"
 
-
-print "OPERATOR CONFIGS"
-config_version = system grep -m1 "^version" !local_scripts/setup.cfg | awk -F " = " '{print $2}' | xargs
-
 new_policy = ""
 set policy new_policy [config] = {}
 set policy new_policy [config][name] = !config_name
 set policy new_policy [config][company] = !company_name
 set policy new_policy [config][node_type] = !node_type
 set policy new_policy [config][version] = !config_version
-
 
 :network-configs:
 process !local_scripts/node-deployment/policies/config_policy_networking.al
