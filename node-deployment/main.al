@@ -12,8 +12,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # python3.11 AnyLog-Network/anylog_enterprise/anylog.py process $ANYLOG_PATH/deployment-scripts/node-deployment/main.al
 
-on error ignore
-
+on error d
 :set-debug:
 on error call set-debug-error
 set debug_mode = false
@@ -75,9 +74,8 @@ process !local_scripts/node-deployment/policies/config_policy.al
 :end-script:
 #if !debug_mode == true then print "Validate everything is running as expected"
 
-if !debug_mode == true then
-do set exception traceback off
-do set trace level = 0
+if !debug_mode == true then set exception traceback off
+if $TRACE_LEVEL != 0 then set trace level = 0
 
 get processes
 if !enable_mqtt == true then get msg client
