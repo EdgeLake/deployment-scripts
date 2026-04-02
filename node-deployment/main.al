@@ -21,6 +21,9 @@ if $ENABLE_TRACEBACK == true or $ENABLE_TRACEBACK == True or $ENABLE_TRACEBACK =
 do set exception traceback on
 do set debug_mode = true
 
+trace method on blockchain sync
+
+
 # if $TRACE_LEVEL then trace level = $TRACE_LEVEL
 # if $TRACE_LEVEL and !debug_mode == false then do set debug_mode = true
 
