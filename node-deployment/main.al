@@ -20,8 +20,8 @@ set debug_mode = false
 if $ENABLE_TRACEBACK == true or $ENABLE_TRACEBACK == True or $ENABLE_TRACEBACK == TRUE then
 do set exception traceback on
 do set debug_mode = true
-if $TRACE_LEVEL then trace level = $TRACE_LEVEL
-if $TRACE_LEVEL and !debug_mode == false then do set debug_mode = true
+# if $TRACE_LEVEL then trace level = $TRACE_LEVEL
+# if $TRACE_LEVEL and !debug_mode == false then do set debug_mode = true
 
 :disable-auth:
 set echo queue on
