@@ -39,6 +39,8 @@ if not !config_id and !create_config == true then goto declare-policy-error
 :prepare-new-policy:
 if !debug_mode == true then print "Create base for new config policy"
 
+config_version = system grep -m1 "^version" !local_scripts/setup.cfg | awk -F " = " '{print $2}' | xargs
+
 new_policy = ""
 set policy new_policy [config] = {}
 set policy new_policy [config][name] = !config_name
@@ -79,7 +81,8 @@ if !node_type == master or !node_type == query then
 do goto publish-policy
 
 :publisher-scripts:
-<set policy new_policy [config][script] = [
+if !node_type == publisher then
+<do set policy new_policy [config][script] = [
     "process !local_scripts/node-deployment/database/deploy_database.al",
     "process !local_scripts/node-deployment/connect_blockchain.al",
     "!is_hidden == false then process !local_scripts/node-deployment/policies/node_policy.al",
