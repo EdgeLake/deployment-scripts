@@ -3,10 +3,18 @@
 # If params were not set in set_params.al section, then utilize defaults
 #-----------------------------------------------------------------------------------------------------------------------
 # process !local_scripts/database/configure_dbms_nosql.al
+on error ignore
+
 
 if !enable_nosql == false then goto blobs-archiver
+#if !enable_nosql == true and !nosql_type == akave then goto blobs-archiver
+if !enable_nosql == true and $NOSQL_TYPE == akave then goto blobs-archiver
+#do process !local_scripts/database/configure_dbms_akave.al
+do goto end-script
 
 :connect-dbms:
+#if !debug_mode == true then print "Deploy blobs database " !default_dbms
+
 on error goto connect-dbms-error
 if !nosql_user and !nosql_passwd then
 <do connect dbms !default_dbms where
@@ -19,8 +27,17 @@ if !nosql_user and !nosql_passwd then
 else connect dbms !default_dbms where type=!nosql_type and ip=!nosql_ip and port=!nosql_port
 
 :blobs-archiver:
+#if !debug_mode == true then print "Enable blobs archiver"
+
+#----------------------------------------------------------------------------------------------------------------------#
+# `run blobs archiver` is how AnyLog / EdgeLake configures storing blobs into database and/or file.
+# - if !blobs_dbms is True then it'll store to nosql database (ex. mongo, s3, akave)
+# - if !blobs_folder is True then it'll store to file (blobs_dir)
+# The 2 options are independent of one another
+#
+# `!blobs_dbms` is autoconfigured based on `!enable_nosql`
+#----------------------------------------------------------------------------------------------------------------------#
 on error call blobs-archiver-error
-if !blobs_dbms == false then set blobs_folder = true
 <run blobs archiver where
     dbms=!blobs_dbms and
     folder=!blobs_folder and

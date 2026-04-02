@@ -1,4 +1,7 @@
-# process !anylog_path/deployment-scripts/test-network-local-scripts/blobs_demo.al
+#---------------------------------------------------------------------------------------------------------------------#
+# AnyLog scripts used for demo for blobs data
+#---------------------------------------------------------------------------------------------------------------------#
+# process !local_scripts/test-network-local-scripts/blobs_demo.al
 on error ignore
 
 :declare-params:
@@ -8,11 +11,12 @@ factory_policy = factory-imgs
 people_policy = people-videos
 
 :declare-policies:
-process !anylog_path/deployment-scripts/demo-scripts/blobs_car_videos.al
-process !anylog_path/deployment-scripts/demo-scripts/blobs_factory_images.al
-process !anylog_path/deployment-scripts/demo-scripts/blobs_people_videos.al
+process !local_scripts/data-generator/blobs_car_videos.al
+process !local_scripts/data-generator/blobs_factory_images.al
+process !local_scripts/data-generator/blobs_people_videos.al
 
-:msg-clien:
+:msg-client:
+on error call msg-client-error
 if !anylog_broker_port then
 <do run msg client where broker=local and port=!anylog_broker_port and log=false and topic=(
     name=!car_policy and
@@ -46,3 +50,10 @@ if not !anylog_broker_port then
     name=!people_policy and
     policy=!people_policy
 )>
+
+:end-script: 
+end script
+
+:msg-client-error:
+echo "Failed to declare message client process" 
+goto end-script
