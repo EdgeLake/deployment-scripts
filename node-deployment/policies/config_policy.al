@@ -39,6 +39,8 @@ if not !config_id and !create_config == true then goto declare-policy-error
 :prepare-new-policy:
 if !debug_mode == true then print "Create base for new config policy"
 
+
+print "OPERATOR CONFIGS"
 config_version = system grep -m1 "^version" !local_scripts/setup.cfg | awk -F " = " '{print $2}' | xargs
 
 new_policy = ""
@@ -101,6 +103,7 @@ if !node_type == publisher then
 do goto publish-policy
 
 :operator-scripts:
+print "OPERATOR CONFIGS"
 <set policy new_policy [config][script] = [
     "process !local_scripts/node-deployment/database/deploy_database.al",
     "process !local_scripts/node-deployment/connect_blockchain.al",
