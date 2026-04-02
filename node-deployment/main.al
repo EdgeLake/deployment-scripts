@@ -12,7 +12,6 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # python3.11 AnyLog-Network/anylog_enterprise/anylog.py process $ANYLOG_PATH/deployment-scripts/node-deployment/main.al
 
-on error d
 :set-debug:
 on error call set-debug-error
 set debug_mode = false
