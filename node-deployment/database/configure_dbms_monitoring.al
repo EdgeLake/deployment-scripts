@@ -13,7 +13,6 @@ db_name = monitoring
 connect dbms !db_name where type=sqlite
 
 :data-partitioning:
-#if !debug_mode == true then print "Set Partitioning"
 if !enable_partitions == true then
 do on error goto partitioning-error
 do partition monitoring * using insert_timestamp by 12 hours

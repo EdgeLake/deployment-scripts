@@ -1,7 +1,6 @@
 set create_policy = false
 
 :check-policy:
-#if !debug_mode == true then print "Check whether blockchain info policy exists"
 
 on error ignore
 is_policy = blockchain get blockchain-info where company=!company_name and public_key=!blockchain_public_key and chain_id=!chain_id
@@ -9,7 +8,6 @@ if !is_policy then goto end-script
 else if not !is_policy and !create_policy == true then goto declare-policy-error
 
 :prep-policy:
-#if !debug_mode == true then print "Create blockchain info policy"
 
 on error ignore
 <new_policy = {
@@ -22,7 +20,6 @@ on error ignore
 }}>
 
 :publish-policy:
-#if !debug_mode == true then print "Declare policy on blockchain"
 
 process !local_scripts/node-deployment/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error

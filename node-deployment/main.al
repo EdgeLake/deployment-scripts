@@ -14,13 +14,19 @@
 
 :set-debug:
 on error call set-debug-error
-set debug_mode = false
-print $ENABLE_TRACEBACK
 if $ENABLE_TRACEBACK == true or $ENABLE_TRACEBACK == True or $ENABLE_TRACEBACK == TRUE then
 do set exception traceback on
 do set debug_mode = true
 
-trace method on blockchain sync
+if $TRACE_LEVEL == 1 then
+do trace level = 1
+do set debug_mode = true
+else if $TRACE_LEVEL == 2 then
+do trace level = 1
+do set debug_mode = true
+else if $TRACE_LEVEL == 3 then
+do trace level = 1
+do set debug_mode = true
 
 
 # if $TRACE_LEVEL then trace level = $TRACE_LEVEL
@@ -31,7 +37,6 @@ set echo queue on
 set authentication off
 
 :is-edgelake:
-#if !debug_mode == true then print "Check whether if an EdgeLake or AnyLog Deployment"
 
 # check whether we're running EdgeLake or AnyLog
 set is_edgelake = false
@@ -41,14 +46,12 @@ if !deployment_type != AnyLog then set is_edgelake = true
 if !is_edgelake == true and $NODE_TYPE == publisher then edgelake-error
 
 :directories:
-#if !debug_mode == true then print "Set directory paths"
 
 # directory where deployment-scripts is stored
 set anylog_path = /app
 if $ANYLOG_PATH then set anylog_path = $ANYLOG_PATH
 else if $EDGELAKE_PATH then set anylog_path = $EDGELAKE_PATH
 
-#if !debug_mode == true then print "set home path"
 set anylog home !anylog_path
 
 local_scripts = !anylog_path/deployment-scripts
@@ -61,27 +64,25 @@ if !is_dir == false then
 do print "missing local scripts directory": !local_scripts
 do goto terminate-scripts
 
-#if !debug_mode == true then print "Create work directories"
 create work directories
 
 :set-params:
-#if !debug_mode == true then print "Set environment params"
 process !local_scripts/node-deployment/set_params.al
 
 :set-configs:
 on error ignore
-#if !debug_mode == true then print "declare configs"
 process !local_scripts/node-deployment/policies/config_policy.al
 
 :end-script:
-#if !debug_mode == true then print "Validate everything is running as expected"
 
-if !debug_mode == true then set exception traceback off
-if $TRACE_LEVEL != 0 then set trace level = 0
+on error ignore
+if !debug_mode == true then
+do set exception traceback off
+do trace level = 0
+
 
 get processes
 if !enable_mqtt == true then get msg client
-if $TRACE_LEVEL == 1 or $TRACE_LEVEL == 3 then  trace level = 0
 end script
 
 :set-debug-error:

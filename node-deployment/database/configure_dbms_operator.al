@@ -10,7 +10,6 @@ db_name = !default_dbms
 process !local_scripts/node-deployment/database/connect_dbms_sql.al
 
 :data-partitioning:
-#if !debug_mode == true then print "Set Partitioning"
 if !enable_partitions == true then
 do on error goto partitioning-error
 do partition !default_dbms !table_name using !partition_column by !partition_interval
