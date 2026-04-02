@@ -26,10 +26,9 @@
 
 on error ignore
 set create_config = false
-if !debug_mode == true then set debug on
+
 
 :check-policy:
-if !debug_mode == true then print "Check whether config policy exists - if exists then goes to declare policy"
 
 config_id = blockchain get config where company=!company_name and name=!config_name and node_type=!node_type bring.first [*][id]
 if !config_id then goto config-policy
@@ -37,11 +36,6 @@ if not !config_id and !create_config == true then goto declare-policy-error
 
 
 :prepare-new-policy:
-if !debug_mode == true then print "Create base for new config policy"
-
-
-print "OPERATOR CONFIGS"
-config_version = system grep -m1 "^version" !local_scripts/setup.cfg | awk -F " = " '{print $2}' | xargs
 
 new_policy = ""
 set policy new_policy [config] = {}
@@ -49,7 +43,6 @@ set policy new_policy [config][name] = !config_name
 set policy new_policy [config][company] = !company_name
 set policy new_policy [config][node_type] = !node_type
 set policy new_policy [config][version] = !config_version
-
 
 :network-configs:
 process !local_scripts/node-deployment/policies/config_policy_networking.al
@@ -103,7 +96,6 @@ if !node_type == publisher then
 do goto publish-policy
 
 :operator-scripts:
-print "OPERATOR CONFIGS"
 <set policy new_policy [config][script] = [
     "process !local_scripts/node-deployment/database/deploy_database.al",
     "process !local_scripts/node-deployment/connect_blockchain.al",
@@ -124,11 +116,8 @@ print "OPERATOR CONFIGS"
     "if !deploy_local_script == true then process !local_scripts/node-deployment/local_script.al",
     "if !is_edgelake == false then process !local_scripts/node-deployment/policies/license_policy.al"
 ]>
-print "NEW POLICY"
-print !new_policy
 
 :publish-policy:
-if !debug_mode == true then print "Declare policy on blockchain"
 
 set is_config = true
 process !local_scripts/node-deployment/policies/publish_policy.al
@@ -142,7 +131,6 @@ set is_config = false
 goto check-policy
 
 :config-policy:
-if !debug_mode == true then print "Deploy Policy"
 
 on error goto config-policy-error
 config from policy where id = !config_id

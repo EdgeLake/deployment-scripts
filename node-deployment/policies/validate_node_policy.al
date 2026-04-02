@@ -11,14 +11,10 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # process !local_scripts/node-deployment/policies/validate_node_policy.al
 
-set debug on
-
 on error ignore
-if !debug_mode == true then set debug on
 
-if !debug_mode == true then print "check if node policy exists"
 
-if !enable_dns == false and not !overlay_ip then generic-check
+if !enable_dns == false and not !overlay_ip then goto generic-check
 if !enable_dns == false and !overlay_ip then goto overlay-check
 
 :dns-check:

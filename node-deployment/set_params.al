@@ -16,7 +16,7 @@
 # process !local_scripts/node-deployment//set_params.al
 on error ignore
 set debug off
-if !debug_mode == true then set debug on
+
 
 # if $DISABLE_CLI == true or  $DISABLE_CLI == True or $DISABLE_CLI == TRUE then set cli off
 
@@ -144,7 +144,6 @@ else if !master_configs == true then ledger_conn = !ip + ":" + !anylog_server_po
 else if !master_configs == false then ledger_conn = !ip + ":32048"
 
 config_version = system grep -m1 "^version" !local_scripts/setup.cfg | awk -F " = " '{print $2}' | xargs
-print !config_version
 
 :authentication:
 set enable_auth = false
