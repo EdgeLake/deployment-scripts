@@ -18,6 +18,7 @@ if $ENABLE_TRACEBACK == true or $ENABLE_TRACEBACK == True or $ENABLE_TRACEBACK =
 do set exception traceback on
 do set debug_mode = true
 
+# replace with with `if $TRACE_LEVEL then trace level = $TRACE_LEVEL` but not currently supported
 if $TRACE_LEVEL == 1 then
 do trace level = 1
 do set debug_mode = true
