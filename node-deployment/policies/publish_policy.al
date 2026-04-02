@@ -4,7 +4,6 @@
 # process !local_scripts/node-deployment/policies/publish_policy.al
 on error ignore
 
-
 :set-params:
 error_code = 0
 
