@@ -62,7 +62,6 @@ else if !blockchain_source == master then
     time=!blockchain_sync and
     dest=!blockchain_destination and
     connection=!ledger_conn>
-do blockchain seed from !ledger_conn
 
 goto end-script
 
