@@ -22,7 +22,6 @@
 if !is_edgelake == true then goto end-script
 
 :check-policy:
-#if !debug_mode == true then print "Check whether license policy exists"
 
 activation_key =  blockchain get license bring.last [license][activation_key] "{'company':'"  [license][company] "','expiration':'"  [license][expiration] "','type':'" [license][type] "'}"
 if !activation_key then goto set-license
@@ -30,7 +29,6 @@ if not !activation_key and not !license_key then goto missing-license-key
 
 :set-params:
 on error ignore
-#if !debug_mode == true then print "set params"
 set create_license = false
 
 license_key_num = !license_key[:256]
@@ -39,7 +37,6 @@ expiration = from !license_key[256:] bring [expiration]
 owner = from !license_key[256:] bring [company]
 
 :create-license:
-#if !debug_mode == true then print "Create license policy"
 on error ignore
 <new_policy = {
     "license": {
@@ -51,7 +48,6 @@ on error ignore
 }>
 
 :publish-policy:
-#if !debug_mode == true then print "Declare policy on blockchain"
 
 process !local_scripts/node-deployment/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error

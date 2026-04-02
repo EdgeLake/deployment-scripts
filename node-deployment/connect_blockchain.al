@@ -13,12 +13,10 @@ on error ignore
 if !blockchain_source == master then goto blockchain-sync
 
 :blockchain-connect:
-#if !debug_mode == true then print "Connect to optimism"
 on error goto connect-blockchain-account-error
 blockchain connect to optimism where provider=https://optimism-sepolia.infura.io/v3/532f565202744c0cb7434505859efb74
 
 :declare-blockchain-account:
-#if !debug_mode == true then print "Declare blockchain account"
 on error goto declare-blockchain-account-error
 <blockchain set account info where
     platform = !blockchain_source and
@@ -29,7 +27,6 @@ on error goto declare-blockchain-account-error
 if !contract then goto blockchain-account
 
 :create-contract:
-#if !debug_mode == true then print "Create a new smart contract"
 
 is_policy = blockchain get blockchain-info where company=!company_name and public_key=!blockchain_public_key and chain_id=!chain_id
 if !is_policy then contract = from !is_policy bring [*][contract]
@@ -40,7 +37,6 @@ do contract = blockchain deploy contract where  platform = !blockchain_source an
 do print "New Contract created: " !contract " - make sure to save contract / update config file accordingly"
 
 :blockchain-account:
-#if !debug_mode == true then print "Set blockchain account information"
 
 on error goto blockchain-account-error
 blockchain set account info where platform = !blockchain_source and contract = !contract
@@ -62,13 +58,7 @@ else if !blockchain_source == master then
     time=!blockchain_sync and
     dest=!blockchain_destination and
     connection=!ledger_conn>
-do blockchain seed from !ledger_conn
 
-goto end-script
-
-:blockchain-seed:
-on error call blockchain-seed-error
-run blockchain seed from !ledger_conn
 goto end-script
 
 :end-script:
