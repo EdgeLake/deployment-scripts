@@ -3,8 +3,6 @@
 # same can be applied with MQTT, and the policy is similar to what EdgeX generates. When deploying script on a publisher
 # node, make sure the default logical database (!default_dbms) is set to an existing logical database.
 #
-# For the data generator associated with this script please reach out to Roy Shadmon (roy@anylog.co)
-#
 # :AnyLog process:
 #   0. Connect to (NoSQL) logical database
 #   1. Set parameters
