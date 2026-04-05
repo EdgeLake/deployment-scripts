@@ -35,12 +35,12 @@ on error goto msg-client-error
     user=anyloguser and password=mqtt4AnyLog! and
     log=false and topic=(
         name=rand-data and
-        topic = BATTERY-PACK-DEVICE-LOGS and
-        topic = BATTERY-PACK-LOGS and
-        topic = CHARGER-DEVICE-LOGS and
-        topic = CHARGER-LOGS and
-        topic = VESSEL-POWER-LOGS and
-        topic = VESSEL-STATE-LOGS
+        policy = BATTERY-PACK-DEVICE-LOGS and
+        policy = BATTERY-PACK-LOGS and
+        policy = CHARGER-DEVICE-LOGS and
+        policy = CHARGER-LOGS and
+        policy = VESSEL-POWER-LOGS and
+        policy = VESSEL-STATE-LOGS
     )>
 
 get msg client
