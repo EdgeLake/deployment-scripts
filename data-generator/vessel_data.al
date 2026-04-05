@@ -19,16 +19,28 @@
 
 on error ignore
 
+:publish-policies:
+process !local_scripts/data-generator/mapping/vessel_BATTERY-PACK-DEVICE-LOGS.al
+process !local_scripts/data-generator/mapping/vessel_BATTERY-PACK-LOGS.al
+process !local_scripts/data-generator/mapping/vessel_CHARGER-DEVICE-LOGS.al
+process !local_scripts/data-generator/mapping/vessel_CHARGER-LOGS.al
+process !local_scripts/data-generator/mapping/vessel_VESSEL-POWER-LOGS.al
+process !local_scripts/data-generator/mapping/vessel_VESSEL-STATE-LOGS.al
 
+
+:msg-client:
+on error goto msg-client-error
 <run msg client where
     broker=172.104.228.251 and port=1883 and
     user=anyloguser and password=mqtt4AnyLog! and
     log=false and topic=(
         name=rand-data and
-        dbms=!default_dbms and
-        topic="rand_data" and
-        column.timestamp.timestamp = "bring [timestamp]" and
-        column.value.float = "bring [value]"
+        topic = BATTERY-PACK-DEVICE-LOGS and
+        topic = BATTERY-PACK-LOGS and
+        topic = CHARGER-DEVICE-LOGS and
+        topic = CHARGER-LOGS and
+        topic = VESSEL-POWER-LOGS and
+        topic = VESSEL-STATE-LOGS
     )>
 
 get msg client
