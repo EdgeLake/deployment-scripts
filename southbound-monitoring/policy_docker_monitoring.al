@@ -4,7 +4,7 @@
 #----------------------------------------------------------------------------------------------------------------------#
 # process !local_scripts/southbound-monitoring/policy_docker_monitoring.al
 
-set debug on
+
 
 on error ignore
 

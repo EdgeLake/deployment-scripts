@@ -65,7 +65,6 @@ else if !tcp_bind == true
     name=!node_name and
     ip = !ip and
     port = !anylog_server_port bring.first>
-do goto end-script
 else goto network-config-error
 
 :check-operator:

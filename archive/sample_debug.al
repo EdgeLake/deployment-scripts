@@ -1,11 +1,11 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # The following demonstrates using the debug mode in order to test specific script.
-# - `set debug on` will run the script line by line
+# - `` will run the script line by line
 # - `set debug interactive` will require user to call `next` after each line
 #
 # requirement: set debug_mode (as integer)
 #   - 0 will run as is
-#   - 1 will run in `set debug on`
+#   - 1 will run in ``
 #   - 2 will run in `set debug interactive`
 #-----------------------------------------------------------------------------------------------------------------------
 # for option 0 and 1 - process deployment-scripts/demo-scripts/sample_debug.al
@@ -13,7 +13,7 @@
 
 :set-params:
 on error ignore
-if !debug_mode.int == 1 then set debug on
+if !debug_mode.int == 1 then 
 if !debug_mode.int == 2 then set debug interactive
 
 rand_value = 1

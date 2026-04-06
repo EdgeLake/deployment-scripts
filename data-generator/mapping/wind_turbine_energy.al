@@ -8,12 +8,13 @@ set create_policy = false
 
 :check-policy:
 is_policy = blockchain get (mapping, transform) where id = energy
-if !is_policy then goto end-script
-else if not !is_policy and !create_table == true then goto declare-policy-error
+if not !is_policy and !create_policy == false then goto declare-policy
+else if !is_policy then goto end-script
+else if not !is_policy and !create_policy == true then goto declare-policy-error
 
 
 :declare-policy:
-<new_policy = [{
+<new_policy = {
     "mapping" : {
         "id" : "energy",
         "dbms" : !default_dbms,
@@ -46,7 +47,7 @@ else if not !is_policy and !create_table == true then goto declare-policy-error
 process !local_scripts/node-deployment/policies/publish_policy.al
 if not !error_code.int then
 do set create_policy = true
-goto check-table-policy
+goto check-policy
 
 if !error_code == 1 then goto sign-policy-error
 else if !error_code == 2 then goto prepare-policy-error

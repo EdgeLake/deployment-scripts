@@ -12,11 +12,11 @@ on error ignore
     broker=172.104.228.251 and port=1883 and
     user=anyloguser and password=mqtt4AnyLog! and
     log=false and topic=(
-        name=rand-data and
+        name=anylog-demo and
         dbms=!default_dbms and
-        topic="rand_data" and
+        table = "bring [table]" and
         column.timestamp.timestamp = "bring [timestamp]" and
-        column.value.float = "bring [value]"
+        column.value = (type=float and value="bring [value]")
     )>
 
 get msg client

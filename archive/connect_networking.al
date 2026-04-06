@@ -4,7 +4,7 @@
 
 on error ignore
 set debug off
-if !debug_mode == true then set debug on
+if !debug_mode == true then 
 
 if !overlay_ip then goto overlay-tcp-networking
 

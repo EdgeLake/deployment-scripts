@@ -13,6 +13,8 @@
 #--------------------------------------------------------------------------------------------------------------#
 # process !local_scripts/data-generator/wind_turbine_data.al
 
+set debug on
+
 on error ignore
 
 :publish-policies:
