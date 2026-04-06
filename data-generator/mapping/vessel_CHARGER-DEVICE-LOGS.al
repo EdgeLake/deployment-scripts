@@ -39,138 +39,138 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "ip_index" : {
                 "type" : "int",
                 "bring" : "[ip_index]",
-                "default" : None
+                "default" : Null
             },
             "motor_id" : {
                 "type" : "int",
                 "bring" : "[motor_id]",
-                "default" : None
+                "default" : Null
             },
             "__start__" : {"script" : ["set CHARGER-DEVICE-LOGS_counter = 0"]
             },
             "currentL1" : {
                 "type" : "float",
                 "bring" : "[currentL1]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [currentL1] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "currentL2" : {
                 "type" : "float",
                 "bring" : "[currentL2]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [currentL2] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "currentL3" : {
                 "type" : "float",
                 "bring" : "[currentL3]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [currentL3] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "voltageL1" : {
                 "type" : "float",
                 "bring" : "[voltageL1]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [voltageL1] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "voltageL2" : {
                 "type" : "float",
                 "bring" : "[voltageL2]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [voltageL2] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "voltageL3" : {
                 "type" : "float",
                 "bring" : "[voltageL3]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [voltageL3] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "inputFrequency" : {
                 "type" : "float",
                 "bring" : "[inputFrequency]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [inputFrequency] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "acCurrentLim" : {
                 "type" : "int",
                 "bring" : "[acCurrentLim]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [acCurrentLim] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "batteryCurrent" : {
                 "type" : "float",
                 "bring" : "[batteryCurrent]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [batteryCurrent] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "batteryCurrentLim" : {
                 "type" : "float",
                 "bring" : "[batteryCurrentLim]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [batteryCurrentLim] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "batteryVoltage" : {
                 "type" : "float",
                 "bring" : "[batteryVoltage]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [batteryVoltage] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "batteryVoltageLim" : {
                 "type" : "float",
                 "bring" : "[batteryVoltageLim]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [batteryVoltageLim] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "chgIbatMaxAvail" : {
                 "type" : "float",
                 "bring" : "[chgIbatMaxAvail]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [chgIbatMaxAvail] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "invTempAmb" : {
                 "type" : "int",
                 "bring" : "[invTempAmb]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [invTempAmb] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "bbTempAmb" : {
                 "type" : "int",
                 "bring" : "[bbTempAmb]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [bbTempAmb] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "externalTemp" : {
                 "type" : "int",
                 "bring" : "[externalTemp]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [externalTemp] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "signalTempAmb" : {
                 "type" : "int",
                 "bring" : "[signalTempAmb]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [signalTempAmb] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "signalTempChassis" : {
                 "type" : "int",
                 "bring" : "[signalTempChassis]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [signalTempChassis] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
@@ -268,7 +268,7 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "evseTypeStatus" : {
                 "type" : "int",
                 "bring" : "[evseTypeStatus]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [evseTypeStatus] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
@@ -289,35 +289,35 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "lockState" : {
                 "type" : "int",
                 "bring" : "[lockState]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [lockState] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "pilotDuty" : {
                 "type" : "int",
                 "bring" : "[pilotDuty]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [pilotDuty] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "pilotFreq" : {
                 "type" : "int",
                 "bring" : "[pilotFreq]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [pilotFreq] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "lV_Vbat" : {
                 "type" : "float",
                 "bring" : "[lV_Vbat]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [lV_Vbat] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "lvBattUVlim" : {
                 "type" : "float",
                 "bring" : "[lvBattUVlim]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [lvBattUVlim] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
@@ -338,7 +338,7 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "deviceSeen" : {
                 "type" : "int",
                 "bring" : "[deviceSeen]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [deviceSeen] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
@@ -366,21 +366,21 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "BBuCVersion" : {
                 "type" : "int",
                 "bring" : "[BBuCVersion]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [BBuCVersion] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "INVuCVersion" : {
                 "type" : "int",
                 "bring" : "[INVuCVersion]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [INVuCVersion] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },
             "signaluCVersion" : {
                 "type" : "int",
                 "bring" : "[signaluCVersion]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [signaluCVersion] then CHARGER-DEVICE-LOGS_counter = incr !CHARGER-DEVICE-LOGS_counter"]
             },

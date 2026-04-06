@@ -39,110 +39,110 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "ip_index" : {
                 "type" : "int",
                 "bring" : "[ip_index]",
-                "default" : None
+                "default" : Null
             },
             "motor_id" : {
                 "type" : "int",
                 "bring" : "[motor_id]",
-                "default" : None
+                "default" : Null
             },
             "__start__" : {"script" : ["set BATTERY-PACK-LOGS_counter = 0"]
             },
             "gStateOfCharge" : {
                 "type" : "float",
                 "bring" : "[gStateOfCharge]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gStateOfCharge] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
             "gStateOfHealth" : {
                 "type" : "float",
                 "bring" : "[gStateOfHealth]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gStateOfHealth] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
             "gEnergyRemaining" : {
                 "type" : "float",
                 "bring" : "[gEnergyRemaining]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gEnergyRemaining] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
             "gParamMaxCapacity" : {
                 "type" : "float",
                 "bring" : "[gParamMaxCapacity]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gParamMaxCapacity] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
             "gParamMaxChargeVoltage" : {
                 "type" : "float",
                 "bring" : "[gParamMaxChargeVoltage]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gParamMaxChargeVoltage] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
             "gPackVoltage" : {
                 "type" : "float",
                 "bring" : "[gPackVoltage]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gPackVoltage] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
             "gBusVoltage" : {
                 "type" : "float",
                 "bring" : "[gBusVoltage]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gBusVoltage] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
             "gCurrent" : {
                 "type" : "float",
                 "bring" : "[gCurrent]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gCurrent] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
             "gCellBalance" : {
                 "type" : "float",
                 "bring" : "[gCellBalance]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gCellBalance] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
             "gPowerLimitCharge" : {
                 "type" : "float",
                 "bring" : "[gPowerLimitCharge]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gPowerLimitCharge] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
             "gPowerLimitDischarge" : {
                 "type" : "int",
                 "bring" : "[gPowerLimitDischarge]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gPowerLimitDischarge] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
             "gAverageTemperature" : {
                 "type" : "int",
                 "bring" : "[gAverageTemperature]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gAverageTemperature] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
             "gMaxCellTemperature" : {
                 "type" : "int",
                 "bring" : "[gMaxCellTemperature]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gMaxCellTemperature] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
             "gMinCellTemperature" : {
                 "type" : "int",
                 "bring" : "[gMinCellTemperature]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gMinCellTemperature] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
@@ -156,7 +156,7 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "gTimeToFullMinute" : {
                 "type" : "int",
                 "bring" : "[gTimeToFullMinute]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gTimeToFullMinute] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },
@@ -198,7 +198,7 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "batteryErrorCode" : {
                 "type" : "int",
                 "bring" : "[batteryErrorCode]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [batteryErrorCode] then BATTERY-PACK-LOGS_counter = incr !BATTERY-PACK-LOGS_counter"]
             },

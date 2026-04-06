@@ -39,54 +39,54 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "ip_index" : {
                 "type" : "int",
                 "bring" : "[ip_index]",
-                "default" : None
+                "default" : Null
             },
             "motor_id" : {
                 "type" : "int",
                 "bring" : "[motor_id]",
-                "default" : None
+                "default" : Null
             },
             "__start__" : {"script" : ["set VESSEL-STATE-LOGS_counter = 0"]
             },
             "hmiYear" : {
                 "type" : "int",
                 "bring" : "[hmiYear]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [hmiYear] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },
             "hmiMonth" : {
                 "type" : "int",
                 "bring" : "[hmiMonth]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [hmiMonth] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },
             "hmiDay" : {
                 "type" : "int",
                 "bring" : "[hmiDay]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [hmiDay] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },
             "hmiHour" : {
                 "type" : "int",
                 "bring" : "[hmiHour]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [hmiHour] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },
             "hmiMinute" : {
                 "type" : "int",
                 "bring" : "[hmiMinute]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [hmiMinute] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },
             "hmiSecond" : {
                 "type" : "int",
                 "bring" : "[hmiSecond]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [hmiSecond] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },
@@ -177,35 +177,35 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "serverCpuLoad" : {
                 "type" : "float",
                 "bring" : "[serverCpuLoad]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [serverCpuLoad] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },
             "serverMemoryUsage" : {
                 "type" : "int",
                 "bring" : "[serverMemoryUsage]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [serverMemoryUsage] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },
             "serverSoftwareVersion" : {
                 "type" : "int",
                 "bring" : "[serverSoftwareVersion]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [serverSoftwareVersion] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },
             "serverCompilationTime" : {
                 "type" : "int",
                 "bring" : "[serverCompilationTime]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [serverCompilationTime] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },
             "updateRateMs" : {
                 "type" : "int",
                 "bring" : "[updateRateMs]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [updateRateMs] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },
@@ -219,21 +219,21 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "boxLinkEnable" : {
                 "type" : "int",
                 "bring" : "[boxLinkEnable]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [boxLinkEnable] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },
             "nightModeActive" : {
                 "type" : "int",
                 "bring" : "[nightModeActive]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [nightModeActive] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },
             "displayEnable" : {
                 "type" : "int",
                 "bring" : "[displayEnable]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [displayEnable] then VESSEL-STATE-LOGS_counter = incr !VESSEL-STATE-LOGS_counter"]
             },

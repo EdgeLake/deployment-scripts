@@ -35,7 +35,15 @@ on error goto msg-client-error
     broker=172.104.228.251 and port=1883 and
     user=anyloguser and password=mqtt4AnyLog! and
     log=false and topic=(
-        name=rand-data and
+        name=vessel-data/DLT and
+        policy = BATTERY-PACK-DEVICE-LOGS and
+        policy = BATTERY-PACK-LOGS and
+        policy = CHARGER-DEVICE-LOGS and
+        policy = CHARGER-LOGS and
+        policy = VESSEL-POWER-LOGS and
+        policy = VESSEL-STATE-LOGS
+    ) and topic=(
+        name=vessel-data/DLB and
         policy = BATTERY-PACK-DEVICE-LOGS and
         policy = BATTERY-PACK-LOGS and
         policy = CHARGER-DEVICE-LOGS and

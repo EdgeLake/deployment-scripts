@@ -39,89 +39,89 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "ip_index" : {
                 "type" : "int",
                 "bring" : "[ip_index]",
-                "default" : None
+                "default" : Null
             },
             "motor_id" : {
                 "type" : "int",
                 "bring" : "[motor_id]",
-                "default" : None
+                "default" : Null
             },
             "__start__" : {"script" : ["set CHARGER-LOGS_counter = 0"]
             },
             "gActAcCurrent" : {
                 "type" : "float",
                 "bring" : "[gActAcCurrent]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gActAcCurrent] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },
             "gActAcVoltage" : {
                 "type" : "float",
                 "bring" : "[gActAcVoltage]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gActAcVoltage] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },
             "gActAcFrequency" : {
                 "type" : "float",
                 "bring" : "[gActAcFrequency]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gActAcFrequency] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },
             "gCommandAcCurrentLimitPP" : {
                 "type" : "int",
                 "bring" : "[gCommandAcCurrentLimitPP]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gCommandAcCurrentLimitPP] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },
             "gParamMaxAcCurrentPP" : {
                 "type" : "int",
                 "bring" : "[gParamMaxAcCurrentPP]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gParamMaxAcCurrentPP] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },
             "gActDcPower" : {
                 "type" : "float",
                 "bring" : "[gActDcPower]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gActDcPower] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },
             "gActDcVoltage" : {
                 "type" : "float",
                 "bring" : "[gActDcVoltage]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gActDcVoltage] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },
             "gCommandDcPowerLimit" : {
                 "type" : "int",
                 "bring" : "[gCommandDcPowerLimit]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gCommandDcPowerLimit] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },
             "gCommandMaxDcVoltage" : {
                 "type" : "float",
                 "bring" : "[gCommandMaxDcVoltage]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gCommandMaxDcVoltage] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },
             "gMaxDcPower" : {
                 "type" : "float",
                 "bring" : "[gMaxDcPower]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gMaxDcPower] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },
             "gActElectronicTemperature" : {
                 "type" : "int",
                 "bring" : "[gActElectronicTemperature]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gActElectronicTemperature] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },
@@ -163,21 +163,21 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "gIsSlave" : {
                 "type" : "int",
                 "bring" : "[gIsSlave]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gIsSlave] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },
             "gWake" : {
                 "type" : "int",
                 "bring" : "[gWake]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gWake] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },
             "gSimConnectedPhaseCount" : {
                 "type" : "int",
                 "bring" : "[gSimConnectedPhaseCount]",
-                "default" : None,
+                "default" : Null,
                 "optional" : True,
                 "script" : ["if [gSimConnectedPhaseCount] then CHARGER-LOGS_counter = incr !CHARGER-LOGS_counter"]
             },

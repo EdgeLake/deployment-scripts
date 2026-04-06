@@ -41,24 +41,26 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "ip_index" : {
                 "type" : "int",
                 "bring" : "[ip_index]",
-                "default" : None
+                "default" : Null
             },
             "motor_id" : {
                 "type" : "int",
                 "bring" : "[motor_id]",
-                "default" : None
+                "default" : Null
             },
             "__start__" : {"script" : ["set BATTERY-PACK-DEVICE-LOGS_counter = 0"]
             },
             "actualSoc" : {
                 "type" : "float",
                 "bring" : "[actualSoc]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [actualSoc] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "actualUserSoc" : {
                 "type" : "float",
                 "bring" : "[actualUserSoc]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [actualUserSoc] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
@@ -72,126 +74,147 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "maxSocAllowed_StateOfHealth" : {
                 "type" : "float",
                 "bring" : "[maxSocAllowed_StateOfHealth]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [maxSocAllowed_StateOfHealth] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "minSocAllowed" : {
                 "type" : "float",
                 "bring" : "[minSocAllowed]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [minSocAllowed] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "actualPackVoltage" : {
                 "type" : "float",
                 "bring" : "[actualPackVoltage]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [actualPackVoltage] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "actualBusVoltage" : {
                 "type" : "int",
                 "bring" : "[actualBusVoltage]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [actualBusVoltage] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "actualCurrent" : {
                 "type" : "float",
                 "bring" : "[actualCurrent]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [actualCurrent] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "maxCapacity" : {
                 "type" : "float",
                 "bring" : "[maxCapacity]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [maxCapacity] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "maxVoltageCharge" : {
                 "type" : "float",
                 "bring" : "[maxVoltageCharge]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [maxVoltageCharge] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "minVoltageDischarge" : {
                 "type" : "float",
                 "bring" : "[minVoltageDischarge]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [minVoltageDischarge] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "maxCurrentCharge" : {
                 "type" : "float",
                 "bring" : "[maxCurrentCharge]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [maxCurrentCharge] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "maxCurrentDischarge" : {
                 "type" : "int",
                 "bring" : "[maxCurrentDischarge]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [maxCurrentDischarge] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "maxCellVoltage" : {
                 "type" : "float",
                 "bring" : "[maxCellVoltage]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [maxCellVoltage] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "minCellVoltage" : {
                 "type" : "float",
                 "bring" : "[minCellVoltage]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [minCellVoltage] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "cellBalance" : {
                 "type" : "float",
                 "bring" : "[cellBalance]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [cellBalance] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "availablePowerChargeLong" : {
                 "type" : "float",
                 "bring" : "[availablePowerChargeLong]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [availablePowerChargeLong] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "availablePowerChargeShort" : {
                 "type" : "float",
                 "bring" : "[availablePowerChargeShort]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [availablePowerChargeShort] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "availablePowerDischargeLong" : {
                 "type" : "float",
                 "bring" : "[availablePowerDischargeLong]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [availablePowerDischargeLong] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "availablePowerDischargeShort" : {
                 "type" : "float",
                 "bring" : "[availablePowerDischargeShort]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [availablePowerDischargeShort] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "actualTempBattery" : {
                 "type" : "int",
                 "bring" : "[actualTempBattery]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [actualTempBattery] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "actualTempBatteryMax" : {
                 "type" : "string",
                 "bring" : "[actualTempBatteryMax]",
+                "default" : "",
                 "optional" : "true",
                 "script" : ["if [actualTempBatteryMax] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "actualTempBatteryMin" : {
                 "type" : "string",
                 "bring" : "[actualTempBatteryMin]",
+                "default" : "",
                 "optional" : "true",
                 "script" : ["if [actualTempBatteryMin] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "actualTempHeatexchanger" : {
                 "type" : "int",
                 "bring" : "[actualTempHeatexchanger]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [actualTempHeatexchanger] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
@@ -254,42 +277,49 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "ekmvTemp" : {
                 "type" : "int",
                 "bring" : "[ekmvTemp]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [ekmvTemp] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "ekmvTempIn" : {
                 "type" : "int",
                 "bring" : "[ekmvTempIn]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [ekmvTempIn] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "ekmvTempOut" : {
                 "type" : "int",
                 "bring" : "[ekmvTempOut]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [ekmvTempOut] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "ekmvPresHigh" : {
                 "type" : "float",
                 "bring" : "[ekmvPresHigh]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [ekmvPresHigh] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "ekmvPresLow" : {
                 "type" : "int",
                 "bring" : "[ekmvPresLow]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [ekmvPresLow] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "ekmvRpmPercent" : {
                 "type" : "float",
                 "bring" : "[ekmvRpmPercent]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [ekmvRpmPercent] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
             "ekmvEpower" : {
                 "type" : "int",
                 "bring" : "[ekmvEpower]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [ekmvEpower] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
@@ -394,6 +424,7 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "timeToFullMinute" : {
                 "type" : "int",
                 "bring" : "[timeToFullMinute]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [timeToFullMinute] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
@@ -428,6 +459,7 @@ else if not !is_policy and !create_policy == true then goto declare-policy-error
             "deviceIdentification" : {
                 "type" : "int",
                 "bring" : "[deviceIdentification]",
+                "default" : Null,
                 "optional" : "true",
                 "script" : ["if [deviceIdentification] then BATTERY-PACK-DEVICE-LOGS_counter = incr !BATTERY-PACK-DEVICE-LOGS_counter"]
             },
