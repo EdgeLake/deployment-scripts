@@ -55,7 +55,7 @@ if !is_file == true then goto process-client
 on error ignore
 
 is_file = if test !client_file
-if not !is_file goto missing-file-client
+if not !is_file then goto missing-file-client
 process !client_file
 
 
