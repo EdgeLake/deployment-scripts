@@ -19,7 +19,7 @@ if !is_file == true then goto process-tags
     url = opc.tcp://172.233.108.122:4841/freeopcua/data-generator and
     node = "ns=2;i=1" and
     dbms = !default_dbms and
-    format = policy  and
+    format = policy and
     schema = true and
     class = variable and
     target = "local = true and master = !ledger_conn" and
