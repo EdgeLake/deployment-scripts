@@ -15,10 +15,8 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # process !local_scripts/node-deployment//set_params.al
 on error ignore
-set debug off
 
-
-# if $DISABLE_CLI == true or  $DISABLE_CLI == True or $DISABLE_CLI == TRUE then set cli off
+if $DISABLE_CLI == true or  $DISABLE_CLI == True or $DISABLE_CLI == TRUE then set cli off
 
 :required-params:
 company_name = "New Company"

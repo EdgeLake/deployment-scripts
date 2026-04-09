@@ -11,7 +11,7 @@ on error ignore
 
 # print "video_ai.al: Starting..."
 
-# set debug on
+# 
 
 :set-paths:
 streams_generated = !local_scripts/southbound-video-streaming/video_ai_streams.al

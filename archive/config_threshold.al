@@ -3,7 +3,7 @@
 #----------------------------------------------------------------------------------------------------------------------#
 # process !local_scripts/policies/config_threshold.al
 
-if !debug_mode == true then set debug on
+if !debug_mode == true then 
 
 :set-params:
 if !debug_mode == true then print "Set buffer threshold"
