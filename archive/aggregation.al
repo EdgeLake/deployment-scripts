@@ -10,7 +10,7 @@
 #                                                                                                #
 # Note: if !enable_aggregations isn't enabled script will not run                                #
 #------------------------------------------------------------------------------------------------#
-# process /app/deployment-scripts/sample-scripts/aggregations.al
+# process !local_scripts/sample-scripts/aggregations.al
 
 on error ignore
 if !aggregation_policy then config from policy where id = !aggregation_policy

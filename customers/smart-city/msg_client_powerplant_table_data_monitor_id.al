@@ -18,7 +18,7 @@
 #    "RealPower":17
 # }
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/customers/smart-city/msg_client_data_monitor_id.al
+# process !local_scripts/customers/smart-city/msg_client_data_monitor_id.al
 
 
 on error ignore

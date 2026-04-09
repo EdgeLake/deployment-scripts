@@ -7,7 +7,7 @@
 #    "PV":1.9200000762939453
 # }
 #----------------------------------------------------------------------------------------------------------------------#
-# process !anylog_path/deployment-scripts/customers/smart-city/msg_client_data_pp_pm.al
+# process !local_scripts/customers/smart-city/msg_client_data_pp_pm.al
 
 
 on error ignore
