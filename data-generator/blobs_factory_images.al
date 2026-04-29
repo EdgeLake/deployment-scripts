@@ -74,7 +74,7 @@
 # :documents:
 #   - Documentation: https://github.com/AnyLog-co/documentation/blob/master/mapping%20data%20to%20tables.md
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/demo-scripts/blobs_factory_images.al
+# process !local_scripts/demo-scripts/blobs_factory_images.al
 
 :preparre-policy:
 policy_id = factory-imgs # used also as the mqtt topic name

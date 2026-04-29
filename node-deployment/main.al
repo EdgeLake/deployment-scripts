@@ -48,28 +48,37 @@ else if $EDGELAKE_PATH then set anylog_path = $EDGELAKE_PATH
 if !debug_mode == true then print "set home path"
 set anylog home !anylog_path
 
-local_scripts = !anylog_path/deployment-scripts/node-deployment
-test_dir = !anylog_path/deployment-scripts/test
+local_scripts = !anylog_path/deployment-scripts
+test_dir = !local_scripts/test
 if $LOCAL_SCRIPTS then set local_scripts = $LOCAL_SCRIPTS
 if $TEST_DIR then set test_dir = $TEST_DIR
+
+is_dir = file test !local_scripts
+if !is_dir == false then
+do print "missing local scripts directory": !local_scripts
+do goto terminate-scripts
 
 if !debug_mode == true then print "Create work directories"
 create work directories
 
 :set-params:
 if !debug_mode == true then print "Set environment params"
-process !local_scripts/set_params.al
+process !local_scripts/node-deployment/set_params.al
 
 
 :set-configs:
 if !debug_mode == true then print "declare configs"
-process !local_scripts/policies/config_policy.al
+process !local_scripts/node-deployment/policies/config_policy.al
 
 :end-script:
 if !debug_mode == true then print "Validate everything is running as expected"
 get processes
 if !enable_mqtt == true then get msg client
 end script
+
+:terminate-scripts:
+exit scripts
+
 
 :edgelake-error:
 print "Node type `publisher` not supported with EdgeLake deployment"

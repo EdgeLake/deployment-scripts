@@ -1,27 +1,39 @@
 #----------------------------------------------------------------------------------------------------------------------#
-# call for connecting to Akave network - everything but logical database is currently hardcoded
+# Create connection to object storage
+# :supported:
+#   - Akave
+#   - S3
+#   - MinIO (?)
 #----------------------------------------------------------------------------------------------------------------------#
-# proces !local_scripts/database/configure_dbms_akave.al
+# process !local_scripts/node-deployment/database/connect_dbms_objstore.al
 
 :declare-provider:
 on error goto declare-provider-error
-<bucket provider connect where
-    group = branch_videos and
-    provider = akave and
-    id = 123 and
-    access_key = !akave_access_key and
-    secret_key = !akave_secret_key and
-    region = akave-network and
-    endpoint_url = https://o3-rc3.akave.xyz>
 
-# we need a function to check if bucket has been created
-#:create-bucket:
-#on error goto create-bucket-error
-#bucket create where group = branch_videos and name = deptcounts
+<connect dbms !default_dbms where
+    type = bucket and
+    provider = !blob_storage_type and
+    access_key = !bucket_access_key and
+    secret_key = $bucket_secrete_key and
+    region = !bucket_region and
+    endpoint = !blob_storage_ip and
+    network_id = x123x and
+    bucket_name = my-bucket>
+
+<bucket provider connect where
+    group = !bucket_group and
+    provider =  and
+    id = !bucket_id and
+    access_key = !bucket_access_key and
+    secret_key = ! and
+    region = ! and
+    endpoint_url = !
+>
 
 :assign-logical-name:
 on error goto assign-logical-name-error
-connect dbms !default_dbms where type = bucket and connection = branch_videos
+connect dbms !default_dbms where type = bucket and connection = !bucket_group
+
 
 :end-script:
 end script
@@ -41,3 +53,6 @@ goto terminate-scripts
 :assign-logical-name-error:
 echo "Error: Failed to connect to logical database: " !default_dbms
 goto terminate-scripts
+
+
+

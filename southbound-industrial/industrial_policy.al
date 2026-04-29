@@ -18,11 +18,11 @@ if not !is_policy and !create_config == true then goto declare-policy-error
         "name": "industrial southbound sources",
         "id": "industrial-config",
         "script": [
-            "if !enable_mqtt == true then process !anylog_path/deployment-scripts/sample-scripts/basic_msg_client.al",
-            "if !enable_opcua == true and !set_opcua_tags == true then process !anylog_path/deployment-scripts/southbound-industrial/opcua_tags.al",
-            "if !enable_opcua == true and !set_opcua_tags == false then process !anylog_path/deployment-scripts/southbound-industrial/opcua_client.al",
-            "if !enable_etherip == true and !set_ether_tags == true then process !anylog_path/deployment-scripts/southbound-industrial/etherip_tags.al",
-            "if !enable_etherip == true and !set_ether_tags == false then process !anylog_path/deployment-scripts/southbound-industrial/etherip_client.al",
+            "if !enable_mqtt == true then process !local_scripts/sample-scripts/basic_msg_client.al",
+            "if !enable_opcua == true and !set_opcua_tags == true then process !local_scripts/southbound-industrial/opcua_tags.al",
+            "if !enable_opcua == true and !set_opcua_tags == false then process !local_scripts/southbound-industrial/opcua_client.al",
+            "if !enable_etherip == true and !set_ether_tags == true then process !local_scripts/southbound-industrial/etherip_tags.al",
+            "if !enable_etherip == true and !set_ether_tags == false then process !local_scripts/southbound-industrial/etherip_client.al",
         ]
     }
 }>
