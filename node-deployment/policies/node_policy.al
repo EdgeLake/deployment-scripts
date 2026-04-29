@@ -22,14 +22,13 @@
 # process !local_scripts/node-deployment/policies/node_policy.al
 
 
-if !debug_mode == true then set debug on
+
 
 on error ignore
 set create_policy = false
 if !is_relay == true then set node_type = relay
 
 :check-policy:
-if !debug_mode == true then print "Check whether policy already exists based on params"
 
 # checks nodes based on name, company and networking configurations
 process !local_scripts/node-deployment/policies/validate_node_policy.al
@@ -39,7 +38,6 @@ if not !is_policy and !create_policy == true then goto config-policy-error
 else goto node-info
 
 :create-policy:
-if !debug_mode == true then print "Declare new policy variables"
 
 set new_policy = ""
 set policy new_policy [!node_type] = {}
@@ -50,7 +48,6 @@ set policy new_policy [!node_type][hostname] = !hostname
 if $HZN_DEVICE_ID then set policy new_policy [!node_type][hzn_device_id] = $HZN_DEVICE_ID
 
 :network-node_type:
-if !debug_mode == true then print "Declare network configuration in new policy variables"
 
 set policy new_policy [!node_type][ip] = !external_ip
 if !enable_dns == true and !external_dns   then set policy new_policy [!node_type][ip] = !external_dns
@@ -67,7 +64,6 @@ if !anylog_broker_port then set policy new_policy [!node_type][broker_port] = !a
 
 :cluster-info:
 if !node_type != operator then goto set-location
-if !debug_mode == true then print "For an operator node add cluster ID new policy variables"
 if !node_type == operator and not !cluster_id then goto operator-cluster-error
 
 set policy new_policy [!node_type][cluster] = !cluster_id
@@ -81,7 +77,6 @@ set policy new_policy [!node_type][main] = !is_main.bool
 
 
 :set-location:
-if !debug_mode == true then print "Declare location of node"
 
 if !loc then set policy new_policy [!node_type][loc] = !loc
 if !country then set policy new_policy [!node_type][country] = !country
@@ -91,9 +86,13 @@ if !city then set policy new_policy [!node_type][city] = !city
 if !node_type == operator and !branch then set policy new_policy [!node_type][branch]
 if !node_type == operator and !dept then set policy new_policy [!node_type][dept]
 
+:set-hzn-info:
+
+if $HZN_DEVICE_ID then set policy new_policy [!node_type][hzn_node_id] = $HZN_DEVICE_ID
+else if $HZN_NODE_ID then set policy new_policy [!node_type][hzn_node_id] = $HZN_NODE_ID
+if $HZN_ORGANIZATION then set policy new_policy [!node_type][hzn_org] = $HZN_ORGANIZATION
 
 :publish-policy:
-if !debug_mode == true then print "Publish policy"
 
 process !local_scripts/node-deployment/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error
@@ -104,11 +103,10 @@ goto check-policy
 
 :node-info:
 on error ignore
-if !debug_mode == true then print "For operator node  get policy ID for `run operator`"
 
-if !node_type != operator then goto end-script
-operator_id = from !is_policy bring.last [*][id]
-if not !operator_id then goto config-policy-error
+:declare-hzn:
+if ($HZN_DEVICE_ID or $HZN_NODE_ID) and $HZN_ORGANIZATION then process !local_scripts/node-deployment/policies/hzn_policy.al
+
 
 :end-script:
 if !is_relay == true then set node_type = master
