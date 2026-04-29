@@ -42,7 +42,7 @@
 #   - Generic MQTT script: !local_scripts/deployment_scripts/mqtt.al
 #   - Documentation: https://github.com/AnyLog-co/documentation/blob/master/image%20mapping.md
 #-----------------------------------------------------------------------------------------------------------------------
-# process !anylog_path/deployment-scripts/demo-scripts/blobs_people_videos.al
+# process !local_scripts/demo-scripts/blobs_people_videos.al
 
 on error ignore
 

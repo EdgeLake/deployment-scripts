@@ -6,7 +6,7 @@
 #   --> set account
 #   --> sync from contract
 #----------------------------------------------------------------------------------------------------------------------#
-# process !local_scripts/connect_blockchain.al
+# process !local_scripts/node-deployment/connect_blockchain.al
 
 on error ignore
 
@@ -54,7 +54,7 @@ do print !contract
     time=!blockchain_sync and
     dest=!blockchain_destination and
     platform=!blockchain_source>
-do process !local_scripts/policies/blockchain_policy.al
+do process !local_scripts/node-deployment/policies/blockchain_policy.al
 do get platforms
 else if !blockchain_source == master then
 <do run blockchain sync where

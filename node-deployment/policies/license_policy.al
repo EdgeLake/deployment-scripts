@@ -17,7 +17,7 @@
 # }}
 # ---- Sample Policy ---
 #-----------------------------------------------------------------------------------------------------------------------
-# process !local_scripts/policies/license_policy.al
+# process !local_scripts/node-deployment/policies/license_policy.al
 
 if !is_edgelake == true then goto end-script
 
@@ -53,7 +53,7 @@ on error ignore
 :publish-policy:
 if !debug_mode == true then print "Declare policy on blockchain"
 
-process !local_scripts/policies/publish_policy.al
+process !local_scripts/node-deployment/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error
 if !error_code == 2 then goto prepare-policy-error
 if !error_code == 3 then goto declare-policy-error

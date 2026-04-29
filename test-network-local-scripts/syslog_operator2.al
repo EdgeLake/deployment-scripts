@@ -3,7 +3,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 on error ignore
 
-process !anylog_path/deployment-scripts/demo-scripts/syslog.al
+process !local_scripts/demo-scripts/syslog.al
 
 on error call syslog-error
 
