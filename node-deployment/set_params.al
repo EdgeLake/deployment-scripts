@@ -15,10 +15,8 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # process !local_scripts/node-deployment//set_params.al
 on error ignore
-set debug off
-if !debug_mode == true then set debug on
 
-# if $DISABLE_CLI == true or  $DISABLE_CLI == True or $DISABLE_CLI == TRUE then set cli off
+if $DISABLE_CLI == true or  $DISABLE_CLI == True or $DISABLE_CLI == TRUE then set cli off
 
 :required-params:
 company_name = "New Company"
@@ -263,7 +261,7 @@ partition_sync = 1 day
 
 if $MEMBER and $MEMBER.int then member = $MEMBER
 if $IS_MAIN and ($IS_MAIN == true or $IS_MAIN == True or $IS_MAIN == TRUE) then set is_main = true
-else if $IS_MAIN ($IS_MAIN == false or $IS_MAIN == False  or $IS_MAIN == FALSE) then set is_main = false
+else if $IS_MAIN and ($IS_MAIN == false or $IS_MAIN == False  or $IS_MAIN == FALSE) then set is_main = false
 
 if $ENABLE_PARTITIONS == false or $ENABLE_PARTITIONS == False or $ENABLE_PARTITIONS == FALSE then set enable_partitions=false
 
@@ -278,7 +276,7 @@ if $PARTITION_SYNC then set partition_sync = $PARTITION_SYNC
 
 :operator-ha:
 set enable_ha = false
-start_data = -30d
+start_date = -30d
 
 if $ENABLE_HA == true or $ENABLE_HA == TRUE or $ENABLE_HA == True then set enable_ha=true
 if $START_DATE then start_date = $START_DATE
@@ -295,8 +293,8 @@ video_port = 32800
 video_grpc_dir = !anylog_path/AnyLog-Network/external_lib/frame_modeling
 # video_dbms = !default_dbms + "_blobs"
 
-if $ENABLE_VIDEO_STREAMING == true or $ENABLE_VIDEO_STREAMING == True or $ENABLE_VIDEO_STREAMING == TRUE or then enable_video_streaming=true
-if $ENABLE_DETECTIONS == true or $ENABLE_DETECTIONS == True or or $ENABLE_DETECTIONS == TRUE then set enable_detections=true
+if $ENABLE_VIDEO_STREAMING == true or $ENABLE_VIDEO_STREAMING == True or $ENABLE_VIDEO_STREAMING == TRUE then enable_video_streaming=true
+if $ENABLE_DETECTIONS == true or $ENABLE_DETECTIONS == True or $ENABLE_DETECTIONS == TRUE then set enable_detections=true
 
 if $VIDEO_URL then set video_url = $VIDEO_URL
 if $VIDEO_PORT then set video_port = $VIDEO_PORT
@@ -364,26 +362,20 @@ if $VIEW_MONITORING_DEST then view_monitoring_dest = $VIEW_MONITORING_DEST
 if $MONITORING_FREQUENCY then monitoring_frequency = $MONITORING_FREQUENCY
 if $DOCKER_FREQUENCY     then docker_frequency     = $DOCKER_FREQUENCY
 
-# :opcua-configs:
-# set enable_opcua=false
-# set set_opcua_tags = false
+:opcua-configs:
+set enable_opcua = false
+opcua_frequency = 5
 
-# if $ENABLE_OPCUA == true or $ENABLE_OPCUA == True or $ENABLE_OPCUA == True then set enable_opcua = true
-# if !enable_opcua == false then goto etherip-conifgs
+if $ENABLE_OPCUA == true or $ENABLE_OPCUA == True or $ENABLE_OPCUA == TRUE then enable_opcua = true
+if $OPCUA_URL then opcua_url = $OPCUA_URL
+if $OPCUA_NODE then opcua_node = $OPCUA_NODE
 
-# if $SET_OPCUA_TAGS == true or $SET_OPCUA_TAGS == True or $SET_OPCUA_TAGS == TRUE then set set_opcua_tags=true
-# if $OPCUA_URL opcua_url=$OPCUA_URL
-# else goto
-# if $OPCUA_NODE then opcua_node=$OPCUA_NODE
-if $OPCUA_FREQUENCY then opcua_frequency=$OPCUA_FREQUENCY
+if $OPCUA_NAME  then opcua_name = $OPCUA_NAME
 
+if $OPCUA_USERNAME then opcua_username = $OPCUA_USERNAME
+if $OPCUA_PASSWORD then opcua_password = $OPCUA_PASSWORD
 
-# :etherip-conifgs:
-# set enable_etherip=false
-# set set_etherip_tags=false
-# if $ENABLE_ETHERIP == true or $ENABeLATOR_MODE == true or $SIMULATOR_MODE == True or $SIMULATOR_MODE == TRUE) then etherip_url=127.0.0.1
-# if $ETHERIP_FREQUENCY then etherip_frequency = $ETHERIP_FREQUENCY
-# if $SET_ETHERIP_TAGS == true or $SET_ETHERIP_TAGS == True or $SET_ETHERIP_TAGS == TRUE then set set_etherip_tags=true
+if $OPCUA_FREQUENCY then opcua_frequency = $OPCUA_FREQUENCY
 
 
 # :aggregations:

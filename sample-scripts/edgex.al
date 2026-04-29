@@ -29,13 +29,13 @@
 
 on error ignore
 
-:set-params:
-if not !msg_log then set msg_log = false
-if not !default_dbms then default_dbms=test
+set create_policy = false
 
-topic_name = edgex-demo
-is_policy = blockchain get mapping where id = !topic_name
-if !is_policy then goto msg-client
+:prepare-policy:
+policy_id = basic-mqtt
+policy = blockchain get mapping where id = !policy_id
+if !policy then goto msg-call
+if !create_policy == true then goto declare-policy-error
 
 :declare-policy:
 mapping_policy = []
@@ -126,51 +126,51 @@ mapping_policy = []
     }
 }>
 
-test_policy = json !mapping_policy test
-if !test_policy == false then goto json-policy-error
-
 :publish-policy:
-on error call declare-policy-error
-if !test_policy == true and not !is_policy
-do blockchain prepare policy !mapping_policy
-do blockchain insert where policy=!mapping_policy and local=true and master=!ledger_conn
+process !local_scripts/node-deployment/policies/publish_policy.al
+if !error_code == 1 then goto sign-policy-error
+if !error_code == 2 then goto prepare-policy-error
+if !error_code == 3 then goto declare-policy-error
+set create_policy = true
+goto check-policy
 
-:msg-client:
-on error call msg-client-error
-if !anylog_broker_port then
-<do run msg client where broker=local and port=!anylog_broker_port and log=!msg_log and topic=(
-    name=!topic_name and
-    policy=!topic_name
+
+:msg-call:
+on error goto msg-error
+if not !anylog_broker_port and !user_name and !user_password then
+<do run msg client where broker=rest and port=!anylog_rest_port and user=!user_name and password=!user_password and user-agent=anylog and log=false and topic=(
+    name=!policy_id and
+    policy=!policy_id
 )>
-<else run msg client where broker=rest and port=!anylog_rest_port and user-agent=anylog and log=!msg_log and topic=(
-    name=!topic_name and
-    policy=!topic_name
+else if !anylog_broker_port then
+<do run msg client where broker=local and port=!anylog_broker_port and log=false and topic=(
+    name=!policy_id and
+    policy=!policy_id
+)>
+else if not !anylog_broker_port then
+<do run msg client where broker=rest and port=!anylog_rest_port and user-agent=anylog and log=false and topic=(
+    name=!policy_id and
+    policy=!policy_id
 )>
 
 :end-script:
-get msg client
 end script
 
-:declare-params-error:
-echo "Failed to declare one or more policies. Cannot continue..."
-goto end-script
+:terminate-scripts:
+exit scripts
 
-:connect-dbms-error:
-echo "Failed to connect to MongoDB logical database " !mongo_db_name ". Cannot continue..."
-goto end-script
+:sign-policy-error:
+print "Failed to sign master policy"
+goto terminate-scripts
 
-:blobs-archiver-error:
-echo "Failed to enable blobs archiver"
-return
-
-:json-policy-error:
-echo "Invalid JSON format, cannot declare policy"
-goto end-script
+:prepare-policy-error:
+print "Failed to prepare member master policy for publishing on blockchain"
+goto terminate-scripts
 
 :declare-policy-error:
-echo "Failed to declare policy on blockchain"
-return
+print "Failed to declare master policy on blockchain"
+goto terminate-scripts
 
-:msg-client-error:
+:msg-error:
 echo "Failed to deploy MQTT process"
 goto end-script
