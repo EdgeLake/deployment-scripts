@@ -3,10 +3,9 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # process !local_scripts/node-deployment/database/configure_dbms_system_query.al
 on error ignore
-if !debug_mode == true then set debug on
+
 
 :system-query-dbms:
-if !debug_mode == true then print "Connect to system_query database"
 on error goto system-query-db-error
 if !system_query_db == sqlite then connect dbms system_query where type=sqlite and memory=!memory
 <else if !system_query_db == psql then connect dbms system_query where

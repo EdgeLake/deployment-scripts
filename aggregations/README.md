@@ -86,7 +86,7 @@ meaning they are not written such that users can define multiple tables or multi
 
 ### Using the configurations
 
-In the advanced configs file, update the aggregation configurations, this would then run [aggregation.al](../sample-scripts/aggregation.al)
+In the advanced configs file, update the aggregation configurations, this would then run [aggregation.al](../archive/aggregation.al)
 script.
 
 ### Using Policies 

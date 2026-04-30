@@ -9,7 +9,7 @@ on error ignore
 
 set create_policy = false
 
-:preparre-policy:
+:prepare-policy:
 policy_id = basic-mqtt
 policy = blockchain get mapping where id = !policy_id
 if !policy then goto msg-call
@@ -35,7 +35,7 @@ if !create_policy == true then goto declare-policy-error
 }>
 
 :publish-policy:
-process !local_scripts/policies/publish_policy.al
+process !local_scripts/node-deployment/policies/publish_policy.al
 if !error_code == 1 then goto sign-policy-error
 if !error_code == 2 then goto prepare-policy-error
 if !error_code == 3 then goto declare-policy-error

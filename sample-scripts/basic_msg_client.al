@@ -6,7 +6,7 @@
 # process !local_scripts/connectors/basic_msg_client.al
 
 on error ignore
-if !debug_mode == true then set debug on
+if !debug_mode == true then 
 
 if !mqtt_broker == rest then
 if !debug_mode.int > 0 then print "set mqtt client connection"
