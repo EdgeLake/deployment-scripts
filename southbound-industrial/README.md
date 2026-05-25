@@ -40,4 +40,4 @@ proces deployment-scripts/southbound-industrial/etherip_tags.al
 proces deployment-scripts/southbound-industrial/etherip_client.al 
 ```
 
-For convenience, this entire two-step process can be automated using: [industrial_policy.al](../southbound-industrial/industrial_policy.al). 
+For convenience, this entire two-step process can be automated using: [industrial_policy.al](../archive/industrial/industrial_policy.al). 
