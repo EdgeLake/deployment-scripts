@@ -35,7 +35,6 @@ do set debug_mode = true
 
 :disable-auth:
 set echo queue on
-set authentication off
 
 :is-edgelake:
 
