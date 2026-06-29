@@ -42,8 +42,6 @@ set node name !node_name
 if $COMPANY_NAME then company_name = $COMPANY_NAME
 
 
-if $LICENSE_KEY then license_key = $LICENSE_KEY
-
 :general-params:
 loc_info = rest get where url = https://ipinfo.io/json
 if $LOCATION then loc = $LOCATION
@@ -505,11 +503,6 @@ goto terminate-scripts
 :nic-error:
 echo "Invalid NIC type " + !nic_Type
 return
-
-
-:missing-license-key:
-print "Missing license key, cannot continue..."
-goto terminate-scripts
 
 :missing-company-name:
 print "Missing company name, cannot continue..."
